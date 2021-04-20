@@ -1,0 +1,45 @@
+﻿name: activate
+on: [push]
+jobs:
+  activation:
+    name: Request manual activation file 🔑
+    runs-on: ubuntu-latest
+    steps:
+      # Request manual activation file
+      - name: Request manual activation file
+        id: getManualLicenseFile
+        uses: game-ci/unity-request-activation-file@v2
+      - name: Expose as artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+
+#name: main
+#on: [pull_request]
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#        
+#      - name: Cache
+#        uses: actions/cache@v2
+#        with:
+#          path: Library
+#          key: Library
+#          
+#      - name: Test
+#        uses: game-ci/unity-test-runner@v2
+#        env:
+#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#        with:
+#          githubToken: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Build
+#        uses: game-ci/unity-builder@v2
+#        env:
+#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#        with:
+#          targetPlatform: WebGL
