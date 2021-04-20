@@ -1,7 +1,7 @@
 ﻿name: main
 on: [pull_request]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,7 +12,7 @@ jobs:
         with:
           path: Library
           key: Library
-        
+
       - name: Test
         uses: game-ci/unity-test-runner@v2
         env:
@@ -27,12 +27,18 @@ jobs:
         with:
           name: Test results
           path: artifacts
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Cleanup
-        run: |
-          git add .
-          git reset HEAD --hard
-        
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library
+          
       - name: Build
         uses: game-ci/unity-builder@v2
         env:
