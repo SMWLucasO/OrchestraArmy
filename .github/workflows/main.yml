@@ -21,8 +21,17 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           unityVersion: 2020.3.3f1
 
+      - name: Upload test rapport
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results
+          path: artifacts
+
       - name: Cleanup
-        run: git reset HEAD --hard
+        run: |
+          git add .
+          git reset HEAD --hard
         
       - name: Build
         uses: game-ci/unity-builder@v2
