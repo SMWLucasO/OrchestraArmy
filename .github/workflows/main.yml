@@ -14,7 +14,10 @@ jobs:
           key: Library
 
       - name: Echo
-        run: echo ${{secrets.UNITY_LICENSE}}
+        run: 'echo "$s" > key'
+        shell: bash
+        env:
+          s: ${{secrets.UNITY_LICENSE}}
         
       - name: Test
         uses: game-ci/unity-test-runner@v2
