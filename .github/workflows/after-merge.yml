@@ -5,7 +5,15 @@ on:
       - main
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    strategy: 
+      fail-fast: false
+      matrix: 
+        targetPlatform:
+          - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
     steps:
       - name: Checkout
         uses: actions/checkout@v2
