@@ -32,12 +32,8 @@ jobs:
         with:
           targetPlatform: ${{ matrix.target }}
           unityVersion: 2020.3.3f1
-  upload:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-          name: Build
-          path: build
+          name: Build-${{ matrix.target }}
+          path: build/${{ matrix.target }}
