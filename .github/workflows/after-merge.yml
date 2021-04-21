@@ -9,7 +9,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix: 
-        targetPlatform:
+        target:
           - StandaloneWindows
           - StandaloneWindows64
           - StandaloneLinux64
@@ -22,15 +22,20 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library
+          key: Library-${{ matrix.target }}
+          restore-keys: Library-
 
       - name: Build
         uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          targetPlatform: StandaloneWindows
+          targetPlatform: ${{ matrix.target }}
           unityVersion: 2020.3.3f1
+  upload:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
