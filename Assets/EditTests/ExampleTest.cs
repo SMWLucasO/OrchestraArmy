@@ -11,6 +11,7 @@ public class ExampleTest
     public void ExampleTestSimplePasses()
     {
         // Use the Assert class to test conditions
+        Assert.IsTrue(true);
     }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
@@ -20,6 +21,13 @@ public class ExampleTest
     {
         // Use the Assert class to test conditions.
         // Use yield to skip a frame.
-        yield return null;
+        for (var i = 0; i < 100; i++)
+        {
+            //every yield advances the game by 1 frame
+            yield return null;
+        }
+
+        //after 100 frames assert this is asserted
+        Assert.IsTrue(true);
     }
 }
