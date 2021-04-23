@@ -1,29 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class levelGen : MonoBehaviour
 {
-    enum gridSpace {empty, floor, wall};
+    enum gridSpace {empty, floor, wall, door};
 	gridSpace[,] grid;
 	int roomHeight, roomWidth;
-	Vector2 roomSizeWorldUnits = new Vector2(30,30);
+	Vector2 roomSizeWorldUnits = new Vector2(150,150);
 	float worldUnitsInOneGridCell = 1;
 	struct walker{
 		public Vector2 dir;
 		public Vector2 pos;
 	}
 	List<walker> walkers;
-	float chanceWalkerChangeDir = 0.5f, chanceWalkerSpawn = 0.05f;
-	float chanceWalkerDestoy = 0.05f;
-	int maxWalkers = 10;
-	float percentToFill = 0.2f; 
-	public GameObject wallObj, floorObj;
+	float chanceWalkerChangeDir = .7f, chanceWalkerSpawn = 0.2f;
+	float chanceWalkerDestoy = 0.2f;
+	int maxWalkers = 6;
+	private float percentToFill = 0.05f; 
+	public GameObject wallObj, floorObj, doorObj;
 	void Start () {
 		Setup();
 		CreateFloors();
 		CreateWalls();
 		RemoveSingleWalls();
+		CreateDoors();
 		SpawnLevel();
 	}
 	void Setup(){
@@ -164,6 +167,152 @@ public class levelGen : MonoBehaviour
 			}
 		}
 	}
+	
+	/*
+	void CreateDoors(){
+        //empty list of walkers
+        walkers = new List<walker>();
+
+        //create walker at top middle.
+        walker topWalker = new walker();
+        walker leftWalker = new walker();
+        walker bottomWalker = new walker();
+        walker rightWalker = new walker();
+
+        topWalker.dir = Vector2.up;
+        leftWalker.dir = Vector2.left;
+        bottomWalker.dir = Vector2.down;
+        rightWalker.dir = Vector2.right;
+
+        print(1);
+
+        topWalker.pos = new Vector2(Mathf.RoundToInt(roomWidth/ 2.0f),
+										0);
+        leftWalker.pos = new Vector2(0,
+										Mathf.RoundToInt(roomHeight/ 2.0f));
+        bottomWalker.pos = new Vector2(Mathf.RoundToInt(roomWidth/ 2.0f),
+										roomHeight-1);
+        rightWalker.pos = new Vector2(roomWidth-1,
+										Mathf.RoundToInt(roomHeight/ 2.0f));
+
+        print(2);
+
+        walkers.Add(topWalker);
+        walkers.Add(leftWalker);
+        walkers.Add(bottomWalker);
+        walkers.Add(rightWalker);
+
+
+		bool goOn = true;
+        print(grid[15,0]);
+        do{
+	        print((int)topWalker.pos.x+", "+(int)topWalker.pos.y);
+	        print(grid[(int)topWalker.pos.x,(int)topWalker.pos.y]);
+            if(grid[(int)topWalker.pos.x,(int)topWalker.pos.y] == gridSpace.wall 
+				&& grid[(int)topWalker.pos.x,(int)topWalker.pos.y+1] == gridSpace.floor){
+					grid[(int)topWalker.pos.x,(int)topWalker.pos.y] = gridSpace.door;
+					goOn = false;
+			}
+			topWalker.pos += topWalker.dir;
+		}while(goOn);
+        print(3);
+
+		goOn = true;
+        do{
+			if(grid[(int)leftWalker.pos.x,(int)leftWalker.pos.y] == gridSpace.wall 
+				&& grid[(int)leftWalker.pos.x-1,(int)leftWalker.pos.y] == gridSpace.floor){
+					grid[(int)leftWalker.pos.x,(int)leftWalker.pos.y] = gridSpace.door;
+					goOn = false;
+			leftWalker.pos += leftWalker.dir;
+			}
+		}while(goOn);
+        print(4);
+
+		goOn = true;
+        do{
+			if(grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y] == gridSpace.wall 
+				&& grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y-1] == gridSpace.floor){
+					grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y] = gridSpace.door;
+					goOn = false;
+			bottomWalker.pos += bottomWalker.dir;
+			}
+		}while(goOn);
+
+		goOn = true;
+		do{
+			if(grid[(int)rightWalker.pos.x,(int)rightWalker.pos.y] == gridSpace.wall 
+				&& grid[(int)rightWalker.pos.x+1,(int)rightWalker.pos.y] == gridSpace.floor){
+					grid[(int)rightWalker.pos.x,(int)rightWalker.pos.y] = gridSpace.door;
+					goOn = false;
+			rightWalker.pos += rightWalker.dir;
+			}
+		}while(goOn);
+
+    }
+	
+	*/
+
+	void CreateDoors()
+	{
+		int minx=roomWidth, miny=roomHeight, maxx=0, maxy=0;
+		for (int x = 0; x < roomWidth; x++)
+		{
+			for (int y = 0; y < roomHeight; y++)
+			{
+				if (grid[x,y] != gridSpace.empty)
+				{
+					minx = Math.Min(minx, x);
+					maxx = Math.Max(maxx, x);
+					miny = Math.Min(miny, y);
+					maxy = Math.Max(maxy, y);
+				}
+			}
+		}
+
+		int centerX = (int)(minx+maxx)/2, centerY=(int)(miny+maxy)/2;
+		
+		for (int i = 0; i < roomHeight; i++)	//down -> up
+		{
+			if (grid[centerX,i] == gridSpace.wall/* &&
+			    grid[Mathf.RoundToInt(roomWidth/ 2.0f),i+1] == gridSpace.floor*/)
+			{
+				grid[centerX, i] = gridSpace.door;
+				print(1);
+				break;
+			}
+		}
+		for (int i = roomHeight-1; i >= 0; i--)	//up -> down
+		{
+			if (grid[centerX,i] == gridSpace.wall/* &&
+			    grid[Mathf.RoundToInt(roomWidth/ 2.0f),i-1] == gridSpace.floor*/)
+			{
+				grid[centerX, i] = gridSpace.door;
+				print(2);
+				break;
+			}
+		}
+		for (int i = 0; i < roomWidth; i++)	//left -> right
+		{
+			if (grid[i,centerY] == gridSpace.wall/* &&
+			    grid[i+1,Mathf.RoundToInt(roomHeight/ 2.0f)] == gridSpace.floor*/)
+			{
+				grid[i,centerY] = gridSpace.door;
+				print(3);
+				break;
+			}
+		}
+		for (int i = roomWidth-1; i >= 0; i--)	//right -> left
+		{
+			if (grid[i,centerY] == gridSpace.wall/* &&
+			    grid[i-1,Mathf.RoundToInt(roomHeight/ 2.0f)] == gridSpace.floor*/)
+			{
+				grid[i,centerY] = gridSpace.door;
+				print(4);
+				break;
+			}
+		}
+	}
+
 	void SpawnLevel(){
 		for (int x = 0; x < roomWidth; x++){
 			for (int y = 0; y < roomHeight; y++){
@@ -176,6 +325,10 @@ public class levelGen : MonoBehaviour
 					case gridSpace.wall:
 						Spawn(x,y,wallObj);
 						break;
+					case gridSpace.door:
+						Spawn(x,y,doorObj);
+						break;
+                    
 				}
 			}
 		}
@@ -206,8 +359,8 @@ public class levelGen : MonoBehaviour
 	}
 	void Spawn(float x, float y, GameObject toSpawn){
 		//find the position to spawn
-		Vector2 offset = roomSizeWorldUnits / 2.0f;
-		Vector2 spawnPos = new Vector2(x,y) * worldUnitsInOneGridCell - offset;
+		Vector3 offset = new Vector3(roomSizeWorldUnits.x / 2.0f,0.0f,roomSizeWorldUnits.y / 2.0f);
+		Vector3 spawnPos = new Vector3(x,0.0f,y) * worldUnitsInOneGridCell - offset;
 		//spawn object
 		Instantiate(toSpawn, spawnPos, Quaternion.identity);
 	}
