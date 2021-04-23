@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Entity.Entities.Player.Controllers;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Player
@@ -10,7 +11,10 @@ namespace OrchestraArmy.Entity.Entities.Player
 
         public Player()
         {
-            // ...
+            this.MovementController = new PlayerMovementController()
+            {
+                Entity = this
+            };
         }
         
     }

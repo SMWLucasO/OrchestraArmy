@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity
 {
-    public class DirectionalEntity : MonoBehaviour
+    public abstract class DirectionalEntity : MonoBehaviour
     {
         /// <summary>
         /// The sprite per direction of the Entity.
@@ -29,9 +29,9 @@ namespace OrchestraArmy.Entity
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
-
+            
         }
     }
 }
