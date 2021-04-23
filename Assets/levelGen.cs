@@ -2,26 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour {
-
-	enum gridSpace {empty, floor, wall, door};
+public class levelGen : MonoBehaviour
+{
+    enum gridSpace {empty, floor, wall};
 	gridSpace[,] grid;
 	int roomHeight, roomWidth;
 	Vector2 roomSizeWorldUnits = new Vector2(30,30);
 	float worldUnitsInOneGridCell = 1;
-
 	struct walker{
 		public Vector2 dir;
 		public Vector2 pos;
 	}
-
 	List<walker> walkers;
 	float chanceWalkerChangeDir = 0.5f, chanceWalkerSpawn = 0.05f;
 	float chanceWalkerDestoy = 0.05f;
 	int maxWalkers = 10;
 	float percentToFill = 0.2f; 
 	public GameObject wallObj, floorObj;
-
 	void Start () {
 		Setup();
 		CreateFloors();
@@ -29,7 +26,6 @@ public class LevelGenerator : MonoBehaviour {
 		RemoveSingleWalls();
 		SpawnLevel();
 	}
-
 	void Setup(){
 		//find grid size
 		roomHeight = Mathf.RoundToInt(roomSizeWorldUnits.x / worldUnitsInOneGridCell);
@@ -56,7 +52,6 @@ public class LevelGenerator : MonoBehaviour {
 		//add walker to list
 		walkers.Add(newWalker);
 	}
-
 	void CreateFloors(){
 		int iterations = 0;//loop will not run forever
 		do{
@@ -94,7 +89,7 @@ public class LevelGenerator : MonoBehaviour {
 				}
 			}
 			//move walkers
-			 for (int i = 0; i < walkers.Count; i++){
+			for (int i = 0; i < walkers.Count; i++){
 				walker thisWalker = walkers[i];
 				thisWalker.pos += thisWalker.dir;
 				walkers[i] = thisWalker;				
@@ -114,7 +109,6 @@ public class LevelGenerator : MonoBehaviour {
 			iterations++;
 		}while(iterations < 100000);
 	}
-
 	void CreateWalls(){
 		//loop though every grid space
 		for (int x = 0; x < roomWidth-1; x++){
@@ -138,7 +132,6 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 	}
-
 	void RemoveSingleWalls(){
 		//loop though every grid space
 		for (int x = 0; x < roomWidth-1; x++){
@@ -171,81 +164,6 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 	}
-
-    void CreateDoors(){
-        //empty list of walkers
-        walkers = new List<walker>();
-
-        //create walker at top middle.
-        walker topWalker = new walker();
-        walker leftWalker = new walker();
-        walker bottomWalker = new walker();
-        walker rightWalker = new walker();
-
-        topWalker.dir = Vector2.down;
-        leftWalker.dir = Vector2.right;
-        bottomWalker.dir = Vector2.up;
-        rightWalker.dir = Vector2.left;
-
-        topWalker.pos = new Vector2(Mathf.RoundToInt(roomWidth/ 2.0f),
-										0);
-        leftWalker.pos = new Vector2(0,
-										Mathf.RoundToInt(roomHeight/ 2.0f));
-        bottomWalker.pos = new Vector2(Mathf.RoundToInt(roomWidth/ 2.0f),
-										roomHeight);
-        rightWalker.pos = new Vector2(roomWidth),
-										Mathf.RoundToInt(roomHeight/ 2.0f));
-
-
-        walkers.Add(topWalker);
-        walkers.Add(leftWalker);
-        walkers.Add(bottomWalker);
-        walkers.Add(rightWalker);
-
-
-		bool goOn = true;
-        do{
-            if(grid[(int)topWalker.pos.x,(int)topWalker.pos.y] == gridSpace.wall 
-				&& grid[(int)topWalker.pos.x,(int)topWalker.pos.y+1] == gridSpace.floor){
-					grid[(int)topWalker.pos.x,(int)topWalker.pos.y] = gridSpace.door;
-					goOn = false;
-			}
-			topWalker.pos += topWalker.dir;
-		}while(goOn);
-
-		goOn = true;
-        do{
-			if(grid[(int)leftWalker.pos.x,(int)leftWalker.pos.y] == gridSpace.wall 
-				&& grid[(int)leftWalker.pos.x-1,(int)leftWalker.pos.y] == gridSpace.floor){
-					grid[(int)leftWalker.pos.x,(int)leftWalker.pos.y] = gridSpace.door;
-					goOn = false;
-			leftWalker.pos += leftWalker.dir;
-			}
-		}while(goOn);
-
-		goOn = true;
-        do{
-			if(grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y] == gridSpace.wall 
-				&& grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y-1] == gridSpace.floor){
-					grid[(int)bottomWalker.pos.x,(int)bottomWalker.pos.y] = gridSpace.door;
-					goOn = false;
-			bottomWalker.pos += bottomWalker.dir;
-			}
-		}while(goOn);
-
-		goOn = true;
-		do{
-			if(grid[(int)rightWalker.pos.x,(int)rightWalker.pos.y] == gridSpace.wall 
-				&& grid[(int)rightWalker.pos.x+1,(int)rightWalker.pos.y] == gridSpace.floor){
-					grid[(int)rightWalker.pos.x,(int)rightWalker.pos.y] = gridSpace.door;
-					goOn = false;
-			rightWalker.pos += rightWalker.dir;
-			}
-		}while(goOn);
-
-        MoveWalkers();
-    }
-
 	void SpawnLevel(){
 		for (int x = 0; x < roomWidth; x++){
 			for (int y = 0; y < roomHeight; y++){
@@ -262,7 +180,6 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 	}
-
 	Vector2 RandomDirection(){
 		//pick random int between 0 and 3
 		int choice = Mathf.FloorToInt(Random.value * 3.99f);
@@ -278,7 +195,6 @@ public class LevelGenerator : MonoBehaviour {
 				return Vector2.right;
 		}
 	}
-
 	int NumberOfFloors(){
 		int count = 0;
 		foreach (gridSpace space in grid){
@@ -288,15 +204,6 @@ public class LevelGenerator : MonoBehaviour {
 		}
 		return count;
 	}
-
-    void MoveWalker(walker thisWalker){
-        for (int i = 0; i < walkers.Count; i++){
-				walker thisWalker = walkers[i];
-				thisWalker.pos += thisWalker.dir;
-				walkers[i] = thisWalker;				
-			}
-    }
-
 	void Spawn(float x, float y, GameObject toSpawn){
 		//find the position to spawn
 		Vector2 offset = roomSizeWorldUnits / 2.0f;
