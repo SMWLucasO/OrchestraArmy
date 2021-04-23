@@ -20,7 +20,7 @@ public class levelGen : MonoBehaviour
 	float chanceWalkerDestoy = 0.2f;
 	int maxWalkers = 6;
 	private float percentToFill = 0.05f; 
-	public GameObject wallObj, floorObj, doorObj;
+	public GameObject wallObj, floorObj, doorObj, cameraObj;
 	void Start () {
 		Setup();
 		CreateFloors();
@@ -270,6 +270,8 @@ public class levelGen : MonoBehaviour
 		}
 
 		int centerX = (int)(minx+maxx)/2, centerY=(int)(miny+maxy)/2;
+		cameraObj.transform.position = new Vector3(centerX, 70, centerY)*2;
+		cameraObj.transform.rotation = Quaternion.Euler(90,0,0);
 		
 		for (int i = 0; i < roomHeight; i++)	//down -> up
 		{
@@ -360,7 +362,7 @@ public class levelGen : MonoBehaviour
 	void Spawn(float x, float y, GameObject toSpawn){
 		//find the position to spawn
 		Vector3 offset = new Vector3(roomSizeWorldUnits.x / 2.0f,0.0f,roomSizeWorldUnits.y / 2.0f);
-		Vector3 spawnPos = new Vector3(x,0.0f,y) * worldUnitsInOneGridCell - offset;
+		Vector3 spawnPos = new Vector3(x,0.0f,y) * worldUnitsInOneGridCell + offset;
 		//spawn object
 		Instantiate(toSpawn, spawnPos, Quaternion.identity);
 	}
