@@ -14,7 +14,7 @@ namespace OrchestraArmy.Entity
         public Sprite[] Sprites;
     }
     
-    public class DirectionalEntity : MonoBehaviour
+    public abstract class DirectionalEntity : MonoBehaviour
     {
         /// <summary>
         /// The sprite per direction of the Entity. Array of structs instead of dictionary so that it can be serialized
@@ -42,7 +42,7 @@ namespace OrchestraArmy.Entity
         /// <summary>
         /// The renderer for the 2D sprites of the directional entity.
         /// </summary>
-        protected SpriteRenderer Renderer { get; set; }
+        public SpriteRenderer Renderer { get; set; }
         
         /// <summary>
         /// The controller for the entity's direction.
@@ -54,7 +54,7 @@ namespace OrchestraArmy.Entity
         // Start is called before the first frame update
         protected void InitializeSprites()
         {
-            Renderer = GetComponent<SpriteRenderer>();
+            Renderer = GetComponentInChildren<SpriteRenderer>();
             StartCoroutine(nameof(AnimatePlayer));
         }
         
@@ -79,5 +79,13 @@ namespace OrchestraArmy.Entity
                 yield return new WaitForSeconds(1.5f);
             }
         }
+        
+        protected virtual void Start() {}
+        // Update is called once per frame
+        protected virtual void Update() {}
+
+        protected virtual void LateUpdate() {}
+        
+        protected  virtual void OnEnable() {}
     }
 }

@@ -6,15 +6,20 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity
 {
-    public class LivingDirectionalEntity : DirectionalEntity
+    public abstract class LivingDirectionalEntity : DirectionalEntity
     {
-        
         [field: SerializeField]
         public IMovementController MovementController { get; set; }
 
         [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
-
+        
+        protected override void Update()
+        {
+            base.Update();
+            MovementController?.HandleMovement();
+        }
+        
     }
    
 }

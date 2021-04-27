@@ -6,8 +6,8 @@
     public enum EntityDirection
     {
         Top,
+        Right,
         Down,
         Left,
-        Right
     }
 }

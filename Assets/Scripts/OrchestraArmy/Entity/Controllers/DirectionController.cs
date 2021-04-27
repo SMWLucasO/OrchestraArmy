@@ -10,14 +10,14 @@ namespace OrchestraArmy.Entity.Controllers
         public DirectionalEntity Entity { get; set; }
         public Camera Camera { get; set; } = Camera.main;
         public EntityDirection CurrentDirection { get; private set; } = EntityDirection.Top;
-        public Vector3 AimDirection = Vector3.forward;
+        public Vector3 AimDirection = Vector3.up;
 
         private void UpdateSprite()
         {
             var newSprite = Entity.Sprites.FirstOrDefault(s => s.Direction == CurrentDirection);
 
             if (newSprite.Sprites == null || newSprite.Sprites.Length == 0)
-                return;
+                return; 
 
             Entity.CurrentSpriteSet = newSprite.Sprites;
         }
@@ -27,41 +27,48 @@ namespace OrchestraArmy.Entity.Controllers
             var entityPosition = Entity.transform.position;
             var entityScreenPosition = Camera.WorldToScreenPoint(entityPosition);
             var mousePosition = Input.mousePosition;
-            var angle = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x) * (180 / Mathf.PI);
-            
+            var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
+            var angle = angleRadians * (180 / Mathf.PI);
+
             if (angle < -45 && angle > -135)
-                CurrentDirection = EntityDirection.Top;
-            else if (angle < -135 || angle > 135)
-                CurrentDirection = EntityDirection.Right;
-            else if (angle > 45 && angle < 135)
-                CurrentDirection = EntityDirection.Down;
-            else if (angle > -45 && angle < 135)
-                CurrentDirection = EntityDirection.Left;
-
-            Plane plane = new Plane(Vector3.up, 0);
-
-            Ray ray = Camera.ScreenPointToRay(mousePosition);
-            var mouseWorldPosition = Camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.transform.position.y));
-
-            if (plane.Raycast(ray, out var dist))
             {
-                mouseWorldPosition = ray.GetPoint(dist);
+                CurrentDirection = EntityDirection.Top;
+                AimDirection = Entity.transform.forward;
+            }
+            else if (angle < -135 || angle > 135)
+            {
+                CurrentDirection = EntityDirection.Right;
+                AimDirection = Entity.transform.right;
+            }
+            else if (angle > 45 && angle < 135)
+            {
+                CurrentDirection = EntityDirection.Down;
+                AimDirection = -Entity.transform.forward;
+            }
+            else if (angle > -45 && angle < 135)
+            {
+                CurrentDirection = EntityDirection.Left;
+                AimDirection = -Entity.transform.right;
             }
             
-            AimDirection = (mouseWorldPosition - entityPosition).normalized;
-            AimDirection.y = 0;
+            // code that could be used to support attacks in all possible directions based on mouse position, but is off at some angles by a bit.
+            //
+            // var screenSpace = Camera.WorldToScreenPoint(entityPosition);
+            // var mouseWorldPosition = Camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, screenSpace.z));
+            //
+            // AimDirection = (mouseWorldPosition - entityPosition);
+            // AimDirection.y = 0;
+            // AimDirection.Normalize();
 
             if (Input.GetMouseButtonDown(1))
             {
                 GameObject.Instantiate(Entity.sphere, entityPosition, Quaternion.LookRotation(AimDirection));
             }
 
-            Debug.Log(AimDirection.x);
-            Debug.Log(AimDirection.y);
-            Debug.Log(AimDirection.z);
-            Debug.Log("---------------");
-            Debug.DrawRay(Entity.transform.position, AimDirection * 100, Color.red);
-            
+            // var camRotation = Camera.transform.rotation.eulerAngles;
+            //
+            // Entity.transform.GetChild(0).rotation = Quaternion.Euler(0, camRotation.y, 0);
+
             UpdateSprite();
         }
     }

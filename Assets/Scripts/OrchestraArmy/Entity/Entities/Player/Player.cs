@@ -1,18 +1,21 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Entity.Entities.Player.Controllers;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Event;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Player
 {
-    public class Player : LivingDirectionalEntity, IListener<PlayerDeathEvent>, IListener<PlayerDamageEvent>
+    public class Player : LivingDirectionalEntity
     {
-        
-        public ICameraController CameraController;
+        /// <summary>
+        /// The controller for the player's camera.
+        /// </summary>
+        public ICameraController CameraController { get; set; }
 
         void Start()
         {
@@ -22,34 +25,34 @@ namespace OrchestraArmy.Entity.Entities.Player
                 Entity = this
             };
             
-            //testing code.
-            EventManager.Bind<PlayerDeathEvent>(this);
-            EventManager.Bind<PlayerDamageEvent>(this);
-            
-            EventManager.Invoke(new PlayerDeathEvent());
-            
-            EventManager.Invoke(new PlayerDamageEvent
+            this.MovementController = new PlayerMovementController()
             {
-                HealthLost = 10
-            });
-            
-            EventManager.Unbind<PlayerDeathEvent>(this);
-            EventManager.Unbind<PlayerDamageEvent>(this);
+                Entity = this
+            };
+
+            // The main camera is the camera which the player uses.
+            this.CameraController = new PlayerCameraController()
+            {
+                Player = this
+            };
         }
 
         private void Update()
         {
+            base.Update();
             DirectionController.HandleDirection();
         }
 
-        public void OnEvent(PlayerDeathEvent invokedEvent)
+        protected override void LateUpdate()
         {
-            this.EntityData.Stamina += 1;
+            base.LateUpdate();
+            CameraController?.HandleCameraMovement();
         }
 
-        public void OnEvent(PlayerDamageEvent invokedEvent)
+        protected override void OnEnable()
         {
-            this.EntityData.Health -= invokedEvent.HealthLost;
+            base.OnEnable();
         }
+
     }
 }
