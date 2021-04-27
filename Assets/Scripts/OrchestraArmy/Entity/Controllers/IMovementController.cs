@@ -2,7 +2,6 @@
 {
     public interface IMovementController
     {
-        
         /// <summary>
         /// The entity whose movement is to be controlled.
         /// </summary>

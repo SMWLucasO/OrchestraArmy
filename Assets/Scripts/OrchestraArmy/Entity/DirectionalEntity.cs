@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using OrchestraArmy.Entity.Controllers;
@@ -22,16 +23,12 @@ namespace OrchestraArmy.Entity
         /// </summary>
         public IDirectionController DirectionController { get; set; }
         
-        // Start is called before the first frame update
-        void Start()
-        {
-            
-        }
+        protected virtual void Start() {}
 
         // Update is called once per frame
-        protected virtual void Update()
-        {
-            
-        }
+        protected virtual void Update() {}
+
+        
+        protected  virtual void OnEnable() {}
     }
 }

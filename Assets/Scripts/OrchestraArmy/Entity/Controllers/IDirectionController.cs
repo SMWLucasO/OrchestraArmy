@@ -13,8 +13,7 @@ namespace OrchestraArmy.Entity.Controllers
         /// The camera to set the direction relative to.
         /// </summary>
         public Camera Camera { get; set; }
-
-
+        
         /// <summary>
         /// Handle the entity's direction relative to the camera.
         /// </summary>
