@@ -17,12 +17,6 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
     // Start is called before the first frame update
     void Start()
     {
-        Setup();
-
-    }
-
-    void Setup()
-    {
         Instantiated = new List<GameObject>();
         Levels = new Level[20, 20]; // can move 10 rooms in each way
         CurrentLevel = new Vector2(10, 10); // start at the halfway point of the level grid
@@ -34,7 +28,6 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         EventManager.Bind<LevelDoorDownEvent>(this);
         EventManager.Bind<LevelDoorLeftEvent>(this);
         EventManager.Bind<LevelDoorRightEvent>(this);
-
 
     }
 
@@ -70,6 +63,29 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
                 CurrentLevel += new Vector2(0, -1);
                 break;
         }
+
+        // check if array is in bounds, if not return to bounds
+        if(CurrentLevel.x > 19)
+        {
+            CurrentLevel.x = 19;
+        }
+
+        if(CurrentLevel.x < 0)
+        {
+            CurrentLevel.x = 0;
+        }
+
+        if(CurrentLevel.y < 0)
+        {
+            CurrentLevel.y = 0;
+        }
+
+        if(CurrentLevel.y > 19)
+        {
+            CurrentLevel.y = 19;
+        }
+
+        print(CurrentLevel);
 
         // create level if it does not exist
         if (Levels[(int)CurrentLevel.x, (int)CurrentLevel.y] == null)
