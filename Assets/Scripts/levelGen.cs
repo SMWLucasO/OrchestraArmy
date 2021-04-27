@@ -21,7 +21,7 @@ public class levelGen : MonoBehaviour
 	float chanceWalkerDestoy = 0.2f;
 	int maxWalkers = 6;
 	private float percentToFill = 0.05f; 
-	public GameObject wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj, cameraObj;
+	public GameObject fillObj, rockObj,rubbleObj, wallObj,tallWallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj, cameraObj;
 	void Start () {
 		Setup();
 		CreateFloors();
@@ -29,6 +29,8 @@ public class levelGen : MonoBehaviour
 		RemoveSingleWalls();
 		CreateDoors();
 		SpawnLevel();
+		SpawnRubble();
+		MakeEdge();
 	}
 	void Setup(){
 		//find grid size
@@ -320,17 +322,40 @@ public class levelGen : MonoBehaviour
 		}
 	}
 
+	bool borderOnFill(int x, int y) {
+		bool outp = false;
+		try {
+			outp = outp || grid[x - 1, y] == gridSpace.empty;
+		}
+		catch { return true;}
+		try {
+			outp = outp || grid[x+1,y]==gridSpace.empty;
+		}
+		catch{ return true;}
+		try {
+			outp = outp || grid[x,y-1]==gridSpace.empty;
+		}
+		catch{ return true;}
+		try {
+			outp = outp || grid[x,y+1]==gridSpace.empty;
+		}
+		catch{ return true;}
+
+		return outp;
+	}
+
 	void SpawnLevel(){
 		for (int x = 0; x < roomWidth; x++){
 			for (int y = 0; y < roomHeight; y++){
 				switch(grid[x,y]){
 					case gridSpace.empty:
+						Spawn(x,y,fillObj);
 						break;
 					case gridSpace.floor:
 						Spawn(x,y,floorObj);
 						break;
 					case gridSpace.wall:
-						Spawn(x,y,wallObj);
+						Spawn(x,y,borderOnFill(x,y)?wallObj:rockObj.transform.GetChild (Random.Range(0,4)).gameObject);
 						break;
 					case gridSpace.doorU:
 						Spawn(x,y,doorUObj);
@@ -349,6 +374,26 @@ public class levelGen : MonoBehaviour
 			}
 		}
 	}
+
+	void SpawnRubble() {
+		for (int x = 0; x < roomWidth; x++) {
+			for (int y = 0; y < roomHeight; y++) {
+				if (grid[x,y]==gridSpace.floor) {
+					if (Random.value <0.25f) {
+						Spawn(x,y,rubbleObj.transform.GetChild (Random.Range(0,3)).gameObject);
+					}
+				}
+			}
+		}
+	}
+
+	void MakeEdge() {
+		Spawn(roomSizeWorldUnits.x,roomSizeWorldUnits.y/2,tallWallObj);
+		Spawn(-roomSizeWorldUnits.x/5,roomSizeWorldUnits.y/2,tallWallObj);
+		//Spawn(roomSizeWorldUnits.x/2,roomSizeWorldUnits.y,tallWallObj);
+		//Spawn(roomSizeWorldUnits.x/2,-roomSizeWorldUnits.y,tallWallObj);
+	}
+	
 	Vector2 RandomDirection(){
 		//pick random int between 0 and 3
 		int choice = Mathf.FloorToInt(Random.value * 3.99f);
