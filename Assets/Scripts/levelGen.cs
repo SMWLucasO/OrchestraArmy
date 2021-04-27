@@ -6,10 +6,11 @@ using Random = UnityEngine.Random;
 
 public class levelGen : MonoBehaviour
 {
-    enum gridSpace {empty, floor, wall, door};
+    enum gridSpace {empty, floor, wall, doorU,doorD,doorL,doorR};
 	gridSpace[,] grid;
 	int roomHeight, roomWidth;
 	Vector2 roomSizeWorldUnits = new Vector2(150,150);
+	Vector2 offsetOfRoom = new Vector2(0, 0);
 	float worldUnitsInOneGridCell = 1;
 	struct walker{
 		public Vector2 dir;
@@ -20,7 +21,7 @@ public class levelGen : MonoBehaviour
 	float chanceWalkerDestoy = 0.2f;
 	int maxWalkers = 6;
 	private float percentToFill = 0.05f; 
-	public GameObject wallObj, floorObj, doorObj, cameraObj;
+	public GameObject wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj, cameraObj;
 	void Start () {
 		Setup();
 		CreateFloors();
@@ -254,7 +255,7 @@ public class levelGen : MonoBehaviour
 
 	void CreateDoors()
 	{
-		int minx=roomWidth, miny=roomHeight, maxx=0, maxy=0;
+		int minx=roomWidth, miny=roomHeight, maxx=0, maxy=0;	//calculate the center of the made map
 		for (int x = 0; x < roomWidth; x++)
 		{
 			for (int y = 0; y < roomHeight; y++)
@@ -269,46 +270,50 @@ public class levelGen : MonoBehaviour
 			}
 		}
 
-		int centerX = (int)(minx+maxx)/2, centerY=(int)(miny+maxy)/2;
-		cameraObj.transform.position = new Vector3(centerX, 70, centerY)*2;
-		cameraObj.transform.rotation = Quaternion.Euler(90,0,0);
+		int centerX = (int) (minx + maxx) / 2, centerY = (int) (miny + maxy) / 2;
 		
+		offsetOfRoom = new Vector2(centerX, centerY);	//when spawning the rooms, this vector will center them
+
 		for (int i = 0; i < roomHeight; i++)	//down -> up
 		{
-			if (grid[centerX,i] == gridSpace.wall/* &&
-			    grid[Mathf.RoundToInt(roomWidth/ 2.0f),i+1] == gridSpace.floor*/)
+			if (grid[centerX,i] == gridSpace.wall)
 			{
-				grid[centerX, i] = gridSpace.door;
+				grid[centerX, i] = gridSpace.doorD;
+				for (int j = 0; j <= 0; j++) {
+					if (grid[centerX,i+1] == gridSpace.floor && 
+					    j==0) {
+						break;
+					} else if (grid[centerX+1,i] == gridSpace.floor) {
+						
+					}
+				}
 				print(1);
 				break;
 			}
 		}
 		for (int i = roomHeight-1; i >= 0; i--)	//up -> down
 		{
-			if (grid[centerX,i] == gridSpace.wall/* &&
-			    grid[Mathf.RoundToInt(roomWidth/ 2.0f),i-1] == gridSpace.floor*/)
+			if (grid[centerX,i] == gridSpace.wall)
 			{
-				grid[centerX, i] = gridSpace.door;
+				grid[centerX, i] = gridSpace.doorU;
 				print(2);
 				break;
 			}
 		}
 		for (int i = 0; i < roomWidth; i++)	//left -> right
 		{
-			if (grid[i,centerY] == gridSpace.wall/* &&
-			    grid[i+1,Mathf.RoundToInt(roomHeight/ 2.0f)] == gridSpace.floor*/)
+			if (grid[i,centerY] == gridSpace.wall)
 			{
-				grid[i,centerY] = gridSpace.door;
+				grid[i,centerY] = gridSpace.doorL;
 				print(3);
 				break;
 			}
 		}
 		for (int i = roomWidth-1; i >= 0; i--)	//right -> left
 		{
-			if (grid[i,centerY] == gridSpace.wall/* &&
-			    grid[i-1,Mathf.RoundToInt(roomHeight/ 2.0f)] == gridSpace.floor*/)
+			if (grid[i,centerY] == gridSpace.wall)
 			{
-				grid[i,centerY] = gridSpace.door;
+				grid[i,centerY] = gridSpace.doorR;
 				print(4);
 				break;
 			}
@@ -327,8 +332,17 @@ public class levelGen : MonoBehaviour
 					case gridSpace.wall:
 						Spawn(x,y,wallObj);
 						break;
-					case gridSpace.door:
-						Spawn(x,y,doorObj);
+					case gridSpace.doorU:
+						Spawn(x,y,doorUObj);
+						break;
+					case gridSpace.doorD:
+						Spawn(x,y,doorDObj);
+						break;
+					case gridSpace.doorL:
+						Spawn(x,y,doorLObj);
+						break;
+					case gridSpace.doorR:
+						Spawn(x,y,doorRObj);
 						break;
                     
 				}
@@ -361,8 +375,7 @@ public class levelGen : MonoBehaviour
 	}
 	void Spawn(float x, float y, GameObject toSpawn){
 		//find the position to spawn
-		Vector3 offset = new Vector3(roomSizeWorldUnits.x / 2.0f,0.0f,roomSizeWorldUnits.y / 2.0f);
-		Vector3 spawnPos = new Vector3(x,0.0f,y) * worldUnitsInOneGridCell + offset;
+		Vector3 spawnPos = new Vector3(x, 0, y) - new Vector3(offsetOfRoom.x, 0, offsetOfRoom.y);
 		//spawn object
 		Instantiate(toSpawn, spawnPos, Quaternion.identity);
 	}
