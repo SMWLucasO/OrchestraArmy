@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 215038862}
   - component: {fileID: 215038861}
   - component: {fileID: 215038860}
+  - component: {fileID: 215038863}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -388,6 +389,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215038858}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &215038863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215038858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3a3c2f4f0ec7d45b48760e58b342f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &283195946
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,6 +413,7 @@ GameObject:
   - component: {fileID: 283195950}
   - component: {fileID: 283195949}
   - component: {fileID: 283195948}
+  - component: {fileID: 283195951}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -485,12 +499,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283195946}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+<<<<<<< HEAD
 --- !u!1 &317265332
 GameObject:
+=======
+--- !u!114 &283195951
+MonoBehaviour:
+>>>>>>> ca19ec74af0641216018fd52475e984bf7e608b2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   serializedVersion: 6
   m_Component:
   - component: {fileID: 317265333}
@@ -581,6 +601,14 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 317265332}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+=======
+  m_GameObject: {fileID: 283195946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad2403c6a5600048971f33fd843c9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+>>>>>>> ca19ec74af0641216018fd52475e984bf7e608b2
 --- !u!1 &344847805
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +973,7 @@ GameObject:
   - component: {fileID: 622065630}
   - component: {fileID: 622065629}
   - component: {fileID: 622065628}
+  - component: {fileID: 622065631}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1030,6 +1059,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622065626}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &622065631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622065626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8466fb78d739a28488beb63437643496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &625172802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,6 +1207,7 @@ GameObject:
   - component: {fileID: 715667025}
   - component: {fileID: 715667024}
   - component: {fileID: 715667023}
+  - component: {fileID: 715667026}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1251,6 +1293,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 715667021}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &715667026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715667021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c0deb7d8a7dad468f8c3926dc4dba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &810268616
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,7 +1331,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 810268616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3789ef6950eca034babf16256053ba24, type: 3}
+  m_Script: {fileID: 11500000, guid: 47186b8a5d0226a41afd2d18c4c56579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fillObj: {fileID: 1207823479}
@@ -1533,7 +1587,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 50
@@ -1543,9 +1597,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 122.7
+  near clip plane: 2.71
+  far clip plane: 1000.15
+  field of view: 79.5537
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1570,12 +1624,18 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
+<<<<<<< HEAD
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 30, z: 0}
+=======
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 0, y: 30, z: -30}
+>>>>>>> ca19ec74af0641216018fd52475e984bf7e608b2
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+<<<<<<< HEAD
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &969749649
 PrefabInstance:
@@ -1663,6 +1723,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400008, guid: 54a9cf01843431742a3126013891032d, type: 3}
   m_PrefabInstance: {fileID: 969749649}
   m_PrefabAsset: {fileID: 0}
+=======
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
+>>>>>>> ca19ec74af0641216018fd52475e984bf7e608b2
 --- !u!1 &1165696917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2663,7 +2726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065507461}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
