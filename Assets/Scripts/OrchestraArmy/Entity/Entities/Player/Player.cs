@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Event;
@@ -11,9 +14,14 @@ namespace OrchestraArmy.Entity.Entities.Player
         
         public ICameraController CameraController;
 
-
         void Start()
         {
+            InitializeSprites();
+            DirectionController = new DirectionController()
+            {
+                Entity = this
+            };
+            
             //testing code.
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<PlayerDamageEvent>(this);
@@ -28,7 +36,12 @@ namespace OrchestraArmy.Entity.Entities.Player
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<PlayerDamageEvent>(this);
         }
-        
+
+        private void Update()
+        {
+            DirectionController.HandleDirection();
+        }
+
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {
             this.EntityData.Stamina += 1;
