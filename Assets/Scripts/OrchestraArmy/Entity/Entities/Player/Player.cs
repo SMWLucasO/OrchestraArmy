@@ -25,9 +25,9 @@ namespace OrchestraArmy.Entity.Entities.Player
             };
         }
 
-        protected override void Update()
+        protected override void LateUpdate()
         {
-            base.Update();
+            base.LateUpdate();
             CameraController?.HandleCameraMovement();
         }
 

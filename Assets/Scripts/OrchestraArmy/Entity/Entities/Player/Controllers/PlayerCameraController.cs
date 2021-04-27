@@ -1,3 +1,4 @@
+using System;
 using OrchestraArmy.Entity.Controllers;
 using UnityEngine;
 
@@ -5,26 +6,28 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
 {
     public class PlayerCameraController : ICameraController
     {
+
         /// <summary>
-        /// The distance the camera should be from the player.
+        /// The highest vertical rotation the pitch may be.
         /// </summary>
-        public const float DistanceFromPlayer = 10.0f;
+        public const float PitchMax = 80f;
+        
+        /// <summary>
+        /// The lowest vertical rotation the pitch may be.
+        /// </summary>
+        public const float PitchMin = 5f;
 
         /// <summary>
         /// The increment in degrees which the camera will get.
+        /// Increment is in seconds.
         /// </summary>
-        public const float CameraRotationIncrement = .1f;
+        public const float CameraRotationIncrement = 50f;
 
         /// <summary>
-        /// The rotation along the y-axis (Left/Right rotation)
+        /// The offset at which the camera rotates around the player.
         /// </summary>
-        public float Yaw { get; set; }
+        public const float CameraOffset = 10f;
         
-        /// <summary>
-        /// The rotation along the x-axis. (Up/Down rotation)
-        /// </summary>
-        public float Pitch { get; set; }
-
         /// <summary>
         /// The camera controller's owner.
         /// </summary>
@@ -34,42 +37,59 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
         /// The camera which is owned by the player.
         /// </summary>
         public Camera Camera { get; set; }
+
+        /// <summary>
+        /// The rotation along the x-axis (up/down rotation)
+        /// </summary>
+        public float Pitch { get; set; }
+
+        /// <summary>
+        /// The rotation along the y-axis (left/right)
+        /// </summary>
+        public float Yaw { get; set; }
         
         public void HandleCameraMovement()
         {
 
-            // Camera position = (player position) - DistanceFromPlayer 
-            // then do rotations.s
+            Transform playerTransform = Player.transform;
+            Transform cameraTransform = Camera.transform;
 
-            var playerTransform = Player.transform;
-            var cameraTransform = Camera.transform;
-            
-            Vector3 newCameraPosition = playerTransform.position;
-            
-            // Put camera behind the player.
-            newCameraPosition -= playerTransform.forward.normalized * DistanceFromPlayer;
-            
-            // Add pitch/yaw based upon key pressed.
-            if (Input.GetKey(KeyCode.UpArrow)) Pitch += CameraRotationIncrement;
-            if (Input.GetKey(KeyCode.DownArrow)) Pitch -= CameraRotationIncrement;
-            if (Input.GetKey(KeyCode.LeftArrow)) Yaw -= CameraRotationIncrement;
-            if (Input.GetKey(KeyCode.RightArrow)) Yaw += CameraRotationIncrement;
-            
-            // Restrict within a certain y range. (no 360deg rotation)
-            // [0, 80] is the allowed range.
-            if (Pitch > 80) Pitch = 80;
-            if (Pitch < 0) Pitch = 0;
+            // Get the initial position for the point to place the camera at.
+            Vector3 cameraPosition = playerTransform.position;
 
+            // Get the player's forward, so that we can put the camera behind the player.
+            // we do not need the y-axis, so we set it to 0 for the forward.
+            Vector3 playerForward = playerTransform.forward.normalized;
+            playerForward.y = 0;
             
-            // Yaw should be between 0-360 degrees.
+            // Pitch is for the vertical rotation
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                float newPitch = CameraRotationIncrement * Time.deltaTime;
+                if (Pitch + newPitch <= PitchMax)
+                    Pitch += newPitch;
+            }
+
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                float newPitch = CameraRotationIncrement * Time.deltaTime;
+                
+                if (Pitch - newPitch >= PitchMin)
+                    Pitch -= newPitch;
+            }
+
+            // calculate the x-rotation
+            if (Input.GetKey(KeyCode.RightArrow)) Yaw -= CameraRotationIncrement * Time.deltaTime;
+            if (Input.GetKey(KeyCode.LeftArrow)) Yaw += CameraRotationIncrement * Time.deltaTime;
+
+            // Get the offset for rotations around the player
+            Vector3 offset = CameraOffset * playerForward;
+
+            // [0, 360] degrees available.
             Yaw %= 360;
             
-            
-            // Apply the rotations to the camera.
-            newCameraPosition = Quaternion.Euler(Pitch, Yaw, 0) * newCameraPosition;
-            
-            // Change the position, but make sure that the camera is still pointing towards the player.
-            cameraTransform.position = newCameraPosition;
+            // place the camera around the player, whilst also pointing it towards the player.
+            cameraTransform.position = cameraPosition - (Quaternion.Euler(Pitch, Yaw, 0) * offset);
             cameraTransform.LookAt(playerTransform);
         }
     }
