@@ -1,5 +1,6 @@
 using System;
 using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Keybindings;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Player.Controllers
@@ -63,14 +64,14 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             playerForward.y = 0;
             
             // Pitch is for the vertical rotation
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera up"]))
             {
                 float newPitch = CameraRotationIncrement * Time.deltaTime;
                 if (Pitch + newPitch <= PitchMax)
                     Pitch += newPitch;
             }
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera down"]))
             {
                 float newPitch = CameraRotationIncrement * Time.deltaTime;
                 
@@ -79,8 +80,11 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             }
 
             // calculate the x-rotation
-            if (Input.GetKey(KeyCode.RightArrow)) Yaw -= CameraRotationIncrement * Time.deltaTime;
-            if (Input.GetKey(KeyCode.LeftArrow)) Yaw += CameraRotationIncrement * Time.deltaTime;
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera right"]))
+                Yaw -= CameraRotationIncrement * Time.deltaTime;
+            
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera left"]))
+                Yaw += CameraRotationIncrement * Time.deltaTime;
 
             // Get the offset for rotations around the player
             Vector3 offset = CameraOffset * playerForward;

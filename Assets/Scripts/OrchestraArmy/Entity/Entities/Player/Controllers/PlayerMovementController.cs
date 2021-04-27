@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Keybindings;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -16,18 +17,16 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             Vector3 currentlyFacing = GetHeightlessFacingDirection(forward);
             Vector3 movementVector = Vector3.zero;
             
-            // TODO: Get key to press from a key binding manager.
-            
-            if (Input.GetKey("w"))
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move forward"]))
                 movementVector += currentlyFacing;
 
-            if (Input.GetKey("s"))
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move backward"]))
                 movementVector -= currentlyFacing;
 
-            if (Input.GetKey("a")) 
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move left"])) 
                 movementVector += MoveLeftForce(currentlyFacing);
 
-            if (Input.GetKey("d")) 
+            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move right"])) 
                 movementVector += MoveRightForce(currentlyFacing);
 
             // Only add to the position when a change is actually detected.
