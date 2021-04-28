@@ -17,16 +17,14 @@ public class DoorRightCollision : MonoBehaviour
     {
         
     }
-
-    void OnCollisionEnter()
+    void OnTriggerEnter(Collider other)
     {
+        EventManager.Invoke(new LevelDoorDownEvent());
         print("right");
     }
-
-    void OnMouseOver()
+    void OnCollisionEnter()
     {
-        print("right");
         EventManager.Invoke(new LevelDoorRightEvent());
-        
+        print("right");
     }
 }
