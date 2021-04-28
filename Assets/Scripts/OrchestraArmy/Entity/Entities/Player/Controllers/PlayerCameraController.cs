@@ -93,7 +93,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             Yaw %= 360;
             
             // place the camera around the player, whilst also pointing it towards the player.
-            cameraTransform.position = cameraPosition - (Quaternion.Euler(0, 0, 0) * offset);
+            cameraTransform.position = cameraPosition - (Quaternion.Euler(Pitch, Yaw, 0) * offset);
             
             cameraTransform.LookAt(playerTransform); 
         }
