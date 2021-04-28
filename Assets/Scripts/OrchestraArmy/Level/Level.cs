@@ -6,34 +6,29 @@ using Random = UnityEngine.Random;
 
 public class Level
 {
-    public enum gridSpace { empty, floor, wall, doorU, doorD, doorL, doorR };
-    public gridSpace[,] grid;
-    public int roomHeight, roomWidth;
-    public bool beaten;
-    public Vector2 roomSizeWorldUnits = new Vector2(150, 150);
-    public Vector2 offsetOfRoom = new Vector2(0, 0);
-    float worldUnitsInOneGridCell = 1;
-    struct walker
+    public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
+    public GridSpace[,] Grid;
+    public int RoomHeight, RoomWidth;
+    public bool Beaten;
+    public Vector2 RoomSizeWorldUnits = new Vector2(150, 150);
+    public Vector2 OffsetOfRoom = new Vector2(0, 0);
+    private float _worldUnitsInOneGridCell = 1;
+    struct Walker
     {
-        public Vector2 dir;
-        public Vector2 pos;
+        public Vector2 Dir;
+        public Vector2 Pos;
     }
-    List<walker> walkers;
-    float chanceWalkerChangeDir = .7f, chanceWalkerSpawn = 0.2f;
-    float chanceWalkerDestoy = 0.2f;
-    int maxWalkers = 6;
-    private float percentToFill = 0.05f;
-    public Level()
+    private List<Walker> _walkers;
+    private float _chanceWalkerChangeDir = .7f, _chanceWalkerSpawn = 0.2f;
+    private float _chanceWalkerDestoy = 0.2f;
+    private int _maxWalkers = 6;
+    private float _percentToFill = 0.05f;
+    
+    public Level(bool boss = false)
     {
-        Setup();
-        CreateFloors();
-        CreateWalls();
-        RemoveSingleWalls();
-        CreateDoors();
-    }
-    public Level(bool boss)
-    {
-        BossSettings();
+        if (boss) {
+            BossSettings();
+        }
         Setup();
         CreateFloors();
         CreateWalls();
@@ -43,42 +38,42 @@ public class Level
 
     void BossSettings()
     {
-        chanceWalkerChangeDir = .99f;
-        chanceWalkerSpawn = 0.8f;
-        chanceWalkerDestoy = 0.8f;
-        maxWalkers = 20;
-        percentToFill = 0.1f;
+        _chanceWalkerChangeDir = .99f;
+        _chanceWalkerSpawn = 0.8f;
+        _chanceWalkerDestoy = 0.8f;
+        _maxWalkers = 20;
+        _percentToFill = 0.1f;
     }
     
     void Setup()
     {
-		this.beaten = false;
+		this.Beaten = false;
         //find grid size
-        roomHeight = Mathf.RoundToInt(roomSizeWorldUnits.x / worldUnitsInOneGridCell);
-        roomWidth = Mathf.RoundToInt(roomSizeWorldUnits.y / worldUnitsInOneGridCell);
+        RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / _worldUnitsInOneGridCell);
+        RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / _worldUnitsInOneGridCell);
         //create grid
-        grid = new gridSpace[roomWidth, roomHeight];
+        Grid = new GridSpace[RoomWidth, RoomHeight];
         //set grid's default state
-        for (int x = 0; x < roomWidth - 1; x++)
+        for (int x = 0; x < RoomWidth - 1; x++)
         {
-            for (int y = 0; y < roomHeight - 1; y++)
+            for (int y = 0; y < RoomHeight - 1; y++)
             {
                 //make every cell "empty"
-                grid[x, y] = gridSpace.empty;
+                Grid[x, y] = GridSpace.Empty;
             }
         }
         //set first walker
         //init list
-        walkers = new List<walker>();
+        _walkers = new List<Walker>();
         //create a walker 
-        walker newWalker = new walker();
-        newWalker.dir = RandomDirection();
+        Walker newWalker = new Walker();
+        newWalker.Dir = RandomDirection();
         //find center of grid
-        Vector2 spawnPos = new Vector2(Mathf.RoundToInt(roomWidth / 2.0f),
-                                        Mathf.RoundToInt(roomHeight / 2.0f));
-        newWalker.pos = spawnPos;
+        Vector2 spawnPos = new Vector2(Mathf.RoundToInt(RoomWidth / 2.0f),
+                                        Mathf.RoundToInt(RoomHeight / 2.0f));
+        newWalker.Pos = spawnPos;
         //add walker to list
-        walkers.Add(newWalker);
+        _walkers.Add(newWalker);
     }
     void CreateFloors()
     {
@@ -86,63 +81,63 @@ public class Level
         do
         {
             //create floor at position of every walker
-            foreach (walker myWalker in walkers)
+            foreach (Walker myWalker in _walkers)
             {
-                grid[(int)myWalker.pos.x, (int)myWalker.pos.y] = gridSpace.floor;
+                Grid[(int)myWalker.Pos.x, (int)myWalker.Pos.y] = GridSpace.Floor;
             }
             //chance: destroy walker
-            int numberChecks = walkers.Count; //might modify count while in this loop
+            int numberChecks = _walkers.Count; //might modify count while in this loop
             for (int i = 0; i < numberChecks; i++)
             {
                 //only if its not the only one, and at a low chance
-                if (Random.value < chanceWalkerDestoy && walkers.Count > 1)
+                if (Random.value < _chanceWalkerDestoy && _walkers.Count > 1)
                 {
-                    walkers.RemoveAt(i);
+                    _walkers.RemoveAt(i);
                     break; //only destroy one per iteration
                 }
             }
             //chance: walker pick new direction
-            for (int i = 0; i < walkers.Count; i++)
+            for (int i = 0; i < _walkers.Count; i++)
             {
-                if (Random.value < chanceWalkerChangeDir)
+                if (Random.value < _chanceWalkerChangeDir)
                 {
-                    walker thisWalker = walkers[i];
-                    thisWalker.dir = RandomDirection();
-                    walkers[i] = thisWalker;
+                    Walker thisWalker = _walkers[i];
+                    thisWalker.Dir = RandomDirection();
+                    _walkers[i] = thisWalker;
                 }
             }
             //chance: spawn new walker
-            numberChecks = walkers.Count; //might modify count while in this loop
+            numberChecks = _walkers.Count; //might modify count while in this loop
             for (int i = 0; i < numberChecks; i++)
             {
                 //only if # of walkers < max, and at a low chance
-                if (Random.value < chanceWalkerSpawn && walkers.Count < maxWalkers)
+                if (Random.value < _chanceWalkerSpawn && _walkers.Count < _maxWalkers)
                 {
                     //create a walker 
-                    walker newWalker = new walker();
-                    newWalker.dir = RandomDirection();
-                    newWalker.pos = walkers[i].pos;
-                    walkers.Add(newWalker);
+                    Walker newWalker = new Walker();
+                    newWalker.Dir = RandomDirection();
+                    newWalker.Pos = _walkers[i].Pos;
+                    _walkers.Add(newWalker);
                 }
             }
             //move walkers
-            for (int i = 0; i < walkers.Count; i++)
+            for (int i = 0; i < _walkers.Count; i++)
             {
-                walker thisWalker = walkers[i];
-                thisWalker.pos += thisWalker.dir;
-                walkers[i] = thisWalker;
+                Walker thisWalker = _walkers[i];
+                thisWalker.Pos += thisWalker.Dir;
+                _walkers[i] = thisWalker;
             }
             //avoid boarder of grid
-            for (int i = 0; i < walkers.Count; i++)
+            for (int i = 0; i < _walkers.Count; i++)
             {
-                walker thisWalker = walkers[i];
+                Walker thisWalker = _walkers[i];
                 //clamp x,y to leave a 1 space boarder: leave room for walls
-                thisWalker.pos.x = Mathf.Clamp(thisWalker.pos.x, 1, roomWidth - 2);
-                thisWalker.pos.y = Mathf.Clamp(thisWalker.pos.y, 1, roomHeight - 2);
-                walkers[i] = thisWalker;
+                thisWalker.Pos.x = Mathf.Clamp(thisWalker.Pos.x, 1, RoomWidth - 2);
+                thisWalker.Pos.y = Mathf.Clamp(thisWalker.Pos.y, 1, RoomHeight - 2);
+                _walkers[i] = thisWalker;
             }
             //check to exit loop
-            if ((float)NumberOfFloors() / (float)grid.Length > percentToFill)
+            if ((float)NumberOfFloors() / (float)Grid.Length > _percentToFill)
             {
                 break;
             }
@@ -152,29 +147,29 @@ public class Level
     void CreateWalls()
     {
         //loop though every grid space
-        for (int x = 0; x < roomWidth - 1; x++)
+        for (int x = 0; x < RoomWidth - 1; x++)
         {
-            for (int y = 0; y < roomHeight - 1; y++)
+            for (int y = 0; y < RoomHeight - 1; y++)
             {
                 //if theres a floor, check the spaces around it
-                if (grid[x, y] == gridSpace.floor)
+                if (Grid[x, y] == GridSpace.Floor)
                 {
                     //if any surrounding spaces are empty, place a wall
-                    if (grid[x, y + 1] == gridSpace.empty)
+                    if (Grid[x, y + 1] == GridSpace.Empty)
                     {
-                        grid[x, y + 1] = gridSpace.wall;
+                        Grid[x, y + 1] = GridSpace.Wall;
                     }
-                    if (grid[x, y - 1] == gridSpace.empty)
+                    if (Grid[x, y - 1] == GridSpace.Empty)
                     {
-                        grid[x, y - 1] = gridSpace.wall;
+                        Grid[x, y - 1] = GridSpace.Wall;
                     }
-                    if (grid[x + 1, y] == gridSpace.empty)
+                    if (Grid[x + 1, y] == GridSpace.Empty)
                     {
-                        grid[x + 1, y] = gridSpace.wall;
+                        Grid[x + 1, y] = GridSpace.Wall;
                     }
-                    if (grid[x - 1, y] == gridSpace.empty)
+                    if (Grid[x - 1, y] == GridSpace.Empty)
                     {
-                        grid[x - 1, y] = gridSpace.wall;
+                        Grid[x - 1, y] = GridSpace.Wall;
                     }
                 }
             }
@@ -183,12 +178,12 @@ public class Level
     void RemoveSingleWalls()
     {
         //loop though every grid space
-        for (int x = 0; x < roomWidth - 1; x++)
+        for (int x = 0; x < RoomWidth - 1; x++)
         {
-            for (int y = 0; y < roomHeight - 1; y++)
+            for (int y = 0; y < RoomHeight - 1; y++)
             {
                 //if theres a wall, check the spaces around it
-                if (grid[x, y] == gridSpace.wall)
+                if (Grid[x, y] == GridSpace.Wall)
                 {
                     //assume all space around wall are floors
                     bool allFloors = true;
@@ -197,8 +192,8 @@ public class Level
                     {
                         for (int checkY = -1; checkY <= 1; checkY++)
                         {
-                            if (x + checkX < 0 || x + checkX > roomWidth - 1 ||
-                                y + checkY < 0 || y + checkY > roomHeight - 1)
+                            if (x + checkX < 0 || x + checkX > RoomWidth - 1 ||
+                                y + checkY < 0 || y + checkY > RoomHeight - 1)
                             {
                                 //skip checks that are out of range
                                 continue;
@@ -208,7 +203,7 @@ public class Level
                                 //skip corners and center
                                 continue;
                             }
-                            if (grid[x + checkX, y + checkY] != gridSpace.floor)
+                            if (Grid[x + checkX, y + checkY] != GridSpace.Floor)
                             {
                                 allFloors = false;
                             }
@@ -216,7 +211,7 @@ public class Level
                     }
                     if (allFloors)
                     {
-                        grid[x, y] = gridSpace.floor;
+                        Grid[x, y] = GridSpace.Floor;
                     }
                 }
             }
@@ -224,68 +219,56 @@ public class Level
     }
 
 
-    void CreateDoors()
+    void CreateDoors()  //place the four doors around the map
     {
-        int minx = roomWidth, miny = roomHeight, maxx = 0, maxy = 0;    //calculate the center of the made map
-        for (int x = 0; x < roomWidth; x++)
+        int minX = RoomWidth, minY = RoomHeight, maxX = 0, maxY = 0;    //calculate the center of the made map
+        for (int x = 0; x < RoomWidth; x++)
         {
-            for (int y = 0; y < roomHeight; y++)
+            for (int y = 0; y < RoomHeight; y++)
             {
-                if (grid[x, y] != gridSpace.empty)
+                if (Grid[x, y] != GridSpace.Empty)
                 {
-                    minx = Math.Min(minx, x);
-                    maxx = Math.Max(maxx, x);
-                    miny = Math.Min(miny, y);
-                    maxy = Math.Max(maxy, y);
+                    minX = Math.Min(minX, x);
+                    maxX = Math.Max(maxX, x);
+                    minY = Math.Min(minY, y);
+                    maxY = Math.Max(maxY, y);
                 }
             }
         }
 
-        int centerX = (int)(minx + maxx) / 2, centerY = (int)(miny + maxy) / 2;
+        int centerX = (int)(minX + maxX) / 2, centerY = (int)(minY + maxY) / 2;
 
-        offsetOfRoom = new Vector2(centerX, centerY);   //when spawning the rooms, this vector will center them
+        OffsetOfRoom = new Vector2(centerX, centerY);   //when spawning the rooms, this vector will center them
 
-        for (int i = 0; i < roomHeight; i++)    //down -> up
+        for (int i = 0; i < RoomHeight; i++)    //down -> up (makes the bottom door)
         {
-            if (grid[centerX, i] == gridSpace.wall)
+            if (Grid[centerX, i] == GridSpace.Wall)
             {
-                grid[centerX, i] = gridSpace.doorD;
-                for (int j = 0; j <= 0; j++)
-                {
-                    if (grid[centerX, i + 1] == gridSpace.floor &&
-                        j == 0)
-                    {
-                        break;
-                    }
-                    else if (grid[centerX + 1, i] == gridSpace.floor)
-                    {
-
-                    }
-                }
+                Grid[centerX, i] = GridSpace.DoorD;
                 break;
             }
         }
-        for (int i = roomHeight - 1; i >= 0; i--)   //up -> down
+        for (int i = RoomHeight - 1; i >= 0; i--)   //up -> down (makes the top door)
         {
-            if (grid[centerX, i] == gridSpace.wall)
+            if (Grid[centerX, i] == GridSpace.Wall)
             {
-                grid[centerX, i] = gridSpace.doorU;
+                Grid[centerX, i] = GridSpace.DoorU;
                 break;
             }
         }
-        for (int i = 0; i < roomWidth; i++) //left -> right
+        for (int i = 0; i < RoomWidth; i++) //left -> right (makes the left door)
         {
-            if (grid[i, centerY] == gridSpace.wall)
+            if (Grid[i, centerY] == GridSpace.Wall)
             {
-                grid[i, centerY] = gridSpace.doorL;
+                Grid[i, centerY] = GridSpace.DoorL;
                 break;
             }
         }
-        for (int i = roomWidth - 1; i >= 0; i--)    //right -> left
+        for (int i = RoomWidth - 1; i >= 0; i--)    //right -> left (makes the right door)
         {
-            if (grid[i, centerY] == gridSpace.wall)
+            if (Grid[i, centerY] == GridSpace.Wall)
             {
-                grid[i, centerY] = gridSpace.doorR;
+                Grid[i, centerY] = GridSpace.DoorR;
                 break;
             }
         }
@@ -312,9 +295,9 @@ public class Level
     int NumberOfFloors()
     {
         int count = 0;
-        foreach (gridSpace space in grid)
+        foreach (GridSpace space in Grid)
         {
-            if (space == gridSpace.floor)
+            if (space == GridSpace.Floor)
             {
                 count++;
             }

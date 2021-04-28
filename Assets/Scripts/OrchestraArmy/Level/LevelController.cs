@@ -9,22 +9,22 @@ using Random = UnityEngine.Random;
 public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, IListener<LevelDoorUpEvent>, IListener<LevelDoorLeftEvent>, IListener<LevelDoorRightEvent>
 {
 
-    public enum doorDirection { left, right, up, down };
-    public GameObject fillObj, rockObj,rubbleObj, wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj, cameraObj;
+    private enum DoorDirection { Left, Right, Up, Down };
+    public GameObject fillObj, rockObj,rubbleObj, wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj;
 
-    private List<GameObject> Instantiated; // list to save all current level objects in game
+    private List<GameObject> _instantiated; // list to save all current level objects in game
 
-    private Level[,] Levels;
-    private Vector2 CurrentLevel;
+    private Level[,] _levels;
+    private Vector2 _currentLevel;
 
-    private int RoomsCleared=0;
+    private int _roomsCleared=0;
     // Start is called before the first frame update
     void Start()
     {
-        Instantiated = new List<GameObject>();
-        Levels = new Level[20, 20]; // can move 10 rooms in each way
-        CurrentLevel = new Vector2(10, 10); // start at the halfway point of the level grid
-        CreateLevel(CurrentLevel);  //make a grid
+        _instantiated = new List<GameObject>();
+        _levels = new Level[20, 20]; // can move 10 rooms in each way
+        _currentLevel = new Vector2(10, 10); // start at the halfway point of the level grid
+        CreateLevel(_currentLevel);  //make a grid
         SpawnLevel();
 
         // bind events
@@ -37,16 +37,16 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
 
     void CreateLevel(Vector2 position)
     {
-        if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))) {    //calculation for chance boss level (after 5 rooms +20% per room)
+        if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5))) {    //calculation for chance boss level (after 5 rooms +20% per room)
             print("boss room");
-            Levels[(int)position.x, (int)position.y] = new Level(true); // create boss level
+            _levels[(int)position.x, (int)position.y] = new Level(true); // create boss level
         }
         else {
-            Levels[(int)position.x, (int)position.y] = new Level(); // create new level
+            _levels[(int)position.x, (int)position.y] = new Level(); // create new level
         }
     }
 
-    void ChangeCurrentLevel(doorDirection direction)
+    void ChangeCurrentLevel(DoorDirection direction)
     {
         // clear previous field
         DestroyCurrentLevel();
@@ -54,74 +54,75 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         // move to another position on the level grid
         switch (direction)
         {
-            case doorDirection.left:
-                CurrentLevel += new Vector2(-1, 0);
+            case DoorDirection.Left:
+                _currentLevel += new Vector2(-1, 0);
                 break;
-            case doorDirection.right:
-                CurrentLevel += new Vector2(1, 0);
+            case DoorDirection.Right:
+                _currentLevel += new Vector2(1, 0);
                 break;
-            case doorDirection.up:
-                CurrentLevel += new Vector2(0, -1);
+            case DoorDirection.Up:
+                _currentLevel += new Vector2(0, -1);
                 break;
-            case doorDirection.down:
-                CurrentLevel += new Vector2(0, 1);
+            case DoorDirection.Down:
+                _currentLevel += new Vector2(0, 1);
                 break;
             default:
-                CurrentLevel += new Vector2(0, -1);
+                _currentLevel += new Vector2(0, -1);
                 break;
         }
 
-        // check if array is in bounds, if not return to bounds      //the 3d shape of the map is suppost to be a torroid.... 
-        if(CurrentLevel.x > 19)
+        // check if array is in bounds, if not return to bounds      //the 3d shape of the map is suppost to be a torroid
+        if(_currentLevel.x > 19)
         {
-            CurrentLevel.x = 0;//19;
+            _currentLevel.x = 0;//19;
         }
 
-        if(CurrentLevel.x < 0)
+        if(_currentLevel.x < 0)
         {
-            CurrentLevel.x = 19;//0;
+            _currentLevel.x = 19;//0;
         }
 
-        if(CurrentLevel.y < 0)
+        if(_currentLevel.y < 0)
         {
-            CurrentLevel.y = 19;//0;
+            _currentLevel.y = 19;//0;
         }
 
-        if(CurrentLevel.y > 19)
+        if(_currentLevel.y > 19)
         {
-            CurrentLevel.y = 0;//19;
+            _currentLevel.y = 0;//19;
         }
 
-        print(CurrentLevel);
+        print(_currentLevel);
 
         // create level if it does not exist
-        if (Levels[(int)CurrentLevel.x, (int)CurrentLevel.y] == null)
+        if (_levels[(int)_currentLevel.x, (int)_currentLevel.y] == null)
         {
-            CreateLevel(CurrentLevel);
-            RoomsCleared++;
+            CreateLevel(_currentLevel);
+            _roomsCleared++;
         }
 
         SpawnLevel();
+        
 
     }
     
     bool borderOnFill(int x, int y) {       //check if tile directly borders an empty tile
-        Level level = Levels[(int) CurrentLevel.x, (int) CurrentLevel.y];
+        Level level = _levels[(int) _currentLevel.x, (int) _currentLevel.y];
         bool outp = false;
         try {
-            outp = outp || level.grid[x-1, y] == Level.gridSpace.empty;
+            outp = outp || level.Grid[x-1, y] == Level.GridSpace.Empty;
         }
         catch { return true;}
         try {
-            outp = outp || level.grid[x+1,y]==Level.gridSpace.empty;
+            outp = outp || level.Grid[x+1,y]==Level.GridSpace.Empty;
         }
         catch{ return true;}
         try {
-            outp = outp || level.grid[x,y-1]==Level.gridSpace.empty;
+            outp = outp || level.Grid[x,y-1]==Level.GridSpace.Empty;
         }
         catch{ return true;}
         try {
-            outp = outp || level.grid[x,y+1]==Level.gridSpace.empty;
+            outp = outp || level.Grid[x,y+1]==Level.GridSpace.Empty;
         }
         catch{ return true;}
 
@@ -131,29 +132,32 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
 
     void SpawnLevel()
     {
-        Level level = Levels[(int)CurrentLevel.x, (int)CurrentLevel.y];
-        for (int x = 0; x < level.roomWidth; x++){
-            for (int y = 0; y < level.roomHeight; y++){
-                switch(level.grid[x,y]){
-                    case Level.gridSpace.empty:
+        Level level = _levels[(int)_currentLevel.x, (int)_currentLevel.y];
+        for (int x = 0; x < level.RoomWidth; x++){
+            for (int y = 0; y < level.RoomHeight; y++){
+                switch(level.Grid[x,y]){
+                    case Level.GridSpace.Empty:
                         Spawn(x,y,fillObj);
                         break;
-                    case Level.gridSpace.floor:
+                    case Level.GridSpace.Floor:
                         Spawn(x,y,floorObj);
+                        if (Random.value<0.1f) {
+                            Spawn(x,y,rubbleObj.transform.GetChild(Random.Range(0,3)).gameObject);
+                        }
                         break;
-                    case Level.gridSpace.wall:
+                    case Level.GridSpace.Wall:
                         Spawn(x,y,borderOnFill(x,y)?wallObj:rockObj.transform.GetChild (Random.Range(0,4)).gameObject);
                         break;
-                    case Level.gridSpace.doorU:
+                    case Level.GridSpace.DoorU:
                         Spawn(x,y,doorUObj);
                         break;
-                    case Level.gridSpace.doorD:
+                    case Level.GridSpace.DoorD:
                         Spawn(x,y,doorDObj);
                         break;
-                    case Level.gridSpace.doorL:
+                    case Level.GridSpace.DoorL:
                         Spawn(x,y,doorLObj);
                         break;
-                    case Level.gridSpace.doorR:
+                    case Level.GridSpace.DoorR:
                         Spawn(x,y,doorRObj);
                         break;
                     
@@ -164,7 +168,7 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
 
     void DestroyCurrentLevel() // destroy a level to make space for a new one
     {
-        foreach (GameObject g in Instantiated)
+        foreach (GameObject g in _instantiated)
         {
             Destroy(g);
         }
@@ -172,33 +176,33 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
 
     void Spawn(float x, float y, GameObject toSpawn)
     {
-        Level level = Levels[(int)CurrentLevel.x, (int)CurrentLevel.y];
+        Level level = _levels[(int)_currentLevel.x, (int)_currentLevel.y];
 
         //find the position to spawn
-        Vector3 spawnPos = new Vector3(x, 0, y) - new Vector3(level.offsetOfRoom.x, 0, level.offsetOfRoom.y);
+        Vector3 spawnPos = new Vector3(x, 0, y) - new Vector3(level.OffsetOfRoom.x, 0, level.OffsetOfRoom.y);
         //spawn object
-        Instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
+        _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
     }
 
 
     public void OnEvent(LevelDoorDownEvent invokedEvent)
     {
-        ChangeCurrentLevel(doorDirection.down);
+        ChangeCurrentLevel(DoorDirection.Down);
     }
 
     public void OnEvent(LevelDoorUpEvent invokedEvent)
     {
-        ChangeCurrentLevel(doorDirection.up);
+        ChangeCurrentLevel(DoorDirection.Up);
     }
 
     public void OnEvent(LevelDoorLeftEvent invokedEvent)
     {
-        ChangeCurrentLevel(doorDirection.left);
+        ChangeCurrentLevel(DoorDirection.Left);
     }
 
     public void OnEvent(LevelDoorRightEvent invokedEvent)
     {
-        ChangeCurrentLevel(doorDirection.right);
+        ChangeCurrentLevel(DoorDirection.Right);
     }
 
 
@@ -206,15 +210,15 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
     private void Update()
     {
         if (Input.GetKey("i")) {
-            ChangeCurrentLevel(doorDirection.up);
+            ChangeCurrentLevel(DoorDirection.Up);
         }else if (Input.GetKey("k")) {
-            ChangeCurrentLevel(doorDirection.down);
+            ChangeCurrentLevel(DoorDirection.Down);
         }else if (Input.GetKey("j")) {
-            ChangeCurrentLevel(doorDirection.left);
+            ChangeCurrentLevel(DoorDirection.Left);
         }else if (Input.GetKey("l")) {
-            ChangeCurrentLevel(doorDirection.right);
+            ChangeCurrentLevel(DoorDirection.Right);
         }else if (Input.GetKey("b")) {
-            RoomsCleared = 10;
+            _roomsCleared = 10;
         }
     }
 }
