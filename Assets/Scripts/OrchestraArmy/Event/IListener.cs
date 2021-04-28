@@ -1,4 +1,4 @@
-﻿using OrchestraArmy.Event.Event;
+using OrchestraArmy.Event.Event;
 
 namespace OrchestraArmy.Event
 {

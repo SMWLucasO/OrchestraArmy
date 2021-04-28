@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
         /// <summary>
         /// The offset at which the camera rotates around the player.
         /// </summary>
-        public Vector3 CameraOffset = new Vector3(0, -15, 10);
+        public Vector3 CameraOffset = new Vector3(0, -1.3f, 1f);
         
         /// <summary>
         /// The camera controller's owner.
