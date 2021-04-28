@@ -57,15 +57,19 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
             case DoorDirection.Left:
                 _currentLevel += new Vector2(-1, 0);
                 break;
+            
             case DoorDirection.Right:
                 _currentLevel += new Vector2(1, 0);
                 break;
+            
             case DoorDirection.Up:
                 _currentLevel += new Vector2(0, -1);
                 break;
+            
             case DoorDirection.Down:
                 _currentLevel += new Vector2(0, 1);
                 break;
+            
             default:
                 _currentLevel += new Vector2(0, -1);
                 break;
@@ -102,8 +106,6 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         }
 
         SpawnLevel();
-        
-
     }
     
     bool borderOnFill(int x, int y) {       //check if tile directly borders an empty tile
@@ -112,18 +114,22 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         try {
             outp = outp || level.Grid[x-1, y] == Level.GridSpace.Empty;
         }
+        
         catch { return true;}
         try {
             outp = outp || level.Grid[x+1,y]==Level.GridSpace.Empty;
         }
+        
         catch{ return true;}
         try {
             outp = outp || level.Grid[x,y-1]==Level.GridSpace.Empty;
         }
+        
         catch{ return true;}
         try {
             outp = outp || level.Grid[x,y+1]==Level.GridSpace.Empty;
         }
+        
         catch{ return true;}
 
         return outp;
@@ -139,6 +145,7 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
                     case Level.GridSpace.Empty:
                         Spawn(x,y,fillObj);
                         break;
+                    
                     case Level.GridSpace.Floor:
                         Spawn(x,y,floorObj);
                         if (Random.value<0.1f) {
@@ -148,15 +155,19 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
                     case Level.GridSpace.Wall:
                         Spawn(x,y,borderOnFill(x,y)?wallObj:rockObj.transform.GetChild (Random.Range(0,4)).gameObject);
                         break;
+                    
                     case Level.GridSpace.DoorU:
                         Spawn(x,y,doorUObj);
                         break;
+                    
                     case Level.GridSpace.DoorD:
                         Spawn(x,y,doorDObj);
                         break;
+                    
                     case Level.GridSpace.DoorL:
                         Spawn(x,y,doorLObj);
                         break;
+                    
                     case Level.GridSpace.DoorR:
                         Spawn(x,y,doorRObj);
                         break;
@@ -183,8 +194,7 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         //spawn object
         _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
     }
-
-
+    
     public void OnEvent(LevelDoorDownEvent invokedEvent)
     {
         ChangeCurrentLevel(DoorDirection.Down);
@@ -203,22 +213,5 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
     public void OnEvent(LevelDoorRightEvent invokedEvent)
     {
         ChangeCurrentLevel(DoorDirection.Right);
-    }
-
-
-    /// DIT IS VOOR TESTEN EN MOET VERWIJDERD WORDEN
-    private void Update()
-    {
-        if (Input.GetKey("i")) {
-            ChangeCurrentLevel(DoorDirection.Up);
-        }else if (Input.GetKey("k")) {
-            ChangeCurrentLevel(DoorDirection.Down);
-        }else if (Input.GetKey("j")) {
-            ChangeCurrentLevel(DoorDirection.Left);
-        }else if (Input.GetKey("l")) {
-            ChangeCurrentLevel(DoorDirection.Right);
-        }else if (Input.GetKey("b")) {
-            _roomsCleared = 10;
-        }
     }
 }

@@ -75,6 +75,7 @@ public class Level
         //add walker to list
         _walkers.Add(newWalker);
     }
+    
     void CreateFloors()
     {
         int iterations = 0;//loop will not run forever
@@ -144,6 +145,7 @@ public class Level
             iterations++;
         } while (iterations < 100000);
     }
+    
     void CreateWalls()
     {
         //loop though every grid space
@@ -175,6 +177,7 @@ public class Level
             }
         }
     }
+    
     void RemoveSingleWalls()
     {
         //loop though every grid space
@@ -209,6 +212,7 @@ public class Level
                             }
                         }
                     }
+                    
                     if (allFloors)
                     {
                         Grid[x, y] = GridSpace.Floor;
@@ -217,7 +221,6 @@ public class Level
             }
         }
     }
-
 
     void CreateDoors()  //place the four doors around the map
     {
@@ -248,6 +251,7 @@ public class Level
                 break;
             }
         }
+        
         for (int i = RoomHeight - 1; i >= 0; i--)   //up -> down (makes the top door)
         {
             if (Grid[centerX, i] == GridSpace.Wall)
@@ -256,6 +260,7 @@ public class Level
                 break;
             }
         }
+        
         for (int i = 0; i < RoomWidth; i++) //left -> right (makes the left door)
         {
             if (Grid[i, centerY] == GridSpace.Wall)
@@ -264,6 +269,7 @@ public class Level
                 break;
             }
         }
+        
         for (int i = RoomWidth - 1; i >= 0; i--)    //right -> left (makes the right door)
         {
             if (Grid[i, centerY] == GridSpace.Wall)
@@ -273,7 +279,6 @@ public class Level
             }
         }
     }
-
 
     Vector2 RandomDirection()
     {
@@ -292,6 +297,7 @@ public class Level
                 return Vector2.right;
         }
     }
+    
     int NumberOfFloors()
     {
         int count = 0;
