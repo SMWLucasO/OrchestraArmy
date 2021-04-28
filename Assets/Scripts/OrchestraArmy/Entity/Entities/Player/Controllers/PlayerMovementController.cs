@@ -1,5 +1,4 @@
-﻿using System;
-using OrchestraArmy.Entity.Controllers;
+﻿using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Keybindings;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -30,9 +29,6 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move right"])) 
                 movementVector += MoveRightForce(currentlyFacing);
 
-            Debug.Log(movementVector);
-            Debug.Log(Entity.RigidBody);
-            
             // Only add to the position when a change is actually detected.
             Entity.RigidBody.velocity = (movementVector.normalized * (Entity.EntityData.WalkSpeed * Time.deltaTime));
         }
