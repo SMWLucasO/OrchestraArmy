@@ -18,15 +18,19 @@ public class DoorDownCollision : MonoBehaviour
         
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        EventManager.Invoke(new LevelDoorDownEvent());
+        print("down");
+    }
     void OnCollisionEnter()
     {
+        EventManager.Invoke(new LevelDoorDownEvent());
         print("down");
     }
 
     void OnMouseOver()
     {
-        print("down");
-        EventManager.Invoke(new LevelDoorDownEvent());
         
     }
 }

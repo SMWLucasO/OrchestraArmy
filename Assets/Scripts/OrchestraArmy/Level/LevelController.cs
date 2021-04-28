@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Event;
@@ -139,6 +140,7 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
     void SpawnLevel()
     {
         Level level = _levels[(int)_currentLevel.x, (int)_currentLevel.y];
+        
         for (int x = 0; x < level.RoomWidth; x++){
             for (int y = 0; y < level.RoomHeight; y++){
                 switch(level.Grid[x,y]){
@@ -175,6 +177,12 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
                 }
             }
         }
+        
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+            player.transform.position = new Vector3(75 - level.OffsetOfRoom.x, player.transform.position.y, 75 - level.OffsetOfRoom.y);
     }
 
     void DestroyCurrentLevel() // destroy a level to make space for a new one

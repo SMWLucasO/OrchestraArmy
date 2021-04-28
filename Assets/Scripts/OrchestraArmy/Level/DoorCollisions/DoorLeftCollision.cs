@@ -17,17 +17,15 @@ public class DoorLeftCollision : MonoBehaviour
     {
         
     }
-
+    void OnTriggerEnter(Collider other)
+    {
+        EventManager.Invoke(new LevelDoorDownEvent());
+        print("left");
+    }
     void OnCollisionEnter()
     {
-        print("left");
-        
-    }
-
-    void OnMouseOver()
-    {
-        print("left");
         EventManager.Invoke(new LevelDoorLeftEvent());
+        print("left");
         
     }
 }
