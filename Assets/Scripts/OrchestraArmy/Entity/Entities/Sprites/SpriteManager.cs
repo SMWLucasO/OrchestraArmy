@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace OrchestraArmy.Entity
+namespace OrchestraArmy.Entity.Entities.Sprites
 {
     public class SpriteManager
     {

@@ -17,27 +17,7 @@ namespace OrchestraArmy.Entity.Entities.Player
         /// </summary>
         public ICameraController CameraController { get; set; }
 
-        void Start()
-        {
-            InitializeSprites();
-            DirectionController = new PlayerDirectionController()
-            {
-                Entity = this
-            };
-            
-            this.MovementController = new PlayerMovementController()
-            {
-                Entity = this
-            };
-
-            // The main camera is the camera which the player uses.
-            this.CameraController = new PlayerCameraController()
-            {
-                Player = this
-            };
-        }
-
-        private void Update()
+        protected override void Update()
         {
             base.Update();
             DirectionController.HandleDirection();
@@ -52,8 +32,23 @@ namespace OrchestraArmy.Entity.Entities.Player
 
         protected override void OnEnable()
         {
-            base.OnEnable();
-        }
+            InitializeSprites();
+            
+            DirectionController = new PlayerDirectionController()
+            {
+                Entity = this
+            };  
+            
+            this.MovementController = new PlayerMovementController()
+            {
+                Entity = this
+            };
 
+            // The main camera is the camera which the player uses.
+            this.CameraController = new PlayerCameraController()
+            {
+                Player = this
+            };
+        }
     }
 }

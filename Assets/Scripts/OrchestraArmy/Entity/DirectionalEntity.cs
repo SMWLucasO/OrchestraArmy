@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Entity.Entities.Sprites;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity
@@ -20,9 +21,6 @@ namespace OrchestraArmy.Entity
         /// The sprite per direction of the Entity. Array of structs instead of dictionary so that it can be serialized
         /// </summary>
         public SpriteEntry[] Sprites;
-
-
-        public GameObject sphere;
 
         /// <summary>
         /// The renderer for the 2D sprites of the directional entity.
