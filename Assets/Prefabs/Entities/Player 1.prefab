@@ -148,7 +148,7 @@ MonoBehaviour:
   <EntityData>k__BackingField:
     _health: 100
     _stamina: 100
-    _walkSpeed: 5
+    _walkSpeed: 35
 --- !u!65 &2230598516762508403
 BoxCollider:
   m_ObjectHideFlags: 0
