@@ -5,23 +5,14 @@ using UnityEngine.UIElements;
 
 namespace OrchestraArmy.Entity.Controllers
 {
-    public class DirectionController: IDirectionController
+    public class PlayerDirectionController: IDirectionController
     {
         public DirectionalEntity Entity { get; set; }
         public Camera Camera { get; set; } = Camera.main;
         public EntityDirection CurrentDirection { get; private set; } = EntityDirection.Top;
+        
         public Vector3 AimDirection = Vector3.up;
 
-        private void UpdateSprite()
-        {
-            var newSprite = Entity.Sprites.FirstOrDefault(s => s.Direction == CurrentDirection);
-
-            if (newSprite.Sprites == null || newSprite.Sprites.Length == 0)
-                return; 
-
-            Entity.CurrentSpriteSet = newSprite.Sprites;
-        }
-        
         public void HandleDirection()
         {
             var entityPosition = Entity.transform.position;
@@ -68,8 +59,6 @@ namespace OrchestraArmy.Entity.Controllers
             // var camRotation = Camera.transform.rotation.eulerAngles;
             //
             // Entity.transform.GetChild(0).rotation = Quaternion.Euler(0, camRotation.y, 0);
-
-            UpdateSprite();
         }
     }
 }

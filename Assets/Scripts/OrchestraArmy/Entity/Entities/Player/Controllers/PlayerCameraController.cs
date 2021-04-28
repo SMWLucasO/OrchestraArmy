@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
         /// <summary>
         /// The offset at which the camera rotates around the player.
         /// </summary>
-        public const float CameraOffset = 10f;
+        public Vector3 CameraOffset = new Vector3(0, -15, 10);
         
         /// <summary>
         /// The camera controller's owner.
@@ -87,8 +87,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
                 Yaw += CameraRotationIncrement * Time.deltaTime;
 
             // Get the offset for rotations around the player
-            Vector3 offset = CameraOffset * playerForward;
-            offset.y = -15;
+            Vector3 offset = CameraOffset + playerForward;
 
             // [0, 360] degrees available.
             Yaw %= 360;

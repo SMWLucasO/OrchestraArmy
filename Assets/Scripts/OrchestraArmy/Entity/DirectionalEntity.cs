@@ -21,23 +21,8 @@ namespace OrchestraArmy.Entity
         /// </summary>
         public SpriteEntry[] Sprites;
 
-        private Sprite[] _currentSpriteSet;
 
         public GameObject sphere;
-        public Sprite[] CurrentSpriteSet
-        {
-            get => _currentSpriteSet;
-            set
-            {
-                if (value != _currentSpriteSet)
-                {
-                    StopCoroutine(nameof(AnimatePlayer));
-                    _currentSpriteSet = value;
-                    _currentSprite = 0;
-                    StartCoroutine(nameof(AnimatePlayer));
-                }
-            }
-        }
 
         /// <summary>
         /// The renderer for the 2D sprites of the directional entity.
@@ -49,35 +34,16 @@ namespace OrchestraArmy.Entity
         /// </summary>
         public IDirectionController DirectionController { get; set; }
         
-        private int _currentSprite = 0;
+        public SpriteManager SpriteManager { get; set; }
         
-        // Start is called before the first frame update
         protected void InitializeSprites()
         {
             Renderer = GetComponentInChildren<SpriteRenderer>();
-            StartCoroutine(nameof(AnimatePlayer));
-        }
-        
-        // If the sprite entry has multiple sprites, animate it
-        IEnumerator AnimatePlayer()
-        {
-            while (true)
+            SpriteManager = new SpriteManager()
             {
-                if (CurrentSpriteSet == null || CurrentSpriteSet.Length <= 1)
-                {
-                    yield return null;
-                    continue;
-                }
-
-                if (_currentSprite >= CurrentSpriteSet.Length)
-                {
-                    _currentSprite = 0;
-                }
-                
-                Renderer.sprite =  CurrentSpriteSet[_currentSprite++];
-                
-                yield return new WaitForSeconds(1.5f);
-            }
+                Entity = this
+            };
+            SpriteManager.StartAnimation();
         }
         
         protected virtual void Start() {}

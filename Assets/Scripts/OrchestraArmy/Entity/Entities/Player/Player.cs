@@ -20,7 +20,7 @@ namespace OrchestraArmy.Entity.Entities.Player
         void Start()
         {
             InitializeSprites();
-            DirectionController = new DirectionController()
+            DirectionController = new PlayerDirectionController()
             {
                 Entity = this
             };
@@ -41,6 +41,7 @@ namespace OrchestraArmy.Entity.Entities.Player
         {
             base.Update();
             DirectionController.HandleDirection();
+            SpriteManager.UpdateSprite();
         }
 
         protected override void LateUpdate()
