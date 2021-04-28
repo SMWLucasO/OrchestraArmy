@@ -6,12 +6,34 @@ namespace OrchestraArmy.Entity
 {
     public class SpriteManager
     {
+        /// <summary>
+        /// The camera, used to determine if a sprite should be inverted
+        /// </summary>
         public Camera Camera = Camera.main;
+        
+        /// <summary>
+        /// The entity
+        /// </summary>
         public DirectionalEntity Entity;
         
+        /// <summary>
+        /// The current sprite set. A sprite set is a collection of sprites that will be animated.
+        /// </summary>
         private Sprite[] _currentSpriteSet;
+        
+        /// <summary>
+        /// The current sprite within the animation
+        /// </summary>
         private int _currentSprite = 0;
-        private Coroutine animation = null;
+        
+        /// <summary>
+        /// The coroutine for the animation
+        /// </summary>
+        private Coroutine _animation = null;
+        
+        /// <summary>
+        /// Property for _currentSpriteSet. Will restart the animation when replaced.
+        /// </summary>
         public Sprite[] CurrentSpriteSet
         {
             get => _currentSpriteSet;
@@ -19,15 +41,18 @@ namespace OrchestraArmy.Entity
             {
                 if (value != _currentSpriteSet)
                 {
-                    if (animation != null)
-                        Entity.StopCoroutine(animation);
+                    if (_animation != null)
+                        Entity.StopCoroutine(_animation);
                     _currentSpriteSet = value;
                     _currentSprite = 0;
-                    animation = Entity.StartCoroutine(AnimateSprite());
+                    _animation = Entity.StartCoroutine(AnimateSprite());
                 }
             }
         }
 
+        /// <summary>
+        /// Updates the current spriteset if needed
+        /// </summary>
         public void UpdateSprite()
         {
             var direction = Entity.DirectionController.CurrentDirection;
@@ -51,14 +76,17 @@ namespace OrchestraArmy.Entity
             CurrentSpriteSet = newSprite.Sprites;
         }
         
-        
+        /// <summary>
+        /// Start the animation
+        /// </summary>
         public void StartAnimation()
         {
-            animation = Entity.StartCoroutine(AnimateSprite());
+            _animation = Entity.StartCoroutine(AnimateSprite());
         }
         
-        
-        // If the sprite entry has multiple sprites, animate it
+        /// <summary>
+        /// Animate a sprite set if it contains more then 1 sprite. Executed as a Coroutine.
+        /// </summary>
         IEnumerator AnimateSprite()
         {
             while (true)
