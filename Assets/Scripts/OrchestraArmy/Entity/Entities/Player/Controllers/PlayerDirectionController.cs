@@ -39,11 +39,6 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
                 CurrentDirection = EntityDirection.Left;
                 AimDirection = -Entity.transform.right;
             }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                GameObject.Instantiate(Entity.sphere, entityPosition, Quaternion.LookRotation(AimDirection));
-            }
         }
     }
 }
