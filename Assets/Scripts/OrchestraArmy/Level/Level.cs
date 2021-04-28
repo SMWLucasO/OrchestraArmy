@@ -10,7 +10,7 @@ public class Level
     public gridSpace[,] grid;
     public int roomHeight, roomWidth;
     public bool beaten;
-    Vector2 roomSizeWorldUnits = new Vector2(150, 150);
+    public Vector2 roomSizeWorldUnits = new Vector2(150, 150);
     public Vector2 offsetOfRoom = new Vector2(0, 0);
     float worldUnitsInOneGridCell = 1;
     struct walker
