@@ -24,21 +24,22 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         Instantiated = new List<GameObject>();
         Levels = new Level[20, 20]; // can move 10 rooms in each way
         CurrentLevel = new Vector2(10, 10); // start at the halfway point of the level grid
-        CreateLevel(CurrentLevel);
+        CreateLevel(CurrentLevel);  //make a grid
         SpawnLevel();
 
         // bind events
         EventManager.Bind<LevelDoorUpEvent>(this);
         EventManager.Bind<LevelDoorDownEvent>(this);
         EventManager.Bind<LevelDoorLeftEvent>(this);
-        EventManager.Bind<LevelDoorRightEvent>(this);
+        EventManager.Bind<LevelDoorRightEvent>(this);   // door actions (go though door)
 
     }
 
     void CreateLevel(Vector2 position)
     {
         if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))) {    //calculation for chance boss level (after 5 rooms +20% per room)
-            //TODO: make boss level
+            print("boss room");
+            Levels[(int)position.x, (int)position.y] = new Level(true); // create boss level
         }
         else {
             Levels[(int)position.x, (int)position.y] = new Level(); // create new level
@@ -130,7 +131,6 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
 
     void SpawnLevel()
     {
-
         Level level = Levels[(int)CurrentLevel.x, (int)CurrentLevel.y];
         for (int x = 0; x < level.roomWidth; x++){
             for (int y = 0; y < level.roomHeight; y++){
@@ -201,4 +201,20 @@ public class LevelController : MonoBehaviour, IListener<LevelDoorDownEvent>, ILi
         ChangeCurrentLevel(doorDirection.right);
     }
 
+
+    /// DIT IS VOOR TESTEN EN MOET VERWIJDERD WORDEN
+    private void Update()
+    {
+        if (Input.GetKey("i")) {
+            ChangeCurrentLevel(doorDirection.up);
+        }else if (Input.GetKey("k")) {
+            ChangeCurrentLevel(doorDirection.down);
+        }else if (Input.GetKey("j")) {
+            ChangeCurrentLevel(doorDirection.left);
+        }else if (Input.GetKey("l")) {
+            ChangeCurrentLevel(doorDirection.right);
+        }else if (Input.GetKey("b")) {
+            RoomsCleared = 10;
+        }
+    }
 }

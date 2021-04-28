@@ -31,6 +31,25 @@ public class Level
         RemoveSingleWalls();
         CreateDoors();
     }
+    public Level(bool boss)
+    {
+        BossSettings();
+        Setup();
+        CreateFloors();
+        CreateWalls();
+        RemoveSingleWalls();
+        CreateDoors();
+    }
+
+    void BossSettings()
+    {
+        chanceWalkerChangeDir = .99f;
+        chanceWalkerSpawn = 0.8f;
+        chanceWalkerDestoy = 0.8f;
+        maxWalkers = 20;
+        percentToFill = 0.1f;
+    }
+    
     void Setup()
     {
 		this.beaten = false;
