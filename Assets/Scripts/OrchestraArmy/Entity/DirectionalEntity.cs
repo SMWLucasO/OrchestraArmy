@@ -47,9 +47,12 @@ namespace OrchestraArmy.Entity
         protected virtual void Start() {}
         // Update is called once per frame
         protected virtual void Update() {}
+        protected virtual void FixedUpdate() {}
 
         protected virtual void LateUpdate() {}
         
         protected  virtual void OnEnable() {}
+        
+        protected  virtual void Awake() {}
     }
 }

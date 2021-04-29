@@ -30,8 +30,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
                 movementVector += MoveRightForce(currentlyFacing);
 
             // Only add to the position when a change is actually detected.
-            if (movementVector != Vector3.zero)
-                Entity.transform.position += (movementVector.normalized * (Entity.EntityData.WalkSpeed * Time.deltaTime));
+            Entity.RigidBody.velocity = (movementVector.normalized * (Entity.EntityData.WalkSpeed * Time.deltaTime));
         }
 
         /// <summary>

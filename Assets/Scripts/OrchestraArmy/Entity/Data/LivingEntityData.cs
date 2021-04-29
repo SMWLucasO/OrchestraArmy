@@ -16,7 +16,7 @@ namespace OrchestraArmy.Entity.Data
         
         [Min(0)]
         [SerializeField]
-        private float _walkSpeed = 5;
+        private float _walkSpeed = 200;
 
 
         public int Health

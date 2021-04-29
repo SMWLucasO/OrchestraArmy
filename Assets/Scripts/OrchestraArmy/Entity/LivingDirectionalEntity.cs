@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using OrchestraArmy.Entity.Controllers;
@@ -8,18 +9,26 @@ namespace OrchestraArmy.Entity
 {
     public abstract class LivingDirectionalEntity : DirectionalEntity
     {
+        
+        public Rigidbody RigidBody { get; set; }
+        
         [field: SerializeField]
         public IMovementController MovementController { get; set; }
 
         [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
-        
-        protected override void Update()
+
+        protected override void FixedUpdate()
         {
-            base.Update();
+            base.FixedUpdate();
             MovementController?.HandleMovement();
         }
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+            this.RigidBody = GetComponent<Rigidbody>();
+        }
     }
    
 }
