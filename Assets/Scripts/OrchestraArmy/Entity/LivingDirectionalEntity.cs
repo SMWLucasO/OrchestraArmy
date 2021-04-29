@@ -18,9 +18,9 @@ namespace OrchestraArmy.Entity
         [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
 
-        protected override void Update()
+        protected override void FixedUpdate()
         {
-            base.Update();
+            base.FixedUpdate();
             MovementController?.HandleMovement();
         }
 
