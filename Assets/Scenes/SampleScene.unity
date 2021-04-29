@@ -216,6 +216,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &772908852 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2230598516762508406, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+  m_PrefabInstance: {fileID: 2230598516012729013}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &772908854
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772908852}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2.25
+  m_Height: 9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &810268616
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,9 +421,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2230598516762508401, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+      propertyPath: <EntityData>k__BackingField._walkSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230598516762508402, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+      propertyPath: m_Constraints
+      value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230598516762508403, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+      propertyPath: m_Size.x
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230598516762508403, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+      propertyPath: m_Size.y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230598516762508403, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
+      propertyPath: m_Size.z
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2230598516762508406, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2230598516762508403, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c7b339d3ae3dc6c479a998e39e83efe8, type: 3}
