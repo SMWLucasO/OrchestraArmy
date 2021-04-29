@@ -39,7 +39,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
 
             var directionVector = new Vector3(-Mathf.Cos(compensatedRadians), 0, -Mathf.Sin(compensatedRadians));
             
-            Entity.transform.forward = directionVector;
+            Entity.transform.forward = directionVector;     
 
             var child = Entity.transform.GetChild(0);
             child.rotation = new Quaternion();
