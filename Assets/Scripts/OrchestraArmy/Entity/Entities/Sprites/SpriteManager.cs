@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -56,18 +57,6 @@ namespace OrchestraArmy.Entity.Entities.Sprites
         public void UpdateSprite()
         {
             var direction = Entity.DirectionController.CurrentDirection;
-            var cameraRotation = Camera.transform.rotation.eulerAngles;
-
-            if ((direction == EntityDirection.Top || direction == EntityDirection.Down) && (cameraRotation.y > 90 && cameraRotation.y < 270))
-            {
-                var newDirection = (int) direction - 2;
-
-                if (newDirection < 0)
-                    newDirection += 4;
-
-                direction = (EntityDirection) newDirection;
-            }
-            
             var newSprite = Entity.Sprites.FirstOrDefault(s => s.Direction == direction);
 
             if (newSprite.Sprites == null || newSprite.Sprites.Length == 0)

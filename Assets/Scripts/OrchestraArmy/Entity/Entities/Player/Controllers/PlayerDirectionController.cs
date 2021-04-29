@@ -16,6 +16,7 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             var entityPosition = Entity.transform.position;
             var entityScreenPosition = Camera.WorldToScreenPoint(entityPosition);
             var mousePosition = Input.mousePosition;
+            var cameraRotation = Camera.transform.rotation.eulerAngles;
 
             if (Mathf.Abs(Vector3.Distance(mousePosition, entityScreenPosition)) < 40)
             {
@@ -24,17 +25,19 @@ namespace OrchestraArmy.Entity.Entities.Player.Controllers
             
             var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
             var angle = angleRadians * (180 / Mathf.PI);
+            var compensatedAngle = angle - cameraRotation.y;
+            var compensatedRadians = compensatedAngle * (Mathf.PI / 180);
 
-            if (angle < -45 && angle > -135)
+            if (angle <= -45 && angle >= -135)
                 CurrentDirection = EntityDirection.Top;
-            else if (angle < -135 || angle > 135)
+            else if (angle <= -135 || angle >= 135)
                 CurrentDirection = EntityDirection.Right;
-            else if (angle > 45 && angle < 135)
+            else if (angle >= 45 && angle <= 135)
                 CurrentDirection = EntityDirection.Down;
-            else if (angle > -45 && angle < 135)
+            else if (angle >= -45 && angle <= 135)
                 CurrentDirection = EntityDirection.Left;
 
-            var directionVector = new Vector3(-Mathf.Cos(angleRadians), 0, -Mathf.Sin(angleRadians));
+            var directionVector = new Vector3(-Mathf.Cos(compensatedRadians), 0, -Mathf.Sin(compensatedRadians));
             
             Entity.transform.forward = directionVector;
 
