@@ -1,9 +1,8 @@
-using System;
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Keybindings;
 using UnityEngine;
 
-namespace OrchestraArmy.Entity.Entities.Player.Controllers
+namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerCameraController : ICameraController
     {
