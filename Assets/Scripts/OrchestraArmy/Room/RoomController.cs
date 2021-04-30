@@ -7,7 +7,7 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Event;
 using Random = UnityEngine.Random;
 
-public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
+public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>//, IListener<PlayerDeathEvent>
 {
 
     private enum DoorDirection { Left, Right, Up, Down };
@@ -18,31 +18,38 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
     private Room[,] _rooms;
     private Vector2 _currentRoom;
 
-    private int _roomsCleared=0;
+    private int _roomsCleared=-1;
     // Start is called before the first frame update
     void Start()
     {
-        _instantiated = new List<GameObject>();
-        _rooms = new Room[20, 20]; // can move 10 rooms in each way
-        _currentRoom = new Vector2(10, 10); // start at the halfway point of the room grid
-        CreateRoom(_currentRoom);  //make a grid
-        SpawnRoom();
+        Setup();
 
         // bind events
         EventManager.Bind<RoomDoorUpEvent>(this);
         EventManager.Bind<RoomDoorDownEvent>(this);
         EventManager.Bind<RoomDoorLeftEvent>(this);
         EventManager.Bind<RoomDoorRightEvent>(this);   // door actions (go though door)
+        
 
+    }
+    
+    void Setup()
+    {
+        _instantiated = new List<GameObject>(); //room object list
+        _rooms = new Room[20, 20];  //make a grid
+        CreateRoom(_currentRoom);  //make a room
+        SpawnRoom();    //spawn room
     }
 
     void CreateRoom(Vector2 position)
     {
         if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5))) {    //calculation for chance boss room (after 5 rooms +20% per room)
             print("boss room");
-            _rooms[(int)position.x, (int)position.y] = new Room(true); // create boss room
-        }
-        else {
+            _rooms[(int)position.x, (int)position.y] = new Room(boss:true); // create boss room
+        } else if (_roomsCleared<0) {
+            print("spawnRoom");
+            _rooms[(int)position.x, (int)position.y] = new Room(spawn:true); // create spawn room
+        } else {
             _rooms[(int)position.x, (int)position.y] = new Room(); // create new room
         }
     }
@@ -202,7 +209,7 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
         //spawn object
         _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
     }
-    
+
     public void OnEvent(RoomDoorDownEvent invokedEvent)
     {
         ChangeCurrentRoom(DoorDirection.Down);
@@ -222,4 +229,9 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
     {
         ChangeCurrentRoom(DoorDirection.Right);
     }
+    //
+    // public void OnEvent(PlayerDeathEvent invokedEvent)
+    // {
+    //     Setup();
+    // }
 }
