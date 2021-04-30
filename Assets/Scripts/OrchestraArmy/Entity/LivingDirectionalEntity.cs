@@ -13,16 +13,7 @@ namespace OrchestraArmy.Entity
         public Rigidbody RigidBody { get; set; }
         
         [field: SerializeField]
-        public IMovementController MovementController { get; set; }
-
-        [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
-
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
-            MovementController?.HandleMovement();
-        }
 
         protected override void Awake()
         {

@@ -1,14 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using OrchestraArmy.Entity.Controllers;
-using OrchestraArmy.Entity.Entities.Player.Controllers;
-using OrchestraArmy.Event;
-using OrchestraArmy.Event.Event;
-using UnityEngine;
+using OrchestraArmy.Entity.Entities.Players.Controllers;
 
-namespace OrchestraArmy.Entity.Entities.Player
+namespace OrchestraArmy.Entity.Entities.Players
 {
     public class Player : LivingDirectionalEntity
     {
@@ -17,6 +10,17 @@ namespace OrchestraArmy.Entity.Entities.Player
         /// </summary>
         public ICameraController CameraController { get; set; }
 
+        /// <summary>
+        /// The controller for the player's movement.
+        /// </summary>
+        public IMovementController MovementController { get; set; }
+
+        /// <summary>
+        /// The controller for the player's attacking.
+        /// </summary>
+        public IAttackController AttackController { get; set; }
+        
+        
         protected override void Update()
         {
             base.Update();
@@ -24,6 +28,12 @@ namespace OrchestraArmy.Entity.Entities.Player
             SpriteManager.UpdateSprite();
         }
 
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            MovementController?.HandleMovement();
+        }
+        
         protected override void LateUpdate()
         {
             base.LateUpdate();

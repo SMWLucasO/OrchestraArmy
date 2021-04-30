@@ -4,7 +4,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace OrchestraArmy.Entity.Entities.Player.Controllers
+namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerMovementController : IMovementController
     {

@@ -1,4 +1,4 @@
-﻿using OrchestraArmy.Entity.Entities.Player;
+﻿using OrchestraArmy.Entity.Entities.Players;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Controllers
@@ -20,5 +20,5 @@ namespace OrchestraArmy.Entity.Controllers
         /// </summary>
         public void HandleCameraMovement();
 
-    }
+    }   
 }
