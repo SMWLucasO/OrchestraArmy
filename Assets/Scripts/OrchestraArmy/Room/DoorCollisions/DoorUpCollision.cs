@@ -2,16 +2,20 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using UnityEngine;
 
-public class DoorUpCollision : MonoBehaviour
+namespace OrchestraArmy.Room.DoorCollisions
 {
-    void OnTriggerEnter(Collider other)
+    public class DoorUpCollision : MonoBehaviour
     {
-        print("up");
-        EventManager.Invoke(new RoomDoorDownEvent());
-    }
-    void OnCollisionEnter()
-    {
-        EventManager.Invoke(new RoomDoorUpEvent());
-        print("up");
+        void OnTriggerEnter(Collider other)
+        {
+            print("up");
+            EventManager.Invoke(new RoomDoorDownEvent());
+        }
+
+        void OnCollisionEnter()
+        {
+            EventManager.Invoke(new RoomDoorUpEvent());
+            print("up");
+        }
     }
 }

@@ -2,17 +2,20 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using UnityEngine;
 
-public class DoorLeftCollision : MonoBehaviour
+namespace OrchestraArmy.Room.DoorCollisions
 {
-    void OnTriggerEnter(Collider other)
+    public class DoorLeftCollision : MonoBehaviour
     {
-        EventManager.Invoke(new RoomDoorDownEvent());
-        print("left");
-    }
-    void OnCollisionEnter()
-    {
-        EventManager.Invoke(new RoomDoorLeftEvent());
-        print("left");
-        
+        void OnTriggerEnter(Collider other)
+        {
+            EventManager.Invoke(new RoomDoorDownEvent());
+            print("left");
+        }
+
+        void OnCollisionEnter()
+        {
+            EventManager.Invoke(new RoomDoorLeftEvent());
+            print("left");
+        }
     }
 }
