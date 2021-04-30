@@ -18,6 +18,8 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
     private Room[,] _rooms;
     private Vector2 _currentRoom;
 
+    private int _level = 1;
+
     private int _roomsCleared=-1;
     // Start is called before the first frame update
     void Start()
@@ -232,6 +234,8 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
     //
     // public void OnEvent(PlayerDeathEvent invokedEvent)
     // {
+    //     //gameObject.SetActive(true)     TODO:activate death screen 
     //     Setup();
+    //     //gameObject.SetActive(false)    TODO:deactivate death screen
     // }
 }
