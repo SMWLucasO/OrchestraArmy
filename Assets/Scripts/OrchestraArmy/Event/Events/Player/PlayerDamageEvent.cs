@@ -1,4 +1,6 @@
-﻿namespace OrchestraArmy.Event.Event
+﻿using OrchestraArmy.Event.Events;
+
+namespace OrchestraArmy.Event.Events.Player
 {
     public class PlayerDamageEvent: IEvent
     {
