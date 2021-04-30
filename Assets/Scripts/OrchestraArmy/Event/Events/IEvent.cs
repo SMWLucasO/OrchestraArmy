@@ -1,4 +1,4 @@
-namespace OrchestraArmy.Event.Event
+namespace OrchestraArmy.Event.Events
 {
     public interface IEvent
     {
