@@ -1,13 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using Random = UnityEngine.Random;
 
-public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
+namespace OrchestraArmy.Room
+{
+    public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
 {
 
     private enum DoorDirection { Left, Right, Up, Down };
@@ -222,4 +222,5 @@ public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IList
     {
         ChangeCurrentRoom(DoorDirection.Right);
     }
+}
 }

@@ -20,5 +20,5 @@ namespace OrchestraArmy.Entity.Controllers
         /// </summary>
         public void HandleCameraMovement();
 
-    }
+    }   
 }
