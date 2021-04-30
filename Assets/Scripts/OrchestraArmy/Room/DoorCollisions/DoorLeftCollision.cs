@@ -4,7 +4,7 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Event;
 using UnityEngine;
 
-public class DoorDownCollision : MonoBehaviour
+public class DoorLeftCollision : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -17,20 +17,15 @@ public class DoorDownCollision : MonoBehaviour
     {
         
     }
-
     void OnTriggerEnter(Collider other)
     {
-        EventManager.Invoke(new LevelDoorDownEvent());
-        print("down");
+        EventManager.Invoke(new RoomDoorDownEvent());
+        print("left");
     }
     void OnCollisionEnter()
     {
-        EventManager.Invoke(new LevelDoorDownEvent());
-        print("down");
-    }
-
-    void OnMouseOver()
-    {
+        EventManager.Invoke(new RoomDoorLeftEvent());
+        print("left");
         
     }
 }

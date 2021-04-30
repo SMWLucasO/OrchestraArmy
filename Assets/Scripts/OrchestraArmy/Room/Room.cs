@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Level
+public class Room
 {
     public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
     public GridSpace[,] Grid;
@@ -24,7 +24,7 @@ public class Level
     private int _maxWalkers = 6;
     private float _percentToFill = 0.05f;
     
-    public Level(bool boss = false)
+    public Room(bool boss = false)
     {
         if (boss) {
             BossSettings();

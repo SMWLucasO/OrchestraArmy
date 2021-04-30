@@ -1,6 +1,6 @@
 namespace OrchestraArmy.Event.Event
 {
-    public class LevelDoorDownEvent: IEvent
+    public class RoomDoorRightEvent: IEvent
     {
     }
 }
