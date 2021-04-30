@@ -1,7 +1,7 @@
 ﻿using OrchestraArmy.Entity.Controllers;
 using UnityEngine;
 
-namespace OrchestraArmy.Entity.Entities.Player.Controllers
+namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerDirectionController: IDirectionController
     {
