@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
+using OrchestraArmy.Event.Events.Player;
 using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Room
 {
-    public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>//, IListener<PlayerDeathEvent>
+    public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>, IListener<PlayerDeathEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
         public GameObject fillObj, rockObj,rubbleObj, wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj;
@@ -234,30 +235,30 @@ namespace OrchestraArmy.Room
 
         private void Update()
         {
-            if (Input.GetKey("g") || _deathState!=0) {  //death animation and hidden un-/loading (remove if when death event is implemented)
-                switch (_deathState) {
-                    case (1):
-                        deathScreen.SetActive(true);        //activate death screen
-                        _roomsCleared = 0;                  // reset roomsCleared
-                        _deathState++;
-                        break;
-                    case (2):                               //slow functions hidden by death screen
-                        DestroyCurrentRoom();               //destroy the room
-                        Setup();                            //reset the map, respawn the start/spawn room and reset location on map
-                        _deathState++;
-                        break;
-                    case (3):
-                        deathScreen.SetActive(false);       //deactivate death screen
-                        _deathState = 0;                    //deactivate death 'loop'
-                        break;
-                }
+            //death animation and hidden un-/loading
+            switch (_deathState) {
+                case (1):
+                    deathScreen.SetActive(true);        //activate death screen
+                    _roomsCleared = 0;                  // reset roomsCleared
+                    _deathState++;
+                    break;
+                case (2):                               //slow functions hidden by death screen
+                    _level= (_level>1)?_level-1:1;      //go one level (not room) back (if possible)
+                    DestroyCurrentRoom();               //destroy the room
+                    Setup();                            //reset the map, respawn the start/spawn room and reset location on map
+                    _deathState++;
+                    break;
+                case (3):
+                    deathScreen.SetActive(false);       //deactivate death screen
+                    _deathState = 0;                    //deactivate death 'loop'
+                    break;
             }
         }
 
-        //public void OnEvent(PlayerDeathEvent invokedEvent)    //TODO:implement playerDeath event
-        // {
-        //      _deathState = 1;
-        // }
+        public void OnEvent(PlayerDeathEvent invokedEvent)
+         {
+              _deathState = 1;
+         }
 
     }
 }
