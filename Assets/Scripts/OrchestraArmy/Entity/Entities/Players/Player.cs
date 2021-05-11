@@ -89,7 +89,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             {
                 // in this case, the player is dead.
                 EntityData.Health = 0;
-                EventManager.Invoke(new PlayerDeathEvent() { /* TODO: Add the required data here. */ });
+                EventManager.Invoke(new PlayerDeathEvent());
             }
         }
     }
