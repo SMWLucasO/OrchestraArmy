@@ -1,13 +1,13 @@
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
-using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data;
-using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Players
 {
-    public class Player : LivingDirectionalEntity
+    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -70,6 +70,27 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
+        }
+
+        /// <summary>
+        /// Event for when the player takes damage.
+        /// </summary>
+        /// <param name="playerDamageEvent"></param>
+        public void OnEvent(PlayerDamageEvent playerDamageEvent)
+        {
+            int healthAfterAttack = EntityData.Health - playerDamageEvent.HealthLost;
+
+            switch (healthAfterAttack)
+            {
+                case > 0:
+                    EntityData.Health = healthAfterAttack;
+                    break;
+                default:
+                    // in this case, the player is dead.
+                    EntityData.Health = 0;
+                    EventManager.Invoke(new PlayerDeathEvent() { /* TODO: Add the required data here. */ });
+                    break;
+            }
         }
     }
 }
