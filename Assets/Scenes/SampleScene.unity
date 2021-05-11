@@ -123,6 +123,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &643162029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 643162031}
+  - component: {fileID: 643162030}
+  m_Layer: 0
+  m_Name: DrumWeaponWheelPlaceholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &643162030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643162029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b600d243e56f7645b8dbccfd62d9edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Previous>k__BackingField: {fileID: 175136278289158263}
+  <Next>k__BackingField: {fileID: 2013063750}
+  <WeaponWheelPlaceholderData>k__BackingField:
+    _unlocked: 0
+    _weaponType: 0
+--- !u!4 &643162031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643162029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 175136278289158262}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +418,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &1756380273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1756380274}
+  - component: {fileID: 1756380275}
+  m_Layer: 0
+  m_Name: SousaphoneWeaponWheelPlaceholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1756380274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756380273}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 175136278289158262}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1756380275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756380273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b600d243e56f7645b8dbccfd62d9edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Previous>k__BackingField: {fileID: 2013063750}
+  <Next>k__BackingField: {fileID: 175136278289158263}
+  <WeaponWheelPlaceholderData>k__BackingField:
+    _unlocked: 0
+    _weaponType: 0
+--- !u!1 &2013063749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013063751}
+  - component: {fileID: 2013063750}
+  m_Layer: 0
+  m_Name: FluteWeaponWheelPlaceholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2013063750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013063749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b600d243e56f7645b8dbccfd62d9edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Previous>k__BackingField: {fileID: 643162030}
+  <Next>k__BackingField: {fileID: 1756380275}
+  <WeaponWheelPlaceholderData>k__BackingField:
+    _unlocked: 0
+    _weaponType: 0
+--- !u!4 &2013063751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013063749}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 175136278289158262}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &175136278289158261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421,12 +565,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2750336323770447637, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+      propertyPath: <Next>k__BackingField
+      value: 
+      objectReference: {fileID: 643162030}
+    - target: {fileID: 2750336323770447637, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+      propertyPath: <Previous>k__BackingField
+      value: 
+      objectReference: {fileID: 1756380275}
+    - target: {fileID: 2750336323770447637, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+      propertyPath: <WeaponWheelPlaceholderData>k__BackingField._weaponName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4086378036913099303, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+--- !u!4 &175136278289158262 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 889585371713288944, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+  m_PrefabInstance: {fileID: 175136278289158261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &175136278289158263 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2750336323770447637, guid: 7319b7999b3b4934ca2d99ff72ebf987, type: 3}
+  m_PrefabInstance: {fileID: 175136278289158261}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b600d243e56f7645b8dbccfd62d9edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2230598516012729013
 PrefabInstance:
   m_ObjectHideFlags: 0

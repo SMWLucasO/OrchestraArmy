@@ -8,6 +8,7 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons
     /// </summary>
     public class Guitar : IWeapon
     {
+        
         public int GetTotalDamage()
         {
             return 10;
