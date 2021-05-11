@@ -10,6 +10,7 @@ namespace OrchestraArmy.Room
     {
         public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
         public GridSpace[,] Grid;
+        public List<Vector2> EnemySpawnLocations;
         public int RoomHeight, RoomWidth;
         public bool Beaten;
         public Vector2 RoomSizeWorldUnits = new Vector2(150, 150);
@@ -25,10 +26,15 @@ namespace OrchestraArmy.Room
         private float _chanceWalkerDestoy = 0.2f;
         private int _maxWalkers = 6;
         private float _percentToFill = 0.05f;
-        
-        public Room(bool boss = false)
+        private int _numberOfEnemies;
+        private List<Vector2> _floors;
+        private int _distanceBetweenEnemies = 10;
+
+        public Room(int numberOfEnemies, bool boss = false)
         {
-            if (boss) {
+            _numberOfEnemies = numberOfEnemies;
+            if (boss)
+            {
                 BossSettings();
             }
             Setup();
@@ -36,6 +42,8 @@ namespace OrchestraArmy.Room
             CreateWalls();
             RemoveSingleWalls();
             CreateDoors();
+            CreateEnemySpawnLocationsRecursive();
+
         }
 
         void BossSettings()
@@ -46,10 +54,11 @@ namespace OrchestraArmy.Room
             _maxWalkers = 20;
             _percentToFill = 0.1f;
         }
-        
+
         void Setup()
         {
-		    this.Beaten = false;
+            _floors = new List<Vector2>();
+            this.Beaten = false;
             //find grid size
             RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / _worldUnitsInOneGridCell);
             RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / _worldUnitsInOneGridCell);
@@ -77,7 +86,7 @@ namespace OrchestraArmy.Room
             //add walker to list
             _walkers.Add(newWalker);
         }
-        
+
         void CreateFloors()
         {
             int iterations = 0;//loop will not run forever
@@ -87,6 +96,7 @@ namespace OrchestraArmy.Room
                 foreach (Walker myWalker in _walkers)
                 {
                     Grid[(int)myWalker.Pos.x, (int)myWalker.Pos.y] = GridSpace.Floor;
+                    _floors.Add(new Vector2((int)myWalker.Pos.x, (int)myWalker.Pos.y)); //add position to floor list
                 }
                 //chance: destroy walker
                 int numberChecks = _walkers.Count; //might modify count while in this loop
@@ -147,7 +157,7 @@ namespace OrchestraArmy.Room
                 iterations++;
             } while (iterations < 100000);
         }
-        
+
         void CreateWalls()
         {
             //loop though every grid space
@@ -179,7 +189,7 @@ namespace OrchestraArmy.Room
                 }
             }
         }
-        
+
         void RemoveSingleWalls()
         {
             //loop though every grid space
@@ -214,10 +224,12 @@ namespace OrchestraArmy.Room
                                 }
                             }
                         }
-                        
+
                         if (allFloors)
                         {
                             Grid[x, y] = GridSpace.Floor;
+                            _floors.Add(new Vector2(x, y)); //add position to floor list
+
                         }
                     }
                 }
@@ -253,7 +265,7 @@ namespace OrchestraArmy.Room
                     break;
                 }
             }
-            
+
             for (int i = RoomHeight - 1; i >= 0; i--)   //up -> down (makes the top door)
             {
                 if (Grid[centerX, i] == GridSpace.Wall)
@@ -262,7 +274,7 @@ namespace OrchestraArmy.Room
                     break;
                 }
             }
-            
+
             for (int i = 0; i < RoomWidth; i++) //left -> right (makes the left door)
             {
                 if (Grid[i, centerY] == GridSpace.Wall)
@@ -271,7 +283,7 @@ namespace OrchestraArmy.Room
                     break;
                 }
             }
-            
+
             for (int i = RoomWidth - 1; i >= 0; i--)    //right -> left (makes the right door)
             {
                 if (Grid[i, centerY] == GridSpace.Wall)
@@ -279,6 +291,57 @@ namespace OrchestraArmy.Room
                     Grid[i, centerY] = GridSpace.DoorR;
                     break;
                 }
+            }
+        }
+
+        void CreateEnemySpawnLocationsRecursive()
+        {
+            try
+            {
+                CreateEnemySpawnLocations();
+            }
+            catch (ArgumentOutOfRangeException) //spreading out with distancebetweenenemies was not possible
+            {
+                if (_distanceBetweenEnemies > 0)
+                {
+                    _distanceBetweenEnemies--;
+                    Debug.Log("Distance between enemies too high. New distance: "+_distanceBetweenEnemies);
+                    CreateEnemySpawnLocationsRecursive();
+                }
+                else
+                {
+                    Debug.Log("Too many enemies for this room.");
+                    Application.Quit();
+                }
+            }
+        }
+
+        void CreateEnemySpawnLocations() // create enemies on floor-tiles
+        {
+            EnemySpawnLocations = new List<Vector2>();
+            Vector2 _location;
+            List<Vector2> _possibleFloors = _floors;
+
+            for (int i = _numberOfEnemies; i > 0; i--)
+            {
+                _location = _possibleFloors[Random.Range(0, _possibleFloors.Count)]; //get random location
+                EnemySpawnLocations.Add(_location); //add location to enemy spawn
+
+                //remove from _possiblefloors in a manhatten distance around enemy to prevent 
+                // groups of enemies in one spot
+                List<Vector2> _tempFloors = new List<Vector2>(); //make temp list
+                Vector2 vec;
+                int diff;
+                foreach (Vector2 floor in _possibleFloors)
+                {
+                    vec = _location - floor;
+                    diff = (int)(Math.Abs(vec.x) + Math.Abs(vec.y)); //get manhatten distance
+                    if (diff > _distanceBetweenEnemies)
+                    {
+                        _tempFloors.Add(floor); //add floor to save to temp list
+                    }
+                }
+                _possibleFloors = _tempFloors; //make temp list permanent
             }
         }
 
@@ -299,7 +362,7 @@ namespace OrchestraArmy.Room
                     return Vector2.right;
             }
         }
-        
+
         int NumberOfFloors()
         {
             int count = 0;

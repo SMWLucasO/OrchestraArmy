@@ -10,14 +10,17 @@ namespace OrchestraArmy.Room
     public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
-        public GameObject fillObj, rockObj,rubbleObj, wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj;
+        public GameObject fillObj, rockObj, rubbleObj, wallObj, floorObj, doorRObj, doorLObj, doorUObj, doorDObj, guitarEnemyObj;
 
         private List<GameObject> _instantiated; // list to save all current room objects in game
 
         private Room[,] _rooms;
         private Vector2 _currentRoom;
 
-        private int _roomsCleared=0;
+        private int _roomsCleared = 0;
+
+        private int _enemiesFib1 = 0, _enemiesFib2 = 1, _enemiesNow;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -31,19 +34,40 @@ namespace OrchestraArmy.Room
             EventManager.Bind<RoomDoorUpEvent>(this);
             EventManager.Bind<RoomDoorDownEvent>(this);
             EventManager.Bind<RoomDoorLeftEvent>(this);
-            EventManager.Bind<RoomDoorRightEvent>(this);   // door actions (go though door)
+            EventManager.Bind<RoomDoorRightEvent>(this);   // door actions (go through door)
 
         }
 
         void CreateRoom(Vector2 position)
         {
-            if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5))) {    //calculation for chance boss room (after 5 rooms +20% per room)
+            //get amount of enemies based on rooms cleared in this level
+            int _numberOfEnemies = GetNumberOfEnemies();
+
+            if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5)))
+            {    //calculation for chance boss room (after 5 rooms +20% per room)
                 print("boss room");
-                _rooms[(int)position.x, (int)position.y] = new Room(true); // create boss room
+                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies, true); // create boss room, numberOfEnemies is irrelevant in this case
             }
-            else {
-                _rooms[(int)position.x, (int)position.y] = new Room(); // create new room
+            else
+            {
+                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies); // create new room
             }
+        }
+
+        int GetNumberOfEnemies() // uses fibonacci to get amount of enemies
+        {
+            if (_enemiesNow < 8)
+            {
+                _enemiesNow = _enemiesFib1 + _enemiesFib2;
+                _enemiesFib1 = _enemiesFib2;
+                _enemiesFib2 = _enemiesNow;
+            }
+            else
+            {
+                _enemiesNow += 4;
+            }
+
+            return _enemiesNow;
         }
 
         void ChangeCurrentRoom(DoorDirection direction)
@@ -57,41 +81,41 @@ namespace OrchestraArmy.Room
                 case DoorDirection.Left:
                     _currentRoom += new Vector2(-1, 0);
                     break;
-                
+
                 case DoorDirection.Right:
                     _currentRoom += new Vector2(1, 0);
                     break;
-                
+
                 case DoorDirection.Up:
                     _currentRoom += new Vector2(0, -1);
                     break;
-                
+
                 case DoorDirection.Down:
                     _currentRoom += new Vector2(0, 1);
                     break;
-                
+
                 default:
                     _currentRoom += new Vector2(0, -1);
                     break;
             }
 
             // check if array is in bounds, if not return to bounds      //the 3d shape of the map is suppost to be a torroid
-            if(_currentRoom.x > 19)
+            if (_currentRoom.x > 19)
             {
                 _currentRoom.x = 0;//19;
             }
 
-            if(_currentRoom.x < 0)
+            if (_currentRoom.x < 0)
             {
                 _currentRoom.x = 19;//0;
             }
 
-            if(_currentRoom.y < 0)
+            if (_currentRoom.y < 0)
             {
                 _currentRoom.y = 19;//0;
             }
 
-            if(_currentRoom.y > 19)
+            if (_currentRoom.y > 19)
             {
                 _currentRoom.y = 0;//19;
             }
@@ -107,30 +131,35 @@ namespace OrchestraArmy.Room
 
             SpawnRoom();
         }
-        
-        bool borderOnFill(int x, int y) {       //check if tile directly borders an empty tile
-            Room room = _rooms[(int) _currentRoom.x, (int) _currentRoom.y];
+
+        bool borderOnFill(int x, int y)
+        {       //check if tile directly borders an empty tile
+            Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
             bool outp = false;
-            try {
-                outp = outp || room.Grid[x-1, y] == Room.GridSpace.Empty;
+            try
+            {
+                outp = outp || room.Grid[x - 1, y] == Room.GridSpace.Empty;
             }
-            
-            catch { return true;}
-            try {
-                outp = outp || room.Grid[x+1,y]==Room.GridSpace.Empty;
+
+            catch { return true; }
+            try
+            {
+                outp = outp || room.Grid[x + 1, y] == Room.GridSpace.Empty;
             }
-            
-            catch{ return true;}
-            try {
-                outp = outp || room.Grid[x,y-1]==Room.GridSpace.Empty;
+
+            catch { return true; }
+            try
+            {
+                outp = outp || room.Grid[x, y - 1] == Room.GridSpace.Empty;
             }
-            
-            catch{ return true;}
-            try {
-                outp = outp || room.Grid[x,y+1]==Room.GridSpace.Empty;
+
+            catch { return true; }
+            try
+            {
+                outp = outp || room.Grid[x, y + 1] == Room.GridSpace.Empty;
             }
-            
-            catch{ return true;}
+
+            catch { return true; }
 
             return outp;
         }
@@ -139,50 +168,62 @@ namespace OrchestraArmy.Room
         void SpawnRoom()
         {
             Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
-            
-            for (int x = 0; x < room.RoomWidth; x++){
-                for (int y = 0; y < room.RoomHeight; y++){
-                    switch(room.Grid[x,y]){
+
+            for (int x = 0; x < room.RoomWidth; x++)
+            {
+                for (int y = 0; y < room.RoomHeight; y++)
+                {
+                    switch (room.Grid[x, y])
+                    {
                         case Room.GridSpace.Empty:
-                            Spawn(x,y,fillObj);
+                            Spawn(x, y, fillObj);
                             break;
-                        
+
                         case Room.GridSpace.Floor:
-                            Spawn(x,y,floorObj);
-                            if (Random.value<0.1f) {
-                                Spawn(x,y,rubbleObj.transform.GetChild(Random.Range(0,3)).gameObject);
+                            Spawn(x, y, floorObj);
+                            if (Random.value < 0.1f)
+                            {
+                                Spawn(x, y, rubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
                             }
                             break;
                         case Room.GridSpace.Wall:
-                            Spawn(x,y,borderOnFill(x,y)?wallObj:rockObj.transform.GetChild (Random.Range(0,4)).gameObject);
+                            Spawn(x, y, borderOnFill(x, y) ? wallObj : rockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
                             break;
-                        
+
                         case Room.GridSpace.DoorU:
-                            Spawn(x,y,doorUObj);
+                            Spawn(x, y, doorUObj);
                             break;
-                        
+
                         case Room.GridSpace.DoorD:
-                            Spawn(x,y,doorDObj);
+                            Spawn(x, y, doorDObj);
                             break;
-                        
+
                         case Room.GridSpace.DoorL:
-                            Spawn(x,y,doorLObj);
+                            Spawn(x, y, doorLObj);
                             break;
-                        
+
                         case Room.GridSpace.DoorR:
-                            Spawn(x,y,doorRObj);
+                            Spawn(x, y, doorRObj);
                             break;
-                        
+
                     }
                 }
             }
-            
+
+            //spawn enemies
+            print(room.EnemySpawnLocations.Count + " enemies");
+            foreach (Vector2 _enemy in room.EnemySpawnLocations)
+            {
+                Spawn(_enemy.x, _enemy.y, guitarEnemyObj);
+            }
+
 
             var player = GameObject.FindGameObjectWithTag("Player");
 
             if (player != null)
                 player.transform.position = new Vector3(75 - room.OffsetOfRoom.x, player.transform.position.y, 75 - room.OffsetOfRoom.y);
         }
+
 
         void DestroyCurrentRoom() // destroy a room to make space for a new one
         {
@@ -201,7 +242,7 @@ namespace OrchestraArmy.Room
             //spawn object
             _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
         }
-        
+
         public void OnEvent(RoomDoorDownEvent invokedEvent)
         {
             ChangeCurrentRoom(DoorDirection.Down);
