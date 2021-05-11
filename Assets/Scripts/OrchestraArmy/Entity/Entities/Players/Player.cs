@@ -25,6 +25,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         public IAttackController AttackController { get; set; }
         
         /// <summary>
+        /// The controller for selecting the player's weapon(instrument).
+        /// </summary>
+        public IWeaponSelectionController WeaponSelectionController { get; set; }
+        
+        
+        /// <summary>
         /// The player's weapon selection wheel.
         /// </summary>
         public WeaponWheel WeaponWheel { get; set; }
@@ -33,6 +39,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         {
             base.Update();
             DirectionController.HandleDirection();
+            WeaponSelectionController.HandleWeaponSelection();
             SpriteManager.UpdateSprite();
         }
 
@@ -64,6 +71,11 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // The main camera is the camera which the player uses.
             this.CameraController = new PlayerCameraController()
+            {
+                Player = this
+            };
+
+            this.WeaponSelectionController = new PlayerWeaponSelectionController()
             {
                 Player = this
             };
