@@ -1,5 +1,9 @@
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.Controllers;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
+using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Players
 {
@@ -20,6 +24,10 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public IAttackController AttackController { get; set; }
         
+        /// <summary>
+        /// The player's weapon selection wheel.
+        /// </summary>
+        public WeaponWheel WeaponWheel { get; set; }
         
         protected override void Update()
         {
@@ -59,6 +67,9 @@ namespace OrchestraArmy.Entity.Entities.Players
             {
                 Player = this
             };
+
+            // Get the weapon wheel for the player.
+            WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
         }
     }
 }
