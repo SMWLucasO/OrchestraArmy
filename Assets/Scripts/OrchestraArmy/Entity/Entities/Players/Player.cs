@@ -48,6 +48,14 @@ namespace OrchestraArmy.Entity.Entities.Players
             CameraController?.HandleCameraMovement();
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            // register player events.
+            EventManager.Bind(this);
+        }
+        
         protected override void OnEnable()
         {
             InitializeSprites();
@@ -80,16 +88,13 @@ namespace OrchestraArmy.Entity.Entities.Players
         {
             int healthAfterAttack = EntityData.Health - playerDamageEvent.HealthLost;
 
-            switch (healthAfterAttack)
+            if (healthAfterAttack > 0)
+                EntityData.Health = healthAfterAttack;
+            else
             {
-                case > 0:
-                    EntityData.Health = healthAfterAttack;
-                    break;
-                default:
-                    // in this case, the player is dead.
-                    EntityData.Health = 0;
-                    EventManager.Invoke(new PlayerDeathEvent() { /* TODO: Add the required data here. */ });
-                    break;
+                // in this case, the player is dead.
+                EntityData.Health = 0;
+                EventManager.Invoke(new PlayerDeathEvent() { /* TODO: Add the required data here. */ });
             }
         }
     }
