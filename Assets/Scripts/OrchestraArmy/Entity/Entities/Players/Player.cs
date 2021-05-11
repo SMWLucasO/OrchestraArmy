@@ -48,14 +48,6 @@ namespace OrchestraArmy.Entity.Entities.Players
             CameraController?.HandleCameraMovement();
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            // register player events.
-            EventManager.Bind(this);
-        }
-        
         protected override void OnEnable()
         {
             InitializeSprites();
@@ -78,6 +70,9 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
+            
+            // register player events.
+            EventManager.Bind<PlayerDamageEvent>(this);
         }
 
         /// <summary>

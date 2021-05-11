@@ -7,12 +7,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies
     {
         public BehaviourStateMachine Behaviour { get; set; }
 
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
+            base.OnEnable();
             
             // register enemy events.
-            EventManager.Bind(this);
+            EventManager.Bind<EnemyDeathEvent>(this);
         }
 
         /// <summary>
