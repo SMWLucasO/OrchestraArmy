@@ -15,11 +15,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         public ICameraController CameraController { get; set; }
 
         /// <summary>
-        /// The controller for the player's movement.
-        /// </summary>
-        public IMovementController MovementController { get; set; }
-
-        /// <summary>
         /// The controller for the player's attacking.
         /// </summary>
         public IAttackController AttackController { get; set; }
@@ -34,6 +29,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             base.Update();
             DirectionController.HandleDirection();
             SpriteManager.UpdateSprite();
+            AttackController.HandleAttack();
         }
 
         protected override void FixedUpdate()
@@ -64,6 +60,11 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // The main camera is the camera which the player uses.
             this.CameraController = new PlayerCameraController()
+            {
+                Player = this
+            };
+
+            this.AttackController = new PlayerAttackController()
             {
                 Player = this
             };

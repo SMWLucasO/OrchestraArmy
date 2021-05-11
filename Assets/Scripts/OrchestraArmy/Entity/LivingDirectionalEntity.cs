@@ -15,6 +15,11 @@ namespace OrchestraArmy.Entity
         [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
 
+        /// <summary>
+        /// The controller for the entity's movement.
+        /// </summary>
+        public IMovementController MovementController { get; set; }
+
         protected override void Awake()
         {
             base.Awake();
