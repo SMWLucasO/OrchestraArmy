@@ -373,6 +373,7 @@ MonoBehaviour:
   doorLObj: {fileID: 4578508040452837794, guid: 23c146f8151f92f48b0beda83d12d551, type: 3}
   doorUObj: {fileID: 6235616627879709886, guid: bf4b80039ae363b47a5d812033ce45b9, type: 3}
   doorDObj: {fileID: 1558094684033946625, guid: 6d2701318e79c654f8989d82f237ec18, type: 3}
+  deathScreen: {fileID: 410868433}
 --- !u!4 &810268618
 Transform:
   m_ObjectHideFlags: 0
@@ -728,7 +729,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
