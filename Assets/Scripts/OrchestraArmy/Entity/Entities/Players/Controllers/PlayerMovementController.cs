@@ -8,7 +8,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerMovementController : IMovementController
     {
-        public LivingDirectionalEntity Entity { get; set; }
+        public MovingEntity Entity { get; set; }
         public void HandleMovement()
         {
             
@@ -30,7 +30,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
                 movementVector += MoveRightForce(currentlyFacing);
 
             // Only add to the position when a change is actually detected.
-            Entity.RigidBody.velocity = (movementVector.normalized * (Entity.EntityData.WalkSpeed * Time.deltaTime));
+            Entity.RigidBody.velocity = (movementVector.normalized * (Entity.MovementData.WalkSpeed * Time.deltaTime));
         }
 
         /// <summary>
