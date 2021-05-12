@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UI:WeaponWheel
   - Enemy
+  - UI:WeaponWheel:ImagePlaceholders
   layers:
   - Default
   - TransparentFX

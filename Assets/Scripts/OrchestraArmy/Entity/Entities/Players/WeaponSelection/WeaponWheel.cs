@@ -1,12 +1,21 @@
+using System;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 {
-    public class WeaponWheel : MonoBehaviour
+    public class WeaponWheel : MonoBehaviour, IListener<PlayerWeaponChangedEvent>
     {
+
+        /// <summary>
+        /// Image[0] = previous weapon
+        /// Image[1] = current weapon
+        /// Image[2] = next weapon
+        /// </summary>
+        private Image[] _weaponPlaceholderImages; 
         
         /// <summary>
         /// The weapon wheel's currently selected placeholder.
@@ -75,5 +84,31 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
                 NewlySelectedWeapon = newlySelectedWeapon
             });
 
+        private void UpdateWeaponWheelImages()
+        {
+            _weaponPlaceholderImages[0].sprite =
+                CurrentlySelected.Previous.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
+            
+            _weaponPlaceholderImages[1].sprite =
+                CurrentlySelected.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
+            
+            _weaponPlaceholderImages[2].sprite =
+                CurrentlySelected.Next.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
+        }
+        
+        private void OnEnable()
+        {
+            _weaponPlaceholderImages = GameObject.FindWithTag("UI:WeaponWheel:ImagePlaceholders")
+                .GetComponentsInChildren<Image>();
+         
+            // set initial UI images.
+            UpdateWeaponWheelImages();    
+            
+            // Register weapon changed event.
+            EventManager.Bind<PlayerWeaponChangedEvent>(this);
+        }
+
+        public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
+            => UpdateWeaponWheelImages();
     }
 }

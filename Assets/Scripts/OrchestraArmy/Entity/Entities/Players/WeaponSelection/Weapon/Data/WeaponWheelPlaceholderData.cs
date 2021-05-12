@@ -1,6 +1,7 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data
 {
@@ -10,7 +11,7 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data
         
         [SerializeField]
         private bool _unlocked = false;
-        
+
         [SerializeField]
         private WeaponType _weaponType = WeaponType.Guitar;
 
@@ -28,7 +29,13 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data
         /// The type of the weapon which this placeholder holds.
         /// </summary>
         public WeaponType WeaponType { get; set; }
-
+        
+        /// <summary>
+        /// The icon for this weapon placeholder.
+        /// </summary>
+        [field: SerializeField] 
+        public Sprite WeaponPlaceholderIcon { get; set; }
+        
         /// <summary>
         /// The weapon on the weapon wheel placeholder.
         /// </summary>
