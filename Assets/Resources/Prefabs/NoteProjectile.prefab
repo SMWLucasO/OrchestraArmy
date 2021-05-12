@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2784668319987695977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
   Sprites:
   - Direction: 0
     Sprites:
-    - {fileID: 21300000, guid: 88fd5ee36dcb4844f85c7a304cf0ccac, type: 3}
+    - {fileID: 21300000, guid: bc677dc6d6a12255aaa7e271a5817ee3, type: 3}
   <EntityData>k__BackingField:
     _health: 100
     _stamina: 100
@@ -131,7 +131,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.25
-  m_Height: 9
+  m_Radius: 0.1
+  m_Height: 0.3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

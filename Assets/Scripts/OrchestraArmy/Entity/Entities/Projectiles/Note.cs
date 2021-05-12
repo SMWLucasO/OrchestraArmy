@@ -16,6 +16,9 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         {
             switch (collision.collider.tag)
             {
+                case "Player":
+                    Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+                    break;
                 case "World":
                     Hit = true;
                     break;
@@ -24,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                     EventManager.Invoke(new PlayerAttackHitEvent()
                     {
                         Attacker = Attacker,
-                        TargetId = collision.collider.GetInstanceID(),
+                        TargetId = collision.collider.gameObject.GetInstanceID(),
                         Weapon = Instrument
                     });
                     break;

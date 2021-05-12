@@ -32,17 +32,18 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         IEnumerator Move()
         {
             yield return new WaitForSeconds(0.01f);
-            
-            var distance = Vector3.Distance(Source, transform.position);
-            
-            while (distance < MaxDistance && !Hit)
+
+            var distance = 0f;
+
+            do
             {
+                distance = Vector3.Distance(Source, transform.position);
                 MovementController.HandleMovement();
-                
+
                 yield return null;
-            }
+            } while (distance < MaxDistance && !Hit);
             
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }
