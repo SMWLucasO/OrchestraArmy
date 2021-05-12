@@ -8,8 +8,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         public DirectionalEntity Entity { get; set; }
         public Camera Camera { get; set; } = Camera.main;
         public EntityDirection CurrentDirection { get; private set; } = EntityDirection.Top;
-        
-        public Vector3 AimDirection = Vector3.up;
 
         public void HandleDirection()
         {

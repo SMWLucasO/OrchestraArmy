@@ -10,11 +10,12 @@ namespace OrchestraArmy.Room
     public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
-        public GameObject fillObj, rockObj, rubbleObj, wallObj, floorObj, doorRObj, doorLObj, doorUObj, doorDObj, guitarEnemyObj;
-
+        public GameObject FillObj, RockObj, RubbleObj, WallObj, FloorObj, DoorRightObj, DoorLeftObj, DoorUpObj, DoorDownObj;
         private List<GameObject> _instantiated; // list to save all current room objects in game
 
+        public List<GameObject> Enemies;
         private Room[,] _rooms;
+        private int _collectedInstruments = 3; // 0 through n. 0 means only guitar, n means all. n = 3 for now.
         private Vector2 _currentRoom;
 
         private int _roomsCleared = 0;
@@ -41,16 +42,16 @@ namespace OrchestraArmy.Room
         void CreateRoom(Vector2 position)
         {
             //get amount of enemies based on rooms cleared in this level
-            int _numberOfEnemies = GetNumberOfEnemies();
+            int numberOfEnemies = GetNumberOfEnemies();
 
             if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5)))
             {    //calculation for chance boss room (after 5 rooms +20% per room)
                 print("boss room");
-                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies, true); // create boss room, numberOfEnemies is irrelevant in this case
+                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies, true); // create boss room, numberOfEnemies is irrelevant in this case
             }
             else
             {
-                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies); // create new room
+                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies); // create new room
             }
         }
 
@@ -176,34 +177,34 @@ namespace OrchestraArmy.Room
                     switch (room.Grid[x, y])
                     {
                         case Room.GridSpace.Empty:
-                            Spawn(x, y, fillObj);
+                            Spawn(x, y, FillObj);
                             break;
 
                         case Room.GridSpace.Floor:
-                            Spawn(x, y, floorObj);
+                            Spawn(x, y, FloorObj);
                             if (Random.value < 0.1f)
                             {
-                                Spawn(x, y, rubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
+                                Spawn(x, y, RubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
                             }
                             break;
                         case Room.GridSpace.Wall:
-                            Spawn(x, y, borderOnFill(x, y) ? wallObj : rockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
+                            Spawn(x, y, borderOnFill(x, y) ? WallObj : RockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
                             break;
 
                         case Room.GridSpace.DoorU:
-                            Spawn(x, y, doorUObj);
+                            Spawn(x, y, DoorUpObj);
                             break;
 
                         case Room.GridSpace.DoorD:
-                            Spawn(x, y, doorDObj);
+                            Spawn(x, y, DoorDownObj);
                             break;
 
                         case Room.GridSpace.DoorL:
-                            Spawn(x, y, doorLObj);
+                            Spawn(x, y, DoorLeftObj);
                             break;
 
                         case Room.GridSpace.DoorR:
-                            Spawn(x, y, doorRObj);
+                            Spawn(x, y, DoorRightObj);
                             break;
 
                     }
@@ -211,10 +212,25 @@ namespace OrchestraArmy.Room
             }
 
             //spawn enemies
-            print(room.EnemySpawnLocations.Count + " enemies");
+            int _newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
+            int _enemyTypes = _newestEnemy + 1;
+
+            int _newestEnemyPercentage = (int)(100.0 / _enemyTypes + 10.0);
+            int _newestEnemyAmount = (int)((float)room.EnemySpawnLocations.Count / 100.0 * (float)_newestEnemyPercentage);
+            _newestEnemyAmount = Math.Max(_newestEnemyAmount, 1); // make sure there is always at least one new enemy in the field
+
             foreach (Vector2 _enemy in room.EnemySpawnLocations)
             {
-                Spawn(_enemy.x, _enemy.y, guitarEnemyObj);
+                if (_newestEnemyAmount > 0)
+                {
+                    Spawn(_enemy.x, _enemy.y, Enemies[_newestEnemy]);
+                    _newestEnemyAmount--;
+                }
+                else
+                {
+                    //check how many types of enemies may spawn and randomly get enemy to spawn from older ones
+                    Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, _newestEnemy)]);
+                }
             }
 
 
@@ -242,6 +258,8 @@ namespace OrchestraArmy.Room
             //spawn object
             _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
         }
+
+
 
         public void OnEvent(RoomDoorDownEvent invokedEvent)
         {

@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
+
 
 namespace OrchestraArmy.Room
 {
-    public class Room
+    public class Room : IListener<EnemyDeathEvent>
     {
         public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
         public GridSpace[,] Grid;
@@ -42,10 +45,14 @@ namespace OrchestraArmy.Room
             CreateWalls();
             RemoveSingleWalls();
             CreateDoors();
-            CreateEnemySpawnLocationsRecursive();
+            if (!Beaten)
+                CreateEnemySpawnLocationsRecursive();
 
         }
 
+        /*
+        * Create room according to boss level settings
+        */
         void BossSettings()
         {
             _chanceWalkerChangeDir = .99f;
@@ -57,6 +64,9 @@ namespace OrchestraArmy.Room
 
         void Setup()
         {
+            // register enemy events.
+            EventManager.Bind<EnemyDeathEvent>(this);
+
             _floors = new List<Vector2>();
             this.Beaten = false;
             //find grid size
@@ -87,6 +97,9 @@ namespace OrchestraArmy.Room
             _walkers.Add(newWalker);
         }
 
+        /*
+        * Create floors with random walkers
+        */
         void CreateFloors()
         {
             int iterations = 0;//loop will not run forever
@@ -95,8 +108,9 @@ namespace OrchestraArmy.Room
                 //create floor at position of every walker
                 foreach (Walker myWalker in _walkers)
                 {
+                    //add position to floor list
                     Grid[(int)myWalker.Pos.x, (int)myWalker.Pos.y] = GridSpace.Floor;
-                    _floors.Add(new Vector2((int)myWalker.Pos.x, (int)myWalker.Pos.y)); //add position to floor list
+                    _floors.Add(new Vector2((int)myWalker.Pos.x, (int)myWalker.Pos.y));
                 }
                 //chance: destroy walker
                 int numberChecks = _walkers.Count; //might modify count while in this loop
@@ -158,6 +172,9 @@ namespace OrchestraArmy.Room
             } while (iterations < 100000);
         }
 
+        /*
+        * Create walls surrounding the floors
+        */
         void CreateWalls()
         {
             //loop though every grid space
@@ -190,6 +207,9 @@ namespace OrchestraArmy.Room
             }
         }
 
+        /*
+        * Replace single walls with a floor
+        */
         void RemoveSingleWalls()
         {
             //loop though every grid space
@@ -228,7 +248,8 @@ namespace OrchestraArmy.Room
                         if (allFloors)
                         {
                             Grid[x, y] = GridSpace.Floor;
-                            _floors.Add(new Vector2(x, y)); //add position to floor list
+                            //add position to floor list
+                            _floors.Add(new Vector2(x, y));
 
                         }
                     }
@@ -236,6 +257,9 @@ namespace OrchestraArmy.Room
             }
         }
 
+        /*
+        * Create the four doors
+        */
         void CreateDoors()  //place the four doors around the map
         {
             int minX = RoomWidth, minY = RoomHeight, maxX = 0, maxY = 0;    //calculate the center of the made map
@@ -298,18 +322,21 @@ namespace OrchestraArmy.Room
         {
             try
             {
+                //try to create the enemy spawn locations
                 CreateEnemySpawnLocations();
             }
-            catch (ArgumentOutOfRangeException) //spreading out with distancebetweenenemies was not possible
+            catch (ArgumentOutOfRangeException)
             {
-                if (_distanceBetweenEnemies > 0)
+                //spreading out with distancebetweenenemies was not possible
+                if (_distanceBetweenEnemies > 0) //if distance between enemies is higher than 0
                 {
-                    _distanceBetweenEnemies--;
-                    Debug.Log("Distance between enemies too high. New distance: "+_distanceBetweenEnemies);
+                    _distanceBetweenEnemies--; //subtract 1 from distance between enemies
+                    Debug.Log("Distance between enemies too high. New distance: " + _distanceBetweenEnemies);
                     CreateEnemySpawnLocationsRecursive();
                 }
                 else
                 {
+                    //there are more enemies than floors in this room, quit application
                     Debug.Log("Too many enemies for this room.");
                     Application.Quit();
                 }
@@ -322,7 +349,7 @@ namespace OrchestraArmy.Room
             Vector2 _location;
             List<Vector2> _possibleFloors = _floors;
 
-            for (int i = _numberOfEnemies; i > 0; i--)
+            for (int i = _numberOfEnemies; i > 0; i--) // for every enemy
             {
                 _location = _possibleFloors[Random.Range(0, _possibleFloors.Count)]; //get random location
                 EnemySpawnLocations.Add(_location); //add location to enemy spawn
@@ -334,9 +361,9 @@ namespace OrchestraArmy.Room
                 int diff;
                 foreach (Vector2 floor in _possibleFloors)
                 {
-                    vec = _location - floor;
+                    vec = _location - floor; //get distance between current location and possible floor
                     diff = (int)(Math.Abs(vec.x) + Math.Abs(vec.y)); //get manhatten distance
-                    if (diff > _distanceBetweenEnemies)
+                    if (diff > _distanceBetweenEnemies) //if difference is large enough to keep enemies apart
                     {
                         _tempFloors.Add(floor); //add floor to save to temp list
                     }
@@ -376,5 +403,19 @@ namespace OrchestraArmy.Room
             return count;
         }
 
+        /// <summary>
+        /// Event for when an enemy dies.
+        /// </summary>
+        /// <param name="enemyDeathEvent"></param>
+        public void OnEvent(EnemyDeathEvent invokedEvent)
+        {
+            //one enemy less
+            _numberOfEnemies--;
+
+            //if all enemies are dead
+            if (_numberOfEnemies < 1)
+                //level beaten
+                Beaten = true;
+        }
     }
 }
