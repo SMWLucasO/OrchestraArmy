@@ -24,11 +24,15 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data
             get => _unlocked;
             set => _unlocked = value;
         }
-        
+
         /// <summary>
         /// The type of the weapon which this placeholder holds.
         /// </summary>
-        public WeaponType WeaponType { get; set; }
+        public WeaponType WeaponType
+        {
+            get => _weaponType;
+            set => _weaponType = value;
+        }
         
         /// <summary>
         /// The icon for this weapon placeholder.
