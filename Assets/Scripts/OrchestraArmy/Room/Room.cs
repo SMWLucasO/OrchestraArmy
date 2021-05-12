@@ -248,7 +248,8 @@ namespace OrchestraArmy.Room
                         if (allFloors)
                         {
                             Grid[x, y] = GridSpace.Floor;
-                            _floors.Add(new Vector2(x, y)); //add position to floor list
+                            //add position to floor list
+                            _floors.Add(new Vector2(x, y));
 
                         }
                     }
@@ -408,12 +409,13 @@ namespace OrchestraArmy.Room
         /// <param name="enemyDeathEvent"></param>
         public void OnEvent(EnemyDeathEvent invokedEvent)
         {
-            _numberOfEnemies--; //one enemy less
-            if (_numberOfEnemies < 1) //if all enemies are dead
-            {
-                Beaten = true; //level beaten
-            }
-        }
+            //one enemy less
+            _numberOfEnemies--;
 
+            //if all enemies are dead
+            if (_numberOfEnemies < 1)
+                //level beaten
+                Beaten = true;
+        }
     }
 }
