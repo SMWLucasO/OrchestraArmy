@@ -8,14 +8,8 @@ namespace OrchestraArmy.Room.DoorCollisions
     {
         void OnTriggerEnter(Collider other)
         {
-            print("up");
-            EventManager.Invoke(new RoomDoorDownEvent());
-        }
-
-        void OnCollisionEnter()
-        {
-            EventManager.Invoke(new RoomDoorUpEvent());
-            print("up");
+            if (other.CompareTag("Player"))
+                EventManager.Invoke(new RoomDoorDownEvent());
         }
     }
 }
