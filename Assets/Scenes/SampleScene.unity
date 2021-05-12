@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -290,7 +290,11 @@ MonoBehaviour:
   doorLObj: {fileID: 4578508040452837794, guid: 23c146f8151f92f48b0beda83d12d551, type: 3}
   doorUObj: {fileID: 6235616627879709886, guid: bf4b80039ae363b47a5d812033ce45b9, type: 3}
   doorDObj: {fileID: 1558094684033946625, guid: 6d2701318e79c654f8989d82f237ec18, type: 3}
-  guitarEnemyObj: {fileID: 630323051058264127, guid: fffcf81fd456aad40a6e72312f9c785a, type: 3}
+  Enemies:
+  - {fileID: 630323051058264127, guid: fffcf81fd456aad40a6e72312f9c785a, type: 3}
+  - {fileID: 630323051058264127, guid: 52682ea59764c934596e4ea5605ba21a, type: 3}
+  - {fileID: 630323051058264127, guid: cd3346680a8eb0f458087732602d4d3f, type: 3}
+  - {fileID: 630323051058264127, guid: dfda76dbfcb2c3e459ecd7562da8aae1, type: 3}
 --- !u!4 &810268618
 Transform:
   m_ObjectHideFlags: 0

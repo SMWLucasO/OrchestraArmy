@@ -213,11 +213,27 @@ namespace OrchestraArmy.Room
 
             //spawn enemies
             print(room.EnemySpawnLocations.Count + " enemies");
+            int _newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
+            int _enemyTypes = _newestEnemy + 1;
+
+            int _newestEnemyPercentage = (int)(100.0 / _enemyTypes + 10.0);
+            print("percentage: "+_newestEnemyPercentage);
+            int _newestEnemyAmount = (int)((float)room.EnemySpawnLocations.Count / 100.0 * (float)_newestEnemyPercentage);
+            _newestEnemyAmount = Math.Max(_newestEnemyAmount, 1); // make sure there is always at least one new enemy in the field
+            print(_newestEnemyAmount + " " + Enemies[_newestEnemy].name);
+
             foreach (Vector2 _enemy in room.EnemySpawnLocations)
             {
-                //check how many types of enemies may spawn and randomly get enemy to spawn
-                int _maxEnemies = Math.Min(_collectedInstruments, Enemies.Count-1);
-                Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, _maxEnemies)]);
+                if (_newestEnemyAmount > 0)
+                {
+                    Spawn(_enemy.x, _enemy.y, Enemies[_newestEnemy]);
+                    _newestEnemyAmount--;
+                }
+                else
+                {
+                    //check how many types of enemies may spawn and randomly get enemy to spawn from older ones
+                    Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, _newestEnemy)]);
+                }
             }
 
 
@@ -246,7 +262,7 @@ namespace OrchestraArmy.Room
             _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
         }
 
-        
+
 
         public void OnEvent(RoomDoorDownEvent invokedEvent)
         {
