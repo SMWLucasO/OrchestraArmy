@@ -18,12 +18,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The controller for the player's attacking.
         /// </summary>
         public IAttackController AttackController { get; set; }
-        
+
         /// <summary>
         /// The player's weapon selection wheel.
         /// </summary>
         public WeaponWheel WeaponWheel { get; set; }
-        
+
         protected override void Update()
         {
             base.Update();
@@ -37,7 +37,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             base.FixedUpdate();
             MovementController?.HandleMovement();
         }
-        
+
         protected override void LateUpdate()
         {
             base.LateUpdate();
@@ -47,12 +47,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         protected override void OnEnable()
         {
             InitializeSprites();
-            
+
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
-            };  
-            
+            };
+
             this.MovementController = new PlayerMovementController()
             {
                 Entity = this
@@ -71,7 +71,7 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
-            
+
             // register player events.
             EventManager.Bind<PlayerDamageEvent>(this);
         }

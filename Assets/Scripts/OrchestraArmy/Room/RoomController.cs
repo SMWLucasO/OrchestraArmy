@@ -42,16 +42,16 @@ namespace OrchestraArmy.Room
         void CreateRoom(Vector2 position)
         {
             //get amount of enemies based on rooms cleared in this level
-            int _numberOfEnemies = GetNumberOfEnemies();
+            int numberOfEnemies = GetNumberOfEnemies();
 
             if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5)))
             {    //calculation for chance boss room (after 5 rooms +20% per room)
                 print("boss room");
-                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies, true); // create boss room, numberOfEnemies is irrelevant in this case
+                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies, true); // create boss room, numberOfEnemies is irrelevant in this case
             }
             else
             {
-                _rooms[(int)position.x, (int)position.y] = new Room(_numberOfEnemies); // create new room
+                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies); // create new room
             }
         }
 
@@ -212,15 +212,12 @@ namespace OrchestraArmy.Room
             }
 
             //spawn enemies
-            print(room.EnemySpawnLocations.Count + " enemies");
             int _newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
             int _enemyTypes = _newestEnemy + 1;
 
             int _newestEnemyPercentage = (int)(100.0 / _enemyTypes + 10.0);
-            print("percentage: "+_newestEnemyPercentage);
             int _newestEnemyAmount = (int)((float)room.EnemySpawnLocations.Count / 100.0 * (float)_newestEnemyPercentage);
             _newestEnemyAmount = Math.Max(_newestEnemyAmount, 1); // make sure there is always at least one new enemy in the field
-            print(_newestEnemyAmount + " " + Enemies[_newestEnemy].name);
 
             foreach (Vector2 _enemy in room.EnemySpawnLocations)
             {
