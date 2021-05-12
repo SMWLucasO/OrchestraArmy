@@ -151,9 +151,12 @@ namespace OrchestraArmy.Room
         {
             Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
             
-            for (int x = 0; x < room.RoomWidth; x++){
-                for (int y = 0; y < room.RoomHeight; y++){
-                    switch(room.Grid[x,y]){
+            for (int x = 0; x < room.RoomWidth; x++)
+            {
+                for (int y = 0; y < room.RoomHeight; y++)
+                {
+                    switch(room.Grid[x,y])
+                    {
                         case Room.GridSpace.Empty:
                             Spawn(x,y,fillObj);
                             break;
@@ -236,18 +239,21 @@ namespace OrchestraArmy.Room
         private void Update()
         {
             //death animation and hidden un-/loading
-            switch (_deathState) {
+            switch (_deathState)
+            {
                 case (1):
                     deathScreen.SetActive(true);        //activate death screen
                     _roomsCleared = 0;                  // reset roomsCleared
                     _deathState++;
                     break;
+                
                 case (2):                               //slow functions hidden by death screen
                     _level= (_level>1)?_level-1:1;      //go one level (not room) back (if possible)
                     DestroyCurrentRoom();               //destroy the room
                     Setup();                            //reset the map, respawn the start/spawn room and reset location on map
                     _deathState++;
                     break;
+                
                 case (3):
                     deathScreen.SetActive(false);       //deactivate death screen
                     _deathState = 0;                    //deactivate death 'loop'
