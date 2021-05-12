@@ -1,4 +1,4 @@
-namespace OrchestraArmy.Entity.Entities.Enemies.Regular
+namespace OrchestraArmy.Entity.Entities.Enemies.Regular.Factories
 {
     public class DrumEnemyFactory : IEnemyFactory
     {

@@ -212,24 +212,24 @@ namespace OrchestraArmy.Room
             }
 
             //spawn enemies
-            int _newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
-            int _enemyTypes = _newestEnemy + 1;
+            int newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
+            int enemyTypes = newestEnemy + 1;
 
-            int _newestEnemyPercentage = (int)(100.0 / _enemyTypes + 10.0);
-            int _newestEnemyAmount = (int)((float)room.EnemySpawnLocations.Count / 100.0 * (float)_newestEnemyPercentage);
-            _newestEnemyAmount = Math.Max(_newestEnemyAmount, 1); // make sure there is always at least one new enemy in the field
+            int newestEnemyPercentage = (int)(100.0 / enemyTypes + 10.0);
+            int newestEnemyAmount = (int)((float)room.EnemySpawnLocations.Count / 100.0 * (float)newestEnemyPercentage);
+            newestEnemyAmount = Math.Max(newestEnemyAmount, 1); // make sure there is always at least one new enemy in the field
 
             foreach (Vector2 _enemy in room.EnemySpawnLocations)
             {
-                if (_newestEnemyAmount > 0)
+                if (newestEnemyAmount > 0)
                 {
-                    Spawn(_enemy.x, _enemy.y, Enemies[_newestEnemy]);
-                    _newestEnemyAmount--;
+                    Spawn(_enemy.x, _enemy.y, Enemies[newestEnemy]);
+                    newestEnemyAmount--;
                 }
                 else
                 {
                     //check how many types of enemies may spawn and randomly get enemy to spawn from older ones
-                    Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, _newestEnemy)]);
+                    Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, newestEnemy)]);
                 }
             }
 
