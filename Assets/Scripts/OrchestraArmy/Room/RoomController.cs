@@ -10,7 +10,7 @@ namespace OrchestraArmy.Room
     public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
-        public GameObject fillObj, rockObj, rubbleObj, wallObj, floorObj, doorRObj, doorLObj, doorUObj, doorDObj;
+        public GameObject FillObj, RockObj, RubbleObj, WallObj, FloorObj, DoorRightObj, DoorLeftObj, DoorUpObj, DoorDownObj;
         private List<GameObject> _instantiated; // list to save all current room objects in game
 
         public List<GameObject> Enemies;
@@ -177,34 +177,34 @@ namespace OrchestraArmy.Room
                     switch (room.Grid[x, y])
                     {
                         case Room.GridSpace.Empty:
-                            Spawn(x, y, fillObj);
+                            Spawn(x, y, FillObj);
                             break;
 
                         case Room.GridSpace.Floor:
-                            Spawn(x, y, floorObj);
+                            Spawn(x, y, FloorObj);
                             if (Random.value < 0.1f)
                             {
-                                Spawn(x, y, rubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
+                                Spawn(x, y, RubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
                             }
                             break;
                         case Room.GridSpace.Wall:
-                            Spawn(x, y, borderOnFill(x, y) ? wallObj : rockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
+                            Spawn(x, y, borderOnFill(x, y) ? WallObj : RockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
                             break;
 
                         case Room.GridSpace.DoorU:
-                            Spawn(x, y, doorUObj);
+                            Spawn(x, y, DoorUpObj);
                             break;
 
                         case Room.GridSpace.DoorD:
-                            Spawn(x, y, doorDObj);
+                            Spawn(x, y, DoorDownObj);
                             break;
 
                         case Room.GridSpace.DoorL:
-                            Spawn(x, y, doorLObj);
+                            Spawn(x, y, DoorLeftObj);
                             break;
 
                         case Room.GridSpace.DoorR:
-                            Spawn(x, y, doorRObj);
+                            Spawn(x, y, DoorRightObj);
                             break;
 
                     }
