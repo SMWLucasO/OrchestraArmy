@@ -8,7 +8,7 @@ using UnityEngine;
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
 
-    public class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>
     {
         public BehaviourStateMachine Behaviour { get; set; }
 
@@ -28,7 +28,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// Event for when an enemy dies.
         /// </summary>
         /// <param name="enemyDeathEvent"></param>
-        public void OnEvent(EnemyDeathEvent enemyDeathEvent) 
+        public void OnEvent(EnemyDeathEvent invokedEvent) 
             => Destroy(gameObject);
 
         /// <summary>

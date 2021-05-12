@@ -1,10 +1,10 @@
 namespace OrchestraArmy.Entity.Entities.Enemies.Regular
 {
-    public class GuitarEnemyFactory : IEnemyFactory
+    public class FluteEnemyFactory : IEnemyFactory
     {
         public Enemy MakeEnemy()
         {
-            return new GuitarEnemy();
+            return new FluteEnemy();
         }
 
     }

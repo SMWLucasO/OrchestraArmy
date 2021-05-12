@@ -10,11 +10,12 @@ namespace OrchestraArmy.Room
     public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
-        public GameObject fillObj, rockObj, rubbleObj, wallObj, floorObj, doorRObj, doorLObj, doorUObj, doorDObj, guitarEnemyObj;
-
+        public GameObject fillObj, rockObj, rubbleObj, wallObj, floorObj, doorRObj, doorLObj, doorUObj, doorDObj;
         private List<GameObject> _instantiated; // list to save all current room objects in game
 
+        public List<GameObject> Enemies;
         private Room[,] _rooms;
+        private int _collectedInstruments = 3; // 0 through n. 0 means only guitar, n means all. n = 3 for now.
         private Vector2 _currentRoom;
 
         private int _roomsCleared = 0;
@@ -214,7 +215,9 @@ namespace OrchestraArmy.Room
             print(room.EnemySpawnLocations.Count + " enemies");
             foreach (Vector2 _enemy in room.EnemySpawnLocations)
             {
-                Spawn(_enemy.x, _enemy.y, guitarEnemyObj);
+                //check how many types of enemies may spawn and randomly get enemy to spawn
+                int _maxEnemies = Math.Min(_collectedInstruments, Enemies.Count-1);
+                Spawn(_enemy.x, _enemy.y, Enemies[Random.Range(0, _maxEnemies)]);
             }
 
 
@@ -242,6 +245,8 @@ namespace OrchestraArmy.Room
             //spawn object
             _instantiated.Add(Instantiate(toSpawn, spawnPos, Quaternion.identity)); // create object and add it to the list
         }
+
+        
 
         public void OnEvent(RoomDoorDownEvent invokedEvent)
         {

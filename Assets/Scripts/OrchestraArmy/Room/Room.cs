@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
+
 
 namespace OrchestraArmy.Room
 {
-    public class Room
+    public class Room : IListener<EnemyDeathEvent>
     {
         public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
         public GridSpace[,] Grid;
@@ -42,7 +45,8 @@ namespace OrchestraArmy.Room
             CreateWalls();
             RemoveSingleWalls();
             CreateDoors();
-            CreateEnemySpawnLocationsRecursive();
+            if(!Beaten)
+                CreateEnemySpawnLocationsRecursive();
 
         }
 
@@ -374,6 +378,15 @@ namespace OrchestraArmy.Room
                 }
             }
             return count;
+        }
+
+        public void OnEvent(EnemyDeathEvent invokedEvent)
+        {
+            _numberOfEnemies--; //one enemy less
+            if(_numberOfEnemies<1) //if all enemies are dead
+            {
+                Beaten = true; //level beaten
+            }
         }
 
     }
