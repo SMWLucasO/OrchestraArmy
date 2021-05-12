@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Projectiles
 {
-    public class Projectile: LivingDirectionalEntity
+    public class Projectile: MovingEntity
     {
         public Vector3 Source { get; set; }
 
