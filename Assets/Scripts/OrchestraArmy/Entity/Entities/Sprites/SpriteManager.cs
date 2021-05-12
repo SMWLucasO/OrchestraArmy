@@ -46,6 +46,7 @@ namespace OrchestraArmy.Entity.Entities.Sprites
                         Entity.StopCoroutine(_animation);
                     _currentSpriteSet = value;
                     _currentSprite = 0;
+                    Entity.Renderer.sprite = CurrentSpriteSet[_currentSprite];
                     _animation = Entity.StartCoroutine(AnimateSprite());
                 }
             }
@@ -59,7 +60,7 @@ namespace OrchestraArmy.Entity.Entities.Sprites
             var direction = Entity.DirectionController.CurrentDirection;
             var newSprite = Entity.Sprites.FirstOrDefault(s => s.Direction == direction);
 
-            if (newSprite.Sprites == null || newSprite.Sprites.Length == 0)
+            if (newSprite.Sprites == CurrentSpriteSet || newSprite.Sprites == null || newSprite.Sprites.Length == 0)
                 return; 
 
             CurrentSpriteSet = newSprite.Sprites;
