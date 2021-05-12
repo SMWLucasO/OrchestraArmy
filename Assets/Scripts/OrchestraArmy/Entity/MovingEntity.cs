@@ -2,9 +2,9 @@ using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Data;
 using UnityEngine;
 
-namespace OrchestraArmy.Entity.Entities
+namespace OrchestraArmy.Entity
 {
-    public class MovingEntity: DirectionalEntity
+    public class MovingEntity : DirectionalEntity
     {
         /// <summary>
         /// Rigidbody for movement.

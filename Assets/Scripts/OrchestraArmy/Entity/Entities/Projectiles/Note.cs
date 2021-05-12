@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Projectiles
 {
-    public class Note: Projectile
+    public class Note : Projectile
     {
         public IWeapon Instrument { get; set; }
         public Player Attacker { get; set; }
