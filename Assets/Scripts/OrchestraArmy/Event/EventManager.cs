@@ -6,14 +6,14 @@ namespace OrchestraArmy.Event
 {
     public static class EventManager
     {
-        //list of dynamics to save the pain of generic lists, guaranteed to be IListener because the only way to add is through bind
+        // List of dynamics to save the pain of generic lists, guaranteed to be IListener because the only way to add is through bind
         private static Dictionary<Type, IList<dynamic>> _listeners = new Dictionary<Type, IList<dynamic>>();
 
         public static void Invoke<T>(T invokedEvent) where T: IEvent
         {
             if (!_listeners.ContainsKey(invokedEvent.GetType()))
             {
-                //nothing is bound to the event, just return
+                // Nothing is bound to the event, just return
                 return;
             }
             

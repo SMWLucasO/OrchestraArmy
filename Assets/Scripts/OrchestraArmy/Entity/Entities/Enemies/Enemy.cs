@@ -19,7 +19,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             LastCollisionTime = Time.time;
 
-            // register enemy events.
+            // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
         }
