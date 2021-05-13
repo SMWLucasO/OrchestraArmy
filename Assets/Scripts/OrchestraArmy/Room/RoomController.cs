@@ -10,12 +10,25 @@ namespace OrchestraArmy.Room
     public class RoomController : MonoBehaviour, IListener<RoomDoorDownEvent>, IListener<RoomDoorUpEvent>, IListener<RoomDoorLeftEvent>, IListener<RoomDoorRightEvent>
     {
         private enum DoorDirection { Left, Right, Up, Down };
-        public GameObject FillObj, RockObj, RubbleObj, WallObj, FloorObj, DoorRightObj, DoorLeftObj, DoorUpObj, DoorDownObj;
-        private List<GameObject> _instantiated; // list to save all current room objects in game
 
+        /// <summary>
+        /// Objects for the map surroundings
+        /// </summary>
+        public GameObject FillObj, RockObj, RubbleObj, WallObj, FloorObj, DoorRightObj, DoorLeftObj, DoorUpObj, DoorDownObj;
+
+        /// <summary>
+        /// List to save the different types of enemies
+        /// </summary>
         public List<GameObject> Enemies;
         private Room[,] _rooms;
-        private int _collectedInstruments = 3; // 0 through n. 0 means only guitar, n means all. n = 3 for now.
+
+        /// <summary>
+        /// 0 through n. 0 means only guitar, n means all. n = 3 for now.
+        /// </summary>
+        [Range(0, 3)]
+        public int CollectedInstruments = 3;
+
+        private List<GameObject> _instantiated;
         private Vector2 _currentRoom;
 
         private int _roomsCleared = 0;
@@ -39,7 +52,11 @@ namespace OrchestraArmy.Room
 
         }
 
-        void CreateRoom(Vector2 position)
+        /// <summary>
+        /// Create room
+        /// </summary>
+        /// <param name="position"></param>
+        private void CreateRoom(Vector2 position)
         {
             //get amount of enemies based on rooms cleared in this level
             int numberOfEnemies = GetNumberOfEnemies();
@@ -55,7 +72,10 @@ namespace OrchestraArmy.Room
             }
         }
 
-        int GetNumberOfEnemies() // uses fibonacci to get amount of enemies
+        /// <summary>
+        /// Get number of enemies
+        /// </summary>
+        private int GetNumberOfEnemies() // uses fibonacci to get amount of enemies
         {
             if (_enemiesNow < 8)
             {
@@ -71,7 +91,11 @@ namespace OrchestraArmy.Room
             return _enemiesNow;
         }
 
-        void ChangeCurrentRoom(DoorDirection direction)
+        /// <summary>
+        /// Go into a room corresponding to the given direction
+        /// </summary>
+        /// <param name="direction"></param>
+        private void ChangeCurrentRoom(DoorDirection direction)
         {
             // clear previous field
             DestroyCurrentRoom();
@@ -133,8 +157,13 @@ namespace OrchestraArmy.Room
             SpawnRoom();
         }
 
-        bool borderOnFill(int x, int y)
-        {       //check if tile directly borders an empty tile
+        /// <summary>
+        /// Check if tile directly borders an empty tile
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        private bool BorderOnFill(int x, int y)
+        {
             Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
             bool outp = false;
             try
@@ -166,7 +195,10 @@ namespace OrchestraArmy.Room
         }
 
 
-        void SpawnRoom()
+        /// <summary>
+        /// Spawn room into game
+        /// </summary>
+        private void SpawnRoom()
         {
             Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
 
@@ -188,7 +220,7 @@ namespace OrchestraArmy.Room
                             }
                             break;
                         case Room.GridSpace.Wall:
-                            Spawn(x, y, borderOnFill(x, y) ? WallObj : RockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
+                            Spawn(x, y, BorderOnFill(x, y) ? WallObj : RockObj.transform.GetChild(Random.Range(0, 4)).gameObject);
                             break;
 
                         case Room.GridSpace.DoorU:
@@ -212,7 +244,7 @@ namespace OrchestraArmy.Room
             }
 
             //spawn enemies
-            int newestEnemy = Math.Min(_collectedInstruments, Enemies.Count - 1);
+            int newestEnemy = Math.Min(CollectedInstruments, Enemies.Count - 1);
             int enemyTypes = newestEnemy + 1;
 
             int newestEnemyPercentage = (int)(100.0 / enemyTypes + 10.0);
@@ -241,7 +273,10 @@ namespace OrchestraArmy.Room
         }
 
 
-        void DestroyCurrentRoom() // destroy a room to make space for a new one
+        /// <summary>
+        /// Destroy a room to make space for a new one
+        /// </summary>
+        private void DestroyCurrentRoom()
         {
             foreach (GameObject g in _instantiated)
             {
@@ -249,7 +284,13 @@ namespace OrchestraArmy.Room
             }
         }
 
-        void Spawn(float x, float y, GameObject toSpawn)
+        /// <summary>
+        /// Spawn object into game
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="toSpawn"></param>
+        private void Spawn(float x, float y, GameObject toSpawn)
         {
             Room room = _rooms[(int)_currentRoom.x, (int)_currentRoom.y];
 
@@ -260,22 +301,37 @@ namespace OrchestraArmy.Room
         }
 
 
-
+        /// <summary>
+        /// Event for when you touch the down door
+        /// </summary>
+        /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorDownEvent invokedEvent)
         {
             ChangeCurrentRoom(DoorDirection.Down);
         }
 
+        /// <summary>
+        /// Event for when you touch the up door
+        /// </summary>
+        /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorUpEvent invokedEvent)
         {
             ChangeCurrentRoom(DoorDirection.Up);
         }
 
+        /// <summary>
+        /// Event for when you touch the left door
+        /// </summary>
+        /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorLeftEvent invokedEvent)
         {
             ChangeCurrentRoom(DoorDirection.Left);
         }
 
+        /// <summary>
+        /// Event for when you touch the right door
+        /// </summary>
+        /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorRightEvent invokedEvent)
         {
             ChangeCurrentRoom(DoorDirection.Right);

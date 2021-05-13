@@ -295,6 +295,7 @@ MonoBehaviour:
   - {fileID: 630323051058264127, guid: 52682ea59764c934596e4ea5605ba21a, type: 3}
   - {fileID: 630323051058264127, guid: cd3346680a8eb0f458087732602d4d3f, type: 3}
   - {fileID: 630323051058264127, guid: dfda76dbfcb2c3e459ecd7562da8aae1, type: 3}
+  CollectedInstruments: 3
 --- !u!4 &810268618
 Transform:
   m_ObjectHideFlags: 0
