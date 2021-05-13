@@ -1,13 +1,23 @@
+using System;
+using System.Linq;
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Players
 {
-    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>
+    [Serializable]
+    public struct InstrumentSpriteEntry
+    {
+        public SpriteEntry[] SpriteEntries;
+        public WeaponType Instrument;
+        
+    }
+    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -28,7 +38,9 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The controller for selecting the player's weapon(instrument).
         /// </summary>
         public IWeaponSelectionController WeaponSelectionController { get; set; }
-        
+
+        [field: SerializeField]
+        public InstrumentSpriteEntry[] InstrumentSprites { get; set; }
         
         /// <summary>
         /// The player's weapon selection wheel.
@@ -82,9 +94,11 @@ namespace OrchestraArmy.Entity.Entities.Players
 
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
+            Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
             
             // register player events.
             EventManager.Bind<PlayerDamageEvent>(this);
+            EventManager.Bind<PlayerWeaponChangedEvent>(this);
         }
 
         /// <summary>
@@ -103,6 +117,11 @@ namespace OrchestraArmy.Entity.Entities.Players
                 EntityData.Health = 0;
                 EventManager.Invoke(new PlayerDeathEvent());
             }
+        }
+
+        public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
+        {
+            Sprites = InstrumentSprites.First(s => s.Instrument == invokedEvent.NewlySelectedWeapon).SpriteEntries;
         }
     }
 }

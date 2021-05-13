@@ -46,6 +46,7 @@ namespace OrchestraArmy.Entity.Entities.Sprites
                         Entity.StopCoroutine(_animation);
                     _currentSpriteSet = value;
                     _currentSprite = 0;
+                    Entity.Renderer.sprite = CurrentSpriteSet[_currentSprite];
                     _animation = Entity.StartCoroutine(AnimateSprite());
                 }
             }
