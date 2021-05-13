@@ -86,14 +86,20 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
                 NewlySelectedWeapon = newlySelectedWeapon
             });
 
+        /// <summary>
+        /// Update the images on the weapon wheel UI.
+        /// </summary>
         private void UpdateWeaponWheelImages()
         {
+            // Set the sprite for the previous weapon at index 0
             _weaponPlaceholderImages[0].sprite =
                 CurrentlySelected.Previous.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
             
+            // Set the sprite for the current weapon at index 1
             _weaponPlaceholderImages[1].sprite =
                 CurrentlySelected.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
             
+            // Set the sprite for the next weapon at index 2
             _weaponPlaceholderImages[2].sprite =
                 CurrentlySelected.Next.WeaponWheelPlaceholderData.WeaponPlaceholderIcon;
         }
@@ -110,6 +116,10 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
         }
 
+        /// <summary>
+        /// Update the weapon wheel when the player switches instruments.
+        /// </summary>
+        /// <param name="invokedEvent"></param>
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => UpdateWeaponWheelImages();
     }
