@@ -22,7 +22,7 @@ namespace OrchestraArmy.Room
 
         private int _level = 1;
         private int _roomsCleared=0;
-        private byte _deathState = 0;
+        private byte _deathState = 0;   //0=show deathscreen, 1=reload level, 3=wait/disable screen (used in update())
         private float _timeOfDeath = 0 ;
         // Start is called before the first frame update
         void Start()
