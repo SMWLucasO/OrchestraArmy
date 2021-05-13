@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Room
@@ -25,11 +26,13 @@ namespace OrchestraArmy.Room
             RockObj,
             RubbleObj,
             WallObj,
-            FloorObj,
+            FloorObj,     //same object as Floor
             DoorRightObj,
             DoorLeftObj,
             DoorUpObj,
             DoorDownObj;
+
+        public NavMeshSurface Floor;    //navMesh and floor object
 
         /// <summary>
         /// List to save the different types of enemies
@@ -256,7 +259,7 @@ namespace OrchestraArmy.Room
                             break;
 
                         case Room.GridSpace.Floor:
-                            Spawn(x, y, FloorObj);
+                            //Spawn(x, y, FloorObj);    //no longer needed a default floor is made under the room
                             if (Random.value < 0.1f)
                             {
                                 Spawn(x, y, RubbleObj.transform.GetChild(Random.Range(0, 3)).gameObject);
@@ -288,6 +291,10 @@ namespace OrchestraArmy.Room
                     }
                 }
             }
+            
+            // make the navMesh opject and mesh for pathFinding
+            //Spawn(75,75,FloorObj);    //PROBLEEM: er moet 1 update loop tussen het maken van de floor en de mesh zitten
+            Floor.BuildNavMesh();
 
             // Spawn enemies
             int newestEnemy = Math.Min(CollectedInstruments, Enemies.Count - 1);
@@ -321,6 +328,14 @@ namespace OrchestraArmy.Room
             if (player != null)
                 player.transform.position = new Vector3(75 - room.OffsetOfRoom.x, player.transform.position.y,
                     75 - room.OffsetOfRoom.y);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKey("m"))
+            {
+                Floor.BuildNavMesh();
+            }
         }
 
 
