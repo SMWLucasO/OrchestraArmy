@@ -28,7 +28,7 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Data
         /// The type of the weapon which this placeholder holds.
         /// </summary>
         public WeaponType WeaponType => _weaponType;
-        
+
         /// <summary>
         /// The icon for this weapon placeholder.
         /// </summary>

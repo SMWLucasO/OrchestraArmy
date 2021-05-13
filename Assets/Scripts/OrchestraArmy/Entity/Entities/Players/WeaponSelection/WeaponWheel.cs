@@ -14,6 +14,8 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         /// Image[0] = previous weapon
         /// Image[1] = current weapon
         /// Image[2] = next weapon
+        ///
+        /// Contains the UI image components for the placeholders.
         /// </summary>
         private Image[] _weaponPlaceholderImages; 
         
