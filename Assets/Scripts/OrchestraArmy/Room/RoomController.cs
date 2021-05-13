@@ -241,8 +241,6 @@ namespace OrchestraArmy.Room
 
         private void Update()
         {
-            if (Input.GetKey("g"))
-                _deathState = 1;
             //death animation and hidden un-/loading
             switch (_deathState)
             {
