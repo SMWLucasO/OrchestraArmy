@@ -34,6 +34,9 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public IWeaponSelectionController WeaponSelectionController { get; set; }
 
+        /// <summary>
+        /// Sprites based on instruments, current instrument's SpriteEntry is written to Sprites
+        /// </summary>
         [field: SerializeField]
         public InstrumentSpriteEntry[] InstrumentSprites { get; set; }
         
