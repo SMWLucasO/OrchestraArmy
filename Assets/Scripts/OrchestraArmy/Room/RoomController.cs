@@ -4,6 +4,7 @@ using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Player;
+using UnityEngine.Experimental.Rendering;
 using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Room
@@ -12,7 +13,7 @@ namespace OrchestraArmy.Room
     {
         private enum DoorDirection { Left, Right, Up, Down };
         public GameObject fillObj, rockObj,rubbleObj, wallObj, floorObj, doorRObj,doorLObj,doorUObj,doorDObj;
-        public GameObject deathScreen;
+        public GameObject DeathScreen;
 
         private List<GameObject> _instantiated; // list to save all current room objects in game
 
@@ -21,7 +22,8 @@ namespace OrchestraArmy.Room
 
         private int _level = 1;
         private int _roomsCleared=0;
-        private int _deathState = 0;
+        private byte _deathState = 0;
+        private float _timeOfDeath = 0 ;
         // Start is called before the first frame update
         void Start()
         {
@@ -31,7 +33,8 @@ namespace OrchestraArmy.Room
             EventManager.Bind<RoomDoorUpEvent>(this);
             EventManager.Bind<RoomDoorDownEvent>(this);
             EventManager.Bind<RoomDoorLeftEvent>(this);
-            EventManager.Bind<RoomDoorRightEvent>(this);   // door actions (go though door)
+            EventManager.Bind<RoomDoorRightEvent>(this);    // door actions (go though door)
+            EventManager.Bind<PlayerDeathEvent>(this);      // death actions (player died)
 
         }
         
@@ -238,12 +241,15 @@ namespace OrchestraArmy.Room
 
         private void Update()
         {
+            if (Input.GetKey("g"))
+                _deathState = 1;
             //death animation and hidden un-/loading
             switch (_deathState)
             {
                 case (1):
-                    deathScreen.SetActive(true);        //activate death screen
+                    DeathScreen.SetActive(true);        //activate death screen
                     _roomsCleared = 0;                  // reset roomsCleared
+                    _timeOfDeath = Time.time;
                     _deathState++;
                     break;
                 
@@ -255,8 +261,11 @@ namespace OrchestraArmy.Room
                     break;
                 
                 case (3):
-                    deathScreen.SetActive(false);       //deactivate death screen
-                    _deathState = 0;                    //deactivate death 'loop'
+                    if (Time.time - _timeOfDeath >= 2)  //extends the time of the deathscreen on fast computers
+                    {
+                        DeathScreen.SetActive(false); //deactivate death screen
+                        _deathState = 0; //deactivate death 'loop'
+                    }
                     break;
             }
         }
