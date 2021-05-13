@@ -9,17 +9,46 @@ using OrchestraArmy.Event.Events.Enemy;
 
 namespace OrchestraArmy.Room
 {
+
+    
     public class Room : IListener<EnemyDeathEvent>
     {
+        /// <summary>
+        /// Enum for the different types of objects on the map
+        /// </summary>
         public enum GridSpace { Empty, Floor, Wall, DoorU, DoorD, DoorL, DoorR };
+       
+        /// <summary>
+        /// The field for this room
+        /// </summary>
         public GridSpace[,] Grid;
+        
+        /// <summary>
+        /// The locations for enemies to spawn
+        /// </summary>
         public List<Vector2> EnemySpawnLocations;
+
+        /// <summary>
+        /// The size of this field
+        /// </summary>
         public int RoomHeight, RoomWidth;
+
+        /// <summary>
+        /// To see is the room is cleared of enemies yet
+        /// </summary>
         public bool Beaten;
+
+        /// <summary>
+        /// Size of the room in Vector2
+        /// </summary>
         public Vector2 RoomSizeWorldUnits = new Vector2(150, 150);
+
+        /// <summary>
+        /// For getting the center of the room
+        /// </summary>
         public Vector2 OffsetOfRoom = new Vector2(0, 0);
         private float _worldUnitsInOneGridCell = 1;
-        struct Walker
+        private struct Walker
         {
             public Vector2 Dir;
             public Vector2 Pos;
@@ -50,10 +79,11 @@ namespace OrchestraArmy.Room
 
         }
 
-        /*
-        * Create room according to boss level settings
-        */
-        void BossSettings()
+        /// <summary>
+        /// Create room according to boss level settings
+        /// </summary>
+        /// <param name="BossSettings"></param>
+        private void BossSettings()
         {
             _chanceWalkerChangeDir = .99f;
             _chanceWalkerSpawn = 0.8f;
@@ -62,7 +92,7 @@ namespace OrchestraArmy.Room
             _percentToFill = 0.1f;
         }
 
-        void Setup()
+        private void Setup()
         {
             // register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
@@ -97,10 +127,11 @@ namespace OrchestraArmy.Room
             _walkers.Add(newWalker);
         }
 
-        /*
-        * Create floors with random walkers
-        */
-        void CreateFloors()
+        /// <summary>
+        /// Create floors with random walkers
+        /// </summary>
+        /// <param name="CreateFloors"></param>
+        private void CreateFloors()
         {
             int iterations = 0;//loop will not run forever
             do
@@ -172,10 +203,12 @@ namespace OrchestraArmy.Room
             } while (iterations < 100000);
         }
 
-        /*
-        * Create walls surrounding the floors
-        */
-        void CreateWalls()
+
+        /// <summary>
+        /// Create walls surrounding the floors
+        /// </summary>
+        /// <param name="CreateWalls"></param>
+        private void CreateWalls()
         {
             //loop though every grid space
             for (int x = 0; x < RoomWidth - 1; x++)
@@ -207,10 +240,11 @@ namespace OrchestraArmy.Room
             }
         }
 
-        /*
-        * Replace single walls with a floor
-        */
-        void RemoveSingleWalls()
+        /// <summary>
+        /// Replace single walls with a floor
+        /// </summary>
+        /// <param name="RemoveSingleWalls"></param>
+        private void RemoveSingleWalls()
         {
             //loop though every grid space
             for (int x = 0; x < RoomWidth - 1; x++)
@@ -260,7 +294,11 @@ namespace OrchestraArmy.Room
         /*
         * Create the four doors
         */
-        void CreateDoors()  //place the four doors around the map
+        /// <summary>
+        /// Place the four doors around the map
+        /// </summary>
+        /// <param name="CreateWalls"></param>
+        private void CreateDoors()
         {
             int minX = RoomWidth, minY = RoomHeight, maxX = 0, maxY = 0;    //calculate the center of the made map
             for (int x = 0; x < RoomWidth; x++)
@@ -318,7 +356,11 @@ namespace OrchestraArmy.Room
             }
         }
 
-        void CreateEnemySpawnLocationsRecursive()
+        /// <summary>
+        /// Create enemy spawn locations with a try-catch
+        /// </summary>
+        /// <param name="CreateEnemySpawnLocationsRecursive"></param>
+        private void CreateEnemySpawnLocationsRecursive()
         {
             try
             {
@@ -343,7 +385,11 @@ namespace OrchestraArmy.Room
             }
         }
 
-        void CreateEnemySpawnLocations() // create enemies on floor-tiles
+        /// <summary>
+        /// Create enemies on floor-tiles
+        /// </summary>
+        /// <param name="CreateEnemySpawnLocations"></param>
+        private void CreateEnemySpawnLocations()
         {
             EnemySpawnLocations = new List<Vector2>();
             Vector2 _location;
@@ -372,11 +418,15 @@ namespace OrchestraArmy.Room
             }
         }
 
-        Vector2 RandomDirection()
+        /// <summary>
+        /// Get a random direction from four options
+        /// </summary>
+        /// <param name="RandomDirection"></param>
+        private Vector2 RandomDirection()
         {
             //pick random int between 0 and 3
             int choice = Mathf.FloorToInt(Random.value * 3.99f);
-            //use that int to chose a direction
+            //use that int to choose a direction
             switch (choice)
             {
                 case 0:
@@ -390,7 +440,11 @@ namespace OrchestraArmy.Room
             }
         }
 
-        int NumberOfFloors()
+        /// <summary>
+        /// Get number of floors in this room
+        /// </summary>
+        /// <param name="NumberOfFloors"></param>
+        private int NumberOfFloors()
         {
             int count = 0;
             foreach (GridSpace space in Grid)
