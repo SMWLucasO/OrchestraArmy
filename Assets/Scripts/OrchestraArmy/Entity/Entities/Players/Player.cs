@@ -25,11 +25,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         public ICameraController CameraController { get; set; }
 
         /// <summary>
-        /// The controller for the player's movement.
-        /// </summary>
-        public IMovementController MovementController { get; set; }
-
-        /// <summary>
         /// The controller for the player's attacking.
         /// </summary>
         public IAttackController AttackController { get; set; }
@@ -53,6 +48,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             DirectionController.HandleDirection();
             WeaponSelectionController.HandleWeaponSelection();
             SpriteManager.UpdateSprite();
+            AttackController.HandleAttack();
         }
 
         protected override void FixedUpdate()
@@ -88,6 +84,11 @@ namespace OrchestraArmy.Entity.Entities.Players
             };
 
             this.WeaponSelectionController = new PlayerWeaponSelectionController()
+            {
+                Player = this
+            };
+
+            this.AttackController = new PlayerAttackController()
             {
                 Player = this
             };
