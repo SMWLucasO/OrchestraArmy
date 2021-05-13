@@ -15,8 +15,8 @@ namespace OrchestraArmy.Entity.Entities.Players
     {
         public SpriteEntry[] SpriteEntries;
         public WeaponType Instrument;
-        
     }
+    
     public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>
     {
         /// <summary>
