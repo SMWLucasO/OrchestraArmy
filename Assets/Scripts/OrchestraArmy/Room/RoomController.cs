@@ -41,7 +41,8 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// 0 through n. 0 means only guitar, n means all. n = 3 for now.
         /// </summary>
-        [Range(0, 3)] public int CollectedInstruments = 3;
+        [Range(0, 3)] 
+        public int CollectedInstruments = 3;
 
         private List<GameObject> _instantiated;
         private Vector2 _currentRoom;
