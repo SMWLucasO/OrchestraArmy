@@ -20,7 +20,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/NoteProjectile"), Player.transform.position, Player.transform.GetChild(0).transform.rotation);
             var attack = obj.GetComponent<Note>();
             
-            attack.transform.forward = Player.transform.forward;
+            attack.transform.forward = Player.DirectionController.AimDirection;
             attack.Source = Player.transform.position;
             attack.Attacker = Player;
             attack.MaxDistance = 400;

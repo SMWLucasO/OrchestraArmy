@@ -18,6 +18,8 @@ namespace OrchestraArmy.Entity.Controllers
         /// The current direction
         /// </summary>
         public EntityDirection CurrentDirection { get; }
+        
+        public Vector3 AimDirection { get; }
 
 
         /// <summary>
