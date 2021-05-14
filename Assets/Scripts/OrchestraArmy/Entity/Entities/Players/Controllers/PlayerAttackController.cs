@@ -21,7 +21,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             attack.transform.forward = Player.transform.forward;
             attack.Source = Player.transform.position;
-            attack.Speed = 5;
             attack.Attacker = Player;
             attack.MaxDistance = 400;
             attack.Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Weapon;
