@@ -6,16 +6,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerCameraController : ICameraController
     {
-
-        /// <summary>
-        /// The highest vertical rotation the pitch may be.
-        /// </summary>
-        public const float PitchMax = 25f;
         
-        /// <summary>
-        /// The lowest vertical rotation the pitch may be.
-        /// </summary>
-        public const float PitchMin = 5f;
 
         /// <summary>
         /// The increment in degrees which the camera will get.
