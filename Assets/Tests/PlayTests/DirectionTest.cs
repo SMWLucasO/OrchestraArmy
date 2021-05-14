@@ -26,7 +26,7 @@ namespace Tests.PlayTests
         {
             _game.SetMousePositionRelativeToPlayer(x, y);
 
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(1f);
             
             Assert.AreEqual(direction, _game.Player.DirectionController.CurrentDirection);
         }
