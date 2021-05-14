@@ -118,8 +118,10 @@ namespace OrchestraArmy.Entity.Entities.Players
             else
             {
                 // in this case, the player is dead.
-                EntityData.Health = 0;
                 EventManager.Invoke(new PlayerDeathEvent());
+                
+                //reset values to max
+                EntityData.Health = 100;
             }
         }
 

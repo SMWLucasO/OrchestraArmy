@@ -57,10 +57,10 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
             WeaponType prev = CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
             WeaponType newWeaponType = CurrentlySelected.Previous.WeaponWheelPlaceholderData.WeaponType;
             
-            // switch weapons
+            // Switch weapons
             CurrentlySelected = CurrentlySelected.Previous;
             
-            // fire event for weapon switch.
+            // Fire event for weapon switch.
             ExecuteWeaponSwitchedEvent(prev, newWeaponType);
 
             return true;
