@@ -24,6 +24,12 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         /// </summary>
         [field: SerializeField]
         public WeaponWheelPlaceholder CurrentlySelected { get; set; }
+        
+        /// <summary>
+        /// Placeholder containing the latest unlocked instrument.
+        /// </summary>
+        [field: SerializeField]
+        public WeaponWheelPlaceholder LatestUnlockedInstrument { get; set; }
 
         /// <summary>
         /// Select the next weapon for usage.
@@ -65,6 +71,28 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 
             return true;
         }
+
+        /// <summary>
+        /// Unlock the instrument which is able to be unlocked next.
+        /// </summary>
+        public void UnlockNextUnlockableInstrument()
+        {
+            // Everything is already unlocked.
+            if (LatestUnlockedInstrument.WeaponWheelPlaceholderData.WeaponType == WeaponType.Sousaphone)
+                return;
+
+            LatestUnlockedInstrument = LatestUnlockedInstrument.Next;
+            LatestUnlockedInstrument.WeaponWheelPlaceholderData.Unlocked = true;
+        }
+
+        /// <summary>
+        /// Lock the instrument which was unlocked last.
+        /// </summary>
+        public void LockLatestInstrument()
+        {
+            LatestUnlockedInstrument.WeaponWheelPlaceholderData.Unlocked = false;
+            LatestUnlockedInstrument = LatestUnlockedInstrument.Previous;
+        } 
         
         /// <summary>
         /// Check whether the weapon in the weapon placeholder is unlocked.

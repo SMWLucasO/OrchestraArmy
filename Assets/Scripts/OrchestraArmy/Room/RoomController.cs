@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using UnityEngine;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
@@ -407,7 +408,7 @@ namespace OrchestraArmy.Room
                     break;
                 
                 case (2):                               //slow functions hidden by death screen
-                    _level= (_level>1)?_level-1:1;      //go one level (not room) back (if possible)
+                    _level = (_level>1)?_level-1:1;      //go one level (not room) back (if possible)
                     DestroyCurrentRoom();               //destroy the room
                     Setup();                            //reset the map, respawn the start/spawn room and reset location on map
                     _deathState++;
@@ -426,6 +427,15 @@ namespace OrchestraArmy.Room
         public void OnEvent(PlayerDeathEvent invokedEvent)
          {
               _deathState = 1;
+
+              if (invokedEvent.Player.WeaponWheel.LatestUnlockedInstrument.WeaponWheelPlaceholderData.WeaponType
+                  == WeaponType.Guitar)
+                  return;
+
+              if (_level == 1)
+                  return;
+              
+              invokedEvent.Player.WeaponWheel.LockLatestInstrument();
          }
 
     }
