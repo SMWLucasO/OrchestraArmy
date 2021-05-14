@@ -34,6 +34,8 @@ namespace OrchestraArmy.Keybindings
                 {"Rotate camera down", KeyCode.DownArrow},
                 {"Rotate camera left", KeyCode.LeftArrow},
                 {"Rotate camera right", KeyCode.RightArrow},
+                {"Select next instrument", KeyCode.E},
+                {"Select previous instrument", KeyCode.Q},
             };
     }
 }
