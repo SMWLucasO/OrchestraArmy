@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Projectiles
 {
-    public class Projectile: MovingEntity
+    public class Projectile : MovingEntity
     {
         public Vector3 Source { get; set; }
-
-        public float Speed { get; set; }
+        
         public float MaxDistance { get; set; }
         protected bool Hit { get; set; } = false;
         
