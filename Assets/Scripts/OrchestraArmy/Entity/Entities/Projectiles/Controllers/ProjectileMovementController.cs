@@ -9,7 +9,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
         public void HandleMovement()
         {
             var projectile = (Projectile) Entity;
-            Entity.RigidBody.velocity = Entity.transform.forward * projectile.Speed;
+            Entity.RigidBody.velocity = Entity.transform.forward * projectile.MovementData.WalkSpeed;
         }
     }
 }
