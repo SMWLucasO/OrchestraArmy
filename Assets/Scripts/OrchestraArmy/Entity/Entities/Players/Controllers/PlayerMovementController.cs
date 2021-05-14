@@ -17,16 +17,16 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Vector3 currentlyFacing = GetHeightlessFacingDirection(forward);
             Vector3 movementVector = Vector3.zero;
             
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move forward"]))
+            if (KeybindingManager.Instance.Keybindings["Move forward"].isPressed)
                 movementVector += currentlyFacing;
 
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move backward"]))
+            if (KeybindingManager.Instance.Keybindings["Move backward"].isPressed)
                 movementVector -= currentlyFacing;
 
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move left"])) 
+            if (KeybindingManager.Instance.Keybindings["Move left"].isPressed) 
                 movementVector += MoveLeftForce(currentlyFacing);
 
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Move right"])) 
+            if (KeybindingManager.Instance.Keybindings["Move right"].isPressed) 
                 movementVector += MoveRightForce(currentlyFacing);
 
             // Only add to the position when a change is actually detected.

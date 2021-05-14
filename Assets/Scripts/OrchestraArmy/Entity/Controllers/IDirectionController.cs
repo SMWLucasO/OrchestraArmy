@@ -18,6 +18,11 @@ namespace OrchestraArmy.Entity.Controllers
         /// The current direction
         /// </summary>
         public EntityDirection CurrentDirection { get; }
+        
+        /// <summary>
+        /// Aim direction, bit more precise than move direction. Only set on mouse click.
+        /// </summary>
+        public Vector3 AimDirection { get; }
 
 
         /// <summary>
