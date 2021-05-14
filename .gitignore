@@ -69,3 +69,4 @@ crashlytics-build.properties
 #ide
 .idea
 .vs
+ProjectSettings/QualitySettings.asset
