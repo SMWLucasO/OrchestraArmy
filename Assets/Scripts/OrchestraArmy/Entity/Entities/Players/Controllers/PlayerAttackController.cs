@@ -3,6 +3,7 @@ using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
 
 namespace OrchestraArmy.Entity.Entities.Players.Controllers
@@ -13,7 +14,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         
         public void HandleAttack()
         {
-            if (!Input.GetMouseButtonDown(0))
+            if (!Mouse.current.leftButton.wasPressedThisFrame)
                 return;
 
             var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/NoteProjectile"), Player.transform.position, Player.transform.GetChild(0).transform.rotation);

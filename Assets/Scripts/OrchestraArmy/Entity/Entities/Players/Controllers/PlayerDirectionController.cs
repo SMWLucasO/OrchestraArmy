@@ -1,5 +1,6 @@
 ﻿using OrchestraArmy.Entity.Controllers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
@@ -13,16 +14,29 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         {
             var entityPosition = Entity.transform.position;
             var entityScreenPosition = Camera.WorldToScreenPoint(entityPosition);
-            var mousePosition = Input.mousePosition;
+            var mousePosition = Mouse.current.position.ReadValue();
             var cameraRotation = Camera.transform.rotation.eulerAngles;
 
             if (Mathf.Abs(Vector3.Distance(mousePosition, entityScreenPosition)) < 40)
             {
                 return;
             }
+
+            var angleRadians = 0f;
+            var ray = Camera.ScreenPointToRay(mousePosition);
+
+            // if (Physics.Raycast(ray, out var hit))
+            // {
+            //     angleRadians = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x);
+            // }
+            // else
+            // {
+                // if there is no object for the ray to hit, fall back to a less accurate method
+                angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
+            // }
             
-            var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
             var angle = angleRadians * (180 / Mathf.PI);
+            
             var compensatedAngle = angle - cameraRotation.y;
             var compensatedRadians = compensatedAngle * (Mathf.PI / 180);
 
