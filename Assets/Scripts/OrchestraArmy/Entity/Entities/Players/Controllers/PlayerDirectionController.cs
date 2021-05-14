@@ -25,15 +25,15 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             var angleRadians = 0f;
             var ray = Camera.ScreenPointToRay(mousePosition);
 
-            // if (Physics.Raycast(ray, out var hit))
-            // {
-            //     angleRadians = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x);
-            // }
-            // else
-            // {
+            if (Physics.Raycast(ray, out var hit))
+            {
+                angleRadians = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x);
+            }
+            else
+            {
                 // if there is no object for the ray to hit, fall back to a less accurate method
                 angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
-            // }
+            }
             
             var angle = angleRadians * (180 / Mathf.PI);
             
