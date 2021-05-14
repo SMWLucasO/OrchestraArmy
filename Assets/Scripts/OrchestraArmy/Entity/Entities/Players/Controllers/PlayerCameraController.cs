@@ -39,11 +39,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         public Camera Camera { get; set; } = Camera.main;
 
         /// <summary>
-        /// The rotation along the x-axis (up/down rotation)
-        /// </summary>
-        public float Pitch { get; set; }
-
-        /// <summary>
         /// The rotation along the y-axis (left/right)
         /// </summary>
         public float Yaw { get; set; }
@@ -61,22 +56,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             // we do not need the y-axis, so we set it to 0 for the forward.
             Vector3 playerForward = playerTransform.forward.normalized;
             playerForward.y = 0;
-            
-            // Pitch is for the vertical rotation
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera up"]))
-            {
-                float newPitch = CameraRotationIncrement * Time.deltaTime;
-                if (Pitch + newPitch <= PitchMax)
-                    Pitch += newPitch;
-            }
-
-            if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera down"]))
-            {
-                float newPitch = CameraRotationIncrement * Time.deltaTime;
-                
-                if (Pitch - newPitch >= PitchMin)
-                    Pitch -= newPitch;
-            }
 
             // calculate the x-rotation
             if (Input.GetKey(KeybindingManager.Instance.Keybindings["Rotate camera right"]))
@@ -92,7 +71,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Yaw %= 360;
             
             // place the camera around the player, whilst also pointing it towards the player.
-            cameraTransform.position = cameraPosition - (Quaternion.Euler(Pitch, Yaw, 0) * offset);
+            cameraTransform.position = cameraPosition - (Quaternion.Euler(0, Yaw, 0) * offset);
             
             cameraTransform.LookAt(playerTransform); 
         }

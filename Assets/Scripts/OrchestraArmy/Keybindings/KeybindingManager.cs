@@ -30,8 +30,6 @@ namespace OrchestraArmy.Keybindings
                 {"Move backward", KeyCode.S},
                 {"Move left", KeyCode.A},
                 {"Move right", KeyCode.D},
-                {"Rotate camera up", KeyCode.UpArrow},
-                {"Rotate camera down", KeyCode.DownArrow},
                 {"Rotate camera left", KeyCode.LeftArrow},
                 {"Rotate camera right", KeyCode.RightArrow},
                 {"Select next instrument", KeyCode.E},
