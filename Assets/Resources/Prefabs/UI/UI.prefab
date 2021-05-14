@@ -782,3 +782,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentlySelected>k__BackingField: {fileID: 8810940145319913015}
+  <LatestUnlockedInstrument>k__BackingField: {fileID: 8810940145319913015}
