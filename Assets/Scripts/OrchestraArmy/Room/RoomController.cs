@@ -426,6 +426,8 @@ namespace OrchestraArmy.Room
         public void OnEvent(PlayerDeathEvent invokedEvent)
          {
               _deathState = 1;
+              _enemiesFib1 = 0;
+              _enemiesFib2 = 1;
          }
 
     }
