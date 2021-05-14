@@ -59,24 +59,32 @@ namespace OrchestraArmy.Room
         private int _maxWalkers = 6;
         private float _percentToFill = 0.05f;
         private int _numberOfEnemies;
-        private List<Vector2> _floors;
+        private List<Vector2> _floors = new List<Vector2>();
         private int _distanceBetweenEnemies = 10;
 
-        public Room(int numberOfEnemies, bool boss = false)
+        
+        public Room(int numberOfEnemies, bool spawn = false, bool boss = false)
         {
             _numberOfEnemies = numberOfEnemies;
-            if (boss)
-            {
-                BossSettings();
+            
+            if (spawn) {
+                CreateSpawn();
+                CreateWalls();
+                CreateDoors();
             }
-            Setup();
-            CreateFloors();
-            CreateWalls();
-            RemoveSingleWalls();
-            CreateDoors();
+            else {
+                if (boss) {
+                    BossSettings();
+                }
+                Setup();
+                CreateFloors();
+                CreateWalls();
+                RemoveSingleWalls();
+                CreateDoors();
+            }
+            
             if (!Beaten)
                 CreateEnemySpawnLocationsRecursive();
-
         }
 
         /// <summary>
@@ -126,12 +134,32 @@ namespace OrchestraArmy.Room
             //add walker to list
             _walkers.Add(newWalker);
         }
-
+        
+        void CreateSpawn()  //creates the spawn room layout 
+        {
+            this.Beaten = false;
+            //find grid size
+            RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / _worldUnitsInOneGridCell);
+            RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / _worldUnitsInOneGridCell);
+            //create grid
+            Grid = new GridSpace[RoomWidth, RoomHeight];
+            Vector2 center = RoomSizeWorldUnits / 2;
+            for (int x = (int)-center.x; x < center.x; x++) {
+                for (int y = (int)-center.y; y < center.y; y++) {
+                    if (x*x+y*y<=100) {
+                        Grid[(int) (x+center.x),(int) (y+center.y)] = GridSpace.Floor;
+                    } else {
+                        Grid[(int)(x+center.x),(int)(y+center.y)] = GridSpace.Empty;
+                    }
+                }
+            }
+        }
+        
         /// <summary>
         /// Create floors with random walkers
         /// </summary>
         /// <param name="CreateFloors"></param>
-        private void CreateFloors()
+        void CreateFloors()
         {
             int iterations = 0;//loop will not run forever
             do
