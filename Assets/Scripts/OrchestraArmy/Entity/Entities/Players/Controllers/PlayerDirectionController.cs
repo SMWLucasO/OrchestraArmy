@@ -24,18 +24,12 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
                 return;
             }
 
-            var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y, entityScreenPosition.x - mousePosition.x);
+            var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y,
+                entityScreenPosition.x - mousePosition.x);
             var angle = angleRadians * (180 / Mathf.PI);
-            var aimAngle = angle;
-            
-            var ray = Camera.ScreenPointToRay(mousePosition);
 
-            if (Physics.Raycast(ray, out var hit))
-                aimAngle = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x) * (180 / Mathf.PI);
-            
             var compensatedAngle = angle - cameraRotation.y;
             var compensatedRadians = compensatedAngle * (Mathf.PI / 180);
-            var compensatedAimAngleRadians = (aimAngle - cameraRotation.y) * (Mathf.PI / 180);
 
             if (angle <= -45 && angle >= -135)
                 CurrentDirection = EntityDirection.Top;
@@ -47,10 +41,32 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
                 CurrentDirection = EntityDirection.Left;
 
             var directionVector = new Vector3(-Mathf.Cos(compensatedRadians), 0, -Mathf.Sin(compensatedRadians));
-            AimDirection = new Vector3(-Mathf.Cos(compensatedAimAngleRadians), 0, -Mathf.Sin(compensatedAimAngleRadians));
-            
-            Entity.transform.forward = directionVector;     
 
+            Entity.transform.forward = directionVector;
+            
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                AimDirection = CalculateAimDirection(mousePosition, entityPosition, cameraRotation) ?? directionVector;
+            }
+            
+            AdjustSprite(angle);
+        }
+
+        private Vector3? CalculateAimDirection(Vector2 mousePosition, Vector3 entityPosition, Vector3 cameraRotation)
+        {
+            var ray = Camera.ScreenPointToRay(mousePosition);
+
+            if (!Physics.Raycast(ray, out var hit))
+                return null;
+            
+            var aimAngle = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x) * (180 / Mathf.PI);
+            var compensatedAimAngleRadians = (aimAngle - cameraRotation.y) * (Mathf.PI / 180);
+            
+            return new Vector3(-Mathf.Cos(compensatedAimAngleRadians), 0, -Mathf.Sin(compensatedAimAngleRadians));
+        }
+
+        private void AdjustSprite(float angle)
+        {
             var child = Entity.transform.GetChild(0);
             child.rotation = new Quaternion();
             child.Rotate(new Vector3(0, angle + 90 % 360, 0), Space.Self);
