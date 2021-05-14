@@ -86,20 +86,19 @@ namespace OrchestraArmy.Room
         private void CreateRoom(Vector2 position)
         {
             // Get amount of enemies based on rooms cleared in this level
-            int numberOfEnemies = GetNumberOfEnemies();
 
             // Calculation for chance boss room (after 5 rooms +20% per room)
             if (Random.value < 0.1f * (_roomsCleared - 5 + Math.Abs(_roomsCleared - 5)))
             {    //calculation for chance boss room (after 5 rooms +20% per room)
                 print("boss room");
-                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies, boss:true); // create boss room
+                _rooms[(int)position.x, (int)position.y] = new Room(GetNumberOfEnemies(), boss:true); // create boss room
             } else if (_roomsCleared==0) {
                 print("spawnRoom");
-                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies, spawn:true); // create spawn room
+                _rooms[(int)position.x, (int)position.y] = new Room(0, spawn:true); // create spawn room
             }
             else
             {
-                _rooms[(int)position.x, (int)position.y] = new Room(numberOfEnemies); // create new room
+                _rooms[(int)position.x, (int)position.y] = new Room(GetNumberOfEnemies()); // create new room
             }
         }
 
