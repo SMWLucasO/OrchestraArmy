@@ -44,7 +44,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The player's weapon selection wheel.
         /// </summary>
         public WeaponWheel WeaponWheel { get; set; }
-        
+
         protected override void Update()
         {
             base.Update();
@@ -59,7 +59,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             base.FixedUpdate();
             MovementController?.HandleMovement();
         }
-        
+
         protected override void LateUpdate()
         {
             base.LateUpdate();
@@ -69,12 +69,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         protected override void OnEnable()
         {
             InitializeSprites();
-            
+
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
-            };  
-            
+            };
+
             this.MovementController = new PlayerMovementController()
             {
                 Entity = this

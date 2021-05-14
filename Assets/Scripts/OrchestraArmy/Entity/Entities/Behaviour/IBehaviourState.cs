@@ -17,7 +17,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// <summary>
         /// Process this state.
         /// </summary>
-        public void Process();
+        public void Process(BehaviourStateMachine machine);
         
         /// <summary>
         /// Exit this state.

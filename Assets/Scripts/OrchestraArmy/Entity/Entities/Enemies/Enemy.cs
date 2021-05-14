@@ -7,18 +7,18 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>
     {
         public BehaviourStateMachine Behaviour { get; set; }
 
         public float LastCollisionTime { get; set; }
-        
+
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             LastCollisionTime = Time.time;
-            
+
             // register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
@@ -42,10 +42,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             if (!other.gameObject.TryGetComponent<Player>(out Player player))
                 return;
-            
+
             if (!((Time.time - LastCollisionTime) > 1))
                 return;
-            
+
             LastCollisionTime = Time.time;
             EventManager.Invoke(new PlayerDamageEvent() { HealthLost = 10 });
         }
@@ -59,7 +59,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             if (EntityData.Health <= 0)
             {
-                EventManager.Invoke(new EnemyDeathEvent() {KilledEnemy = this});
+                EventManager.Invoke(new EnemyDeathEvent() { KilledEnemy = this });
             }
         }
 

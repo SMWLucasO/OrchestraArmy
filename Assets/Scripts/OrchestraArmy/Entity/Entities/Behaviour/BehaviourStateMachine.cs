@@ -38,6 +38,6 @@
         /// Process the current state of the state machine.
         /// </summary>
         public void Update() 
-            => CurrentState.Process();
+            => CurrentState.Process(this);
     }
 }
