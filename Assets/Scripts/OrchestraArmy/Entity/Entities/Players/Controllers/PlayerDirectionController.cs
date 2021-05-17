@@ -46,23 +46,20 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                AimDirection = CalculateAimDirection(mousePosition, entityPosition, cameraRotation) ?? directionVector;
+                AimDirection = CalculateAimDirection(mousePosition, entityPosition) ?? directionVector;
             }
             
             AdjustSprite(angle);
         }
 
-        private Vector3? CalculateAimDirection(Vector2 mousePosition, Vector3 entityPosition, Vector3 cameraRotation)
+        private Vector3? CalculateAimDirection(Vector2 mousePosition, Vector3 entityPosition)
         {
             var ray = Camera.ScreenPointToRay(mousePosition);
 
             if (!Physics.Raycast(ray, out var hit))
                 return null;
             
-            var aimAngle = Mathf.Atan2(entityPosition.z - hit.point.z, entityPosition.x - hit.point.x) * (180 / Mathf.PI);
-            var compensatedAimAngleRadians = (aimAngle - cameraRotation.y) * (Mathf.PI / 180);
-            
-            return new Vector3(-Mathf.Cos(compensatedAimAngleRadians), 0, -Mathf.Sin(compensatedAimAngleRadians));
+            return hit.point - entityPosition;
         }
 
         private void AdjustSprite(float angle)
