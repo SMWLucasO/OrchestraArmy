@@ -32,13 +32,14 @@ namespace Tests.PlayTests.Helpers
             Set(Mouse.current.position, new Vector2(mouseScreenPosition.x + xMod, mouseScreenPosition.y + yMod));
         }
         
-        public IEnumerator TestSetup(string scene)
+        public IEnumerator TestSetup(string scene = null)
         {
             Setup();
             InputSystem.AddDevice<Keyboard>();
             InputSystem.AddDevice<Mouse>();
 
-            yield return LoadScene(scene);
+            if (scene != null)
+                yield return LoadScene(scene);
         }
         
         public IEnumerator LoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Single)
@@ -55,11 +56,12 @@ namespace Tests.PlayTests.Helpers
         /// <summary>
         /// Destruction at the end.
         /// </summary>
-        public IEnumerator TestTearDown(string scene)
+        public IEnumerator TestTearDown(string scene = null)
         {
             TearDown();
 
-            yield return SceneManager.UnloadSceneAsync(scene);
+            if (scene != null)
+                yield return SceneManager.UnloadSceneAsync(scene);
         }
     }
 }
