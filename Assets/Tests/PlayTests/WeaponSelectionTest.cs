@@ -17,8 +17,6 @@ namespace Tests.PlayTests
     {
         private Game _game;
 
-        private Image[] _weaponWheelIconPlaceholders; 
-        
         [UnitySetUp]
         public IEnumerator Setup()
         {
@@ -187,7 +185,7 @@ namespace Tests.PlayTests
         }
 
         [UnityTest]
-        public IEnumerator TestPlayerPressBothQAndEDoesNothing()
+        public IEnumerator TestPlayerPressBothQAndEWeaponSelectionDoesNothing()
         {
             WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
 
