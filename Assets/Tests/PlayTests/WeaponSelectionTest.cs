@@ -51,15 +51,63 @@ namespace Tests.PlayTests
         }
         
         [UnityTest]
+        [TestCase(WeaponType.Guitar, WeaponType.Sousaphone, ExpectedResult = (IEnumerator) null)]
+        [TestCase(WeaponType.Sousaphone, WeaponType.Flute, ExpectedResult = (IEnumerator) null)]
+        [TestCase(WeaponType.Flute, WeaponType.Drum, ExpectedResult = (IEnumerator) null)]
+        [TestCase(WeaponType.Drum, WeaponType.Guitar, ExpectedResult = (IEnumerator) null)]
         public IEnumerator TestPlayerCanSwitchInstrumentsBackwardWhenUnlocked(WeaponType before, WeaponType expectedAfter)
         {
-            yield return new WaitForSeconds(1);
+            // load our scene.
+            yield return _game.WaitForSetupTestDataForScene("SampleScene");
+
+            while (_game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType != before)
+                _game.Player.WeaponWheel.CurrentlySelected = _game.Player.WeaponWheel.CurrentlySelected.Next;
+
+            _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Unlocked = true;
+            _game.Player.WeaponWheel.CurrentlySelected.Previous.WeaponWheelPlaceholderData.Unlocked = true;
+
+            yield return null;
+            
+            _game.Press(Keyboard.current.qKey);
+
+            yield return null;
+
+            _game.Release(Keyboard.current.qKey);
+
+            WeaponType newlySelected = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
+            
+            Assert.AreEqual(expectedAfter, newlySelected);
         }
         
         [UnityTest]
         public IEnumerator TestPlayerCannotSwitchInstrumentsWhenLocked()
         {
-            yield return new WaitForSeconds(1);
+            yield return _game.WaitForSetupTestDataForScene("SampleScene");
+
+            WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
+            
+            _game.Press(Keyboard.current.qKey);
+
+            yield return null;
+
+            _game.Release(Keyboard.current.qKey);
+
+            Assert.AreEqual(
+                previous,
+                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                );
+
+            _game.Press(Keyboard.current.qKey);
+
+            yield return null;
+
+            _game.Release(Keyboard.current.qKey);
+            
+            Assert.AreEqual(
+                previous,
+                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+            );
+            
         }
         
 
