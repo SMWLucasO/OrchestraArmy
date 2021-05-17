@@ -15,6 +15,9 @@ namespace Tests.PlayTests
 {
     public class WeaponSelectionTest
     {
+        
+        private Image[] _weaponWheelIconPlaceholders;
+        
         private Game _game;
 
         [UnitySetUp]
