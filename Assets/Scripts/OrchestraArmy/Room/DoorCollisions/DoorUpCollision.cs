@@ -1,30 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using OrchestraArmy.Event;
-using OrchestraArmy.Event.Event;
+using OrchestraArmy.Event.Events.DoorAccess;
 using UnityEngine;
 
-public class DoorUpCollision : MonoBehaviour
+namespace OrchestraArmy.Room.DoorCollisions
 {
-    // Start is called before the first frame update
-    void Start()
+    public class DoorUpCollision : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        print("up");
-        EventManager.Invoke(new RoomDoorDownEvent());
-    }
-    void OnCollisionEnter()
-    {
-        EventManager.Invoke(new RoomDoorUpEvent());
-        print("up");
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+                EventManager.Invoke(new RoomDoorUpEvent());
+        }
     }
 }

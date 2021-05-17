@@ -13,11 +13,6 @@ namespace OrchestraArmy.Entity.Data
         [Min(0)]
         [SerializeField]
         private int _stamina = 100;
-        
-        [Min(0)]
-        [SerializeField]
-        private float _walkSpeed = 200;
-
 
         public int Health
         {
@@ -29,12 +24,6 @@ namespace OrchestraArmy.Entity.Data
         {
             get => _stamina;
             set => _stamina = value;
-        }
-        
-        public float WalkSpeed
-        {
-            get => _walkSpeed;
-            set => _walkSpeed = value;
         }
     }
 }
