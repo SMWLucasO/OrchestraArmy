@@ -80,6 +80,7 @@ namespace Tests.PlayTests.Helpers
         /// </summary>
         public override void TearDown()
         {
+            base.TearDown();
             InputSystem.RemoveDevice(Keyboard.current);
             InputSystem.RemoveDevice(Mouse.current);
         }
