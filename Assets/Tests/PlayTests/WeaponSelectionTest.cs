@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Tests.PlayTests
 {
@@ -16,11 +17,16 @@ namespace Tests.PlayTests
     {
         private Game _game;
 
+        private Image[] _weaponWheelIconPlaceholders; 
+        
         [UnitySetUp]
         public IEnumerator Setup()
         {
             _game = new Game();
             yield return _game.TestSetup("SampleScene");
+            
+            _weaponWheelIconPlaceholders = GameObject.FindWithTag("UI:WeaponWheel:ImagePlaceholders")
+                .GetComponentsInChildren<Image>();
         }
 
         [UnityTest]
@@ -47,6 +53,8 @@ namespace Tests.PlayTests
 
             WeaponType newlySelected = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
 
+            AssertPlaceholderSprite();
+            
             Assert.AreEqual(expectedAfter, newlySelected);
         }
 
@@ -73,6 +81,8 @@ namespace Tests.PlayTests
             _game.Release(Keyboard.current.qKey);
 
             WeaponType newlySelected = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
+
+            AssertPlaceholderSprite();
 
             Assert.AreEqual(expectedAfter, newlySelected);
         }
@@ -111,7 +121,7 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestPlayerWeaponSelectionForwardFlow()
         {
-            ApplyToAllInstruments(
+            ApplyToAllInstrumentPlaceholders(
                 (placeholder) => placeholder.WeaponWheelPlaceholderData.Unlocked = true
             );
 
@@ -136,7 +146,7 @@ namespace Tests.PlayTests
             }
             
             
-            ApplyToAllInstruments(
+            ApplyToAllInstrumentPlaceholders(
                 (placeholder) =>
                 {
                     if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
@@ -147,7 +157,7 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestPlayerWeaponSelectionBackwardFlow()
         {
-            ApplyToAllInstruments(
+            ApplyToAllInstrumentPlaceholders(
                 (placeholder) => placeholder.WeaponWheelPlaceholderData.Unlocked = true
             );
 
@@ -203,7 +213,32 @@ namespace Tests.PlayTests
 
         // specific helpers
 
-        private void ApplyToAllInstruments(Action<WeaponWheelPlaceholder> appliableFunc)
+        /// <summary>
+        /// Assertion method for whether the icons are correct for the currently selected instrument and its next/prev.
+        /// </summary>
+        private void AssertPlaceholderSprite()
+        {
+            Assert.AreEqual(
+                _game.Player.WeaponWheel.CurrentlySelected.Previous.WeaponWheelPlaceholderData.WeaponPlaceholderIcon,
+                _weaponWheelIconPlaceholders[0].sprite
+            );
+
+            Assert.AreEqual(
+                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponPlaceholderIcon,
+                _weaponWheelIconPlaceholders[1].sprite
+            );
+
+            Assert.AreEqual(
+                _game.Player.WeaponWheel.CurrentlySelected.Next.WeaponWheelPlaceholderData.WeaponPlaceholderIcon,
+                _weaponWheelIconPlaceholders[2].sprite
+            );
+        }
+        
+        /// <summary>
+        /// Apply something to all instrument placeholders.
+        /// </summary>
+        /// <param name="appliableFunc"></param>
+        private void ApplyToAllInstrumentPlaceholders(Action<WeaponWheelPlaceholder> appliableFunc)
         {
             WeaponWheelPlaceholder placeholder = _game.Player.WeaponWheel.CurrentlySelected;
             bool first = true;
@@ -217,8 +252,11 @@ namespace Tests.PlayTests
             }
         }
         
+        /// <summary>
+        /// Lock all unlockable(everything except the guitar) instruments
+        /// </summary>
         private void LockAllUnlockableInstruments()
-            => ApplyToAllInstruments(
+            => ApplyToAllInstrumentPlaceholders(
                 (placeholder) =>
                 {
                     if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
