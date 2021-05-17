@@ -4,6 +4,7 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.InputSystem",
+        "Unity.InputSystem.Tests",
         "Unity.InputSystem.TestFramework",
         "OrchestraArmy"
     ],
