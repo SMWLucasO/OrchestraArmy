@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using NUnit.Framework;
 using OrchestraArmy.Entity.Entities.Players;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using Tests.PlayTests.Helpers;
 using UnityEngine;
@@ -26,7 +28,8 @@ namespace Tests.PlayTests
         [TestCase(WeaponType.Drum, WeaponType.Flute, ExpectedResult = (IEnumerator) null)]
         [TestCase(WeaponType.Flute, WeaponType.Sousaphone, ExpectedResult = (IEnumerator) null)]
         [TestCase(WeaponType.Sousaphone, WeaponType.Guitar, ExpectedResult = (IEnumerator) null)]
-        public IEnumerator TestPlayerCanSwitchInstrumentsForwardWhenUnlocked(WeaponType before, WeaponType expectedAfter)
+        public IEnumerator TestPlayerCanSwitchInstrumentsForwardWhenUnlocked(WeaponType before,
+            WeaponType expectedAfter)
         {
             while (_game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType != before)
                 _game.Player.WeaponWheel.CurrentlySelected = _game.Player.WeaponWheel.CurrentlySelected.Next;
@@ -35,7 +38,7 @@ namespace Tests.PlayTests
             _game.Player.WeaponWheel.CurrentlySelected.Next.WeaponWheelPlaceholderData.Unlocked = true;
 
             yield return null;
-            
+
             _game.Press(Keyboard.current.eKey);
 
             yield return null;
@@ -43,16 +46,17 @@ namespace Tests.PlayTests
             _game.Release(Keyboard.current.eKey);
 
             WeaponType newlySelected = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
-            
+
             Assert.AreEqual(expectedAfter, newlySelected);
         }
-        
+
         [UnityTest]
         [TestCase(WeaponType.Guitar, WeaponType.Sousaphone, ExpectedResult = (IEnumerator) null)]
         [TestCase(WeaponType.Sousaphone, WeaponType.Flute, ExpectedResult = (IEnumerator) null)]
         [TestCase(WeaponType.Flute, WeaponType.Drum, ExpectedResult = (IEnumerator) null)]
         [TestCase(WeaponType.Drum, WeaponType.Guitar, ExpectedResult = (IEnumerator) null)]
-        public IEnumerator TestPlayerCanSwitchInstrumentsBackwardWhenUnlocked(WeaponType before, WeaponType expectedAfter)
+        public IEnumerator TestPlayerCanSwitchInstrumentsBackwardWhenUnlocked(WeaponType before,
+            WeaponType expectedAfter)
         {
             while (_game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType != before)
                 _game.Player.WeaponWheel.CurrentlySelected = _game.Player.WeaponWheel.CurrentlySelected.Next;
@@ -61,7 +65,7 @@ namespace Tests.PlayTests
             _game.Player.WeaponWheel.CurrentlySelected.Previous.WeaponWheelPlaceholderData.Unlocked = true;
 
             yield return null;
-            
+
             _game.Press(Keyboard.current.qKey);
 
             yield return null;
@@ -69,43 +73,150 @@ namespace Tests.PlayTests
             _game.Release(Keyboard.current.qKey);
 
             WeaponType newlySelected = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
-            
+
             Assert.AreEqual(expectedAfter, newlySelected);
         }
-        
+
         [UnityTest]
         public IEnumerator TestPlayerCannotSwitchInstrumentsWhenLocked()
         {
             WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
-            
-            _game.Press(Keyboard.current.qKey);
-
-            yield return null;
-
-            _game.Release(Keyboard.current.qKey);
-
-            Assert.AreEqual(
-                previous,
-                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
-                );
 
             _game.Press(Keyboard.current.qKey);
 
             yield return null;
 
             _game.Release(Keyboard.current.qKey);
-            
+
             Assert.AreEqual(
                 previous,
                 _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
             );
+
+            _game.Press(Keyboard.current.qKey);
+
+            yield return null;
+
+            _game.Release(Keyboard.current.qKey);
+
+            Assert.AreEqual(
+                previous,
+                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+            );
+        }
+
+        [UnityTest]
+        public IEnumerator TestPlayerWeaponSelectionForwardFlow()
+        {
+            ApplyToAllInstruments(
+                (placeholder) => placeholder.WeaponWheelPlaceholderData.Unlocked = true
+            );
+
+            WeaponType[] weaponTypes = new[]
+            {
+                WeaponType.Guitar,
+                WeaponType.Drum,
+                WeaponType.Flute,
+                WeaponType.Sousaphone
+            };
+
+         
+            foreach (WeaponType weaponType in weaponTypes)
+            {
+                _game.Press(Keyboard.current.eKey);
+                Assert.AreEqual(
+                    weaponType,
+                    _game.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                );
+                yield return null;
+                _game.Release(Keyboard.current.eKey);
+            }
             
+            
+            ApplyToAllInstruments(
+                (placeholder) =>
+                {
+                    if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
+                        placeholder.WeaponWheelPlaceholderData.Unlocked = false;
+                });
         }
         
+        [UnityTest]
+        public IEnumerator TestPlayerWeaponSelectionBackwardFlow()
+        {
+            ApplyToAllInstruments(
+                (placeholder) => placeholder.WeaponWheelPlaceholderData.Unlocked = true
+            );
+
+            WeaponType[] weaponTypes = new[]
+            {
+                WeaponType.Guitar,
+                WeaponType.Sousaphone,
+                WeaponType.Flute,
+                WeaponType.Drum,
+                WeaponType.Guitar
+            };
+
+         
+            foreach (WeaponType weaponType in weaponTypes)
+            {
+                _game.Press(Keyboard.current.qKey);
+                Assert.AreEqual(
+                    weaponType,
+                    _game.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                );
+                yield return null;
+                _game.Release(Keyboard.current.qKey);
+            }
+            
+            
+            ApplyToAllInstruments(
+                (placeholder) =>
+                {
+                    if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
+                        placeholder.WeaponWheelPlaceholderData.Unlocked = false;
+                });
+        }
+
+        [UnityTest]
+        public IEnumerator TestPlayerPressBothQAndEDoesNothing()
+        {
+            WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
+
+            _game.Press(Keyboard.current.qKey);
+            _game.Press(Keyboard.current.eKey);
+
+            yield return null;
+
+            _game.Release(Keyboard.current.qKey);
+            _game.Release(Keyboard.current.eKey);
+
+            Assert.AreEqual(
+                previous,
+                _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+            );
+        }
+
         [UnityTearDown]
         public IEnumerator Teardown()
         {
             yield return _game.TestTearDown("SampleScene");
+        }
+
+        // specific helpers
+
+        private void ApplyToAllInstruments(Action<WeaponWheelPlaceholder> appliableFunc)
+        {
+            WeaponWheelPlaceholder placeholder = _game.Player.WeaponWheel.CurrentlySelected;
+            bool first = true;
+            while (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar || first)
+            {
+                appliableFunc(placeholder);
+                placeholder = placeholder.Next;
+                
+                if (placeholder.WeaponWheelPlaceholderData.WeaponType == WeaponType.Guitar)
+                    first = false;
+            }
         }
     }
 }
