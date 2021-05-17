@@ -12,13 +12,13 @@ namespace Tests.PlayTests
 {
     public class WeaponSelectionTest
     {
-        private Game2 _game;
-        
-        [SetUp]
-        public void Setup()
+        private Game _game;
+
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
-            _game = new Game2();
-            _game.Setup();
+            _game = new Game();
+            yield return _game.TestSetup("SampleScene");
         }
 
         [UnityTest]
@@ -28,9 +28,6 @@ namespace Tests.PlayTests
         [TestCase(WeaponType.Sousaphone, WeaponType.Guitar, ExpectedResult = (IEnumerator) null)]
         public IEnumerator TestPlayerCanSwitchInstrumentsForwardWhenUnlocked(WeaponType before, WeaponType expectedAfter)
         {
-            // load our scene.
-            yield return _game.WaitForSetupTestDataForScene("SampleScene");
-
             while (_game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType != before)
                 _game.Player.WeaponWheel.CurrentlySelected = _game.Player.WeaponWheel.CurrentlySelected.Next;
 
@@ -57,9 +54,6 @@ namespace Tests.PlayTests
         [TestCase(WeaponType.Drum, WeaponType.Guitar, ExpectedResult = (IEnumerator) null)]
         public IEnumerator TestPlayerCanSwitchInstrumentsBackwardWhenUnlocked(WeaponType before, WeaponType expectedAfter)
         {
-            // load our scene.
-            yield return _game.WaitForSetupTestDataForScene("SampleScene");
-
             while (_game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType != before)
                 _game.Player.WeaponWheel.CurrentlySelected = _game.Player.WeaponWheel.CurrentlySelected.Next;
 
@@ -82,8 +76,6 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestPlayerCannotSwitchInstrumentsWhenLocked()
         {
-            yield return _game.WaitForSetupTestDataForScene("SampleScene");
-
             WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
             
             _game.Press(Keyboard.current.qKey);
@@ -110,13 +102,10 @@ namespace Tests.PlayTests
             
         }
         
-
-
-        [TearDown]
-        public void Teardown()
+        [UnityTearDown]
+        public IEnumerator Teardown()
         {
-            _game.TearDown();
+            yield return _game.TestTearDown("SampleScene");
         }
-
     }
 }
