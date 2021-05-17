@@ -80,6 +80,9 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestPlayerCannotSwitchInstrumentsWhenLocked()
         {
+            // due to testing, all weapons might be unlocked.
+            LockAllUnlockableInstruments();
+            
             WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
 
             _game.Press(Keyboard.current.qKey);
@@ -168,14 +171,9 @@ namespace Tests.PlayTests
                 yield return null;
                 _game.Release(Keyboard.current.qKey);
             }
-            
-            
-            ApplyToAllInstruments(
-                (placeholder) =>
-                {
-                    if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
-                        placeholder.WeaponWheelPlaceholderData.Unlocked = false;
-                });
+
+            LockAllUnlockableInstruments();
+
         }
 
         [UnityTest]
@@ -218,5 +216,14 @@ namespace Tests.PlayTests
                     first = false;
             }
         }
+        
+        private void LockAllUnlockableInstruments()
+            => ApplyToAllInstruments(
+                (placeholder) =>
+                {
+                    if (placeholder.WeaponWheelPlaceholderData.WeaponType != WeaponType.Guitar)
+                        placeholder.WeaponWheelPlaceholderData.Unlocked = false;
+                });
+        
     }
 }
