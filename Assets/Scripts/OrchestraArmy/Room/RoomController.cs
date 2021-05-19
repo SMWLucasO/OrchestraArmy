@@ -40,7 +40,6 @@ namespace OrchestraArmy.Room
 
         public RoomController()
         {
-            
             // Register the events which are controlled by this class.
             EventManager.Bind<EnemyDeathEvent>(this);
         }
@@ -48,10 +47,8 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Destroy the room which this controller controls.
         /// </summary>
-        public void DestroyRoom()
-        {
-            Objects.ForEach(GameObject.Destroy);
-        }
+        public void DestroyRoom() 
+            => Objects.ForEach(GameObject.Destroy);
 
         /// <summary>
         /// Event for when an enemy dies.
@@ -64,8 +61,12 @@ namespace OrchestraArmy.Room
 
             // If all enemies are dead
             if (Room.EnemySpawnData.NumberOfEnemies < 1)
+            {
                 // Level beaten
                 Room.RoomIsCleared = true;
+                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
+            }
+                
         }
 
     }

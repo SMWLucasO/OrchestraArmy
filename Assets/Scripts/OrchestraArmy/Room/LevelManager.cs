@@ -14,11 +14,11 @@ namespace OrchestraArmy.Room
         /// The single instance of the levelmanager.
         /// </summary>
         public static LevelManager Instance { get; set; }
-        
+
         /// <summary>
         /// The Level on which the rooms are located.
         /// </summary>
-        public int Level { get; set; }
+        public int Level { get; set; } = 1;
 
         /// <summary>
         /// The room manager for the level.
@@ -42,6 +42,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Go to the next level.
         /// </summary>
+        /// <param name="player"></param>
         public void MoveToNextLevel(Player player)
         {
             RoomManager.Instance.DestroyRooms();
@@ -57,6 +58,10 @@ namespace OrchestraArmy.Room
 
         }
 
+        /// <summary>
+        /// Go to the previous level.
+        /// </summary>
+        /// <param name="player"></param>
         public void MoveToPreviousLevel(Player player)
         {
             RoomManager.Instance.DestroyRooms();
@@ -91,13 +96,13 @@ namespace OrchestraArmy.Room
                     break;
                 
                 case (2):                               //slow functions hidden by death screen
-                    MoveToPreviousLevel(GameObject.FindWithTag("Player").GetComponent<Player>());
                     _deathState++;
                     break;
                 
                 case (3):
                     if (Time.time - _timeOfDeath >= 2)  //extends the time of the deathscreen on fast computers
                     {
+                        MoveToPreviousLevel(GameObject.FindWithTag("Player").GetComponent<Player>());
                         DeathScreen.SetActive(false); //deactivate death screen
                         _deathState = 0; //deactivate death 'loop'
                     }

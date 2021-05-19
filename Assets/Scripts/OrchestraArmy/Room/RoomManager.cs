@@ -52,7 +52,11 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The current room of the player.
         /// </summary>
-        public Room CurrentRoom => Rooms[(int) CurrentRoomIndex.x, (int) CurrentRoomIndex.y];
+        public Room CurrentRoom
+        {
+            get => Rooms[(int) CurrentRoomIndex.x, (int) CurrentRoomIndex.y];
+            set => Rooms[(int) CurrentRoomIndex.x, (int) CurrentRoomIndex.y] = value;
+        }
         
         private int _enemiesFib1 = 1;
         private int _enemiesFib2 = 1;
@@ -81,6 +85,51 @@ namespace OrchestraArmy.Room
             EventManager.Bind<PlayerDeathEvent>(this);
         }
 
+        /// <summary>
+        /// Generate a room of the specified type to be placed at the specified location.
+        /// Will not do anything if a room already exists at the specified position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="room"></param>
+        public void GenerateRoom(Vector2 position, RoomType room)
+        {
+            if (CurrentRoom != null)
+                return;
+            
+            CurrentRoom = room switch
+            {
+                RoomType.BossRoom => RoomFactory.MakeBossRoom(),
+                RoomType.MonsterRoom => RoomFactory.MakeMonsterRoom(),
+                RoomType.StartingRoom => RoomFactory.MakeStartingRoom(),
+                _ => null
+            };
+
+            if (CurrentRoom != null)
+            {
+                CurrentRoom.RoomController.Room = CurrentRoom;
+                CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
+                CurrentRoom.Generate();
+
+                SpawnRoom();
+            }
+        }
+        
+        /// <summary>
+        /// Destroy all current rooms.
+        /// </summary>
+        public void DestroyRooms()
+        {
+            foreach (var room in Rooms)
+                room?.RoomController?.DestroyRoom();
+
+            Rooms = new Room[20, 20];
+        }
+        
+        /// <summary>
+        /// Move the player to the next room.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="direction"></param>
         public void MoveToNextRoom(Player player, DoorDirection direction)
         {
             // Clear previous field
@@ -126,7 +175,7 @@ namespace OrchestraArmy.Room
         /// </summary>
         private void SpawnRoom()
         {
-            
+
             for (int x = 0; x < CurrentRoom.RoomWidth; x++)
             {
                 for (int y = 0; y < CurrentRoom.RoomHeight; y++)
@@ -282,37 +331,6 @@ namespace OrchestraArmy.Room
         
 
         /// <summary>
-        /// Generate a room of the specified type to be placed at the specified location.
-        /// Will not do anything if a room already exists at the specified position.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="room"></param>
-        public void GenerateRoom(Vector2 position, RoomType room)
-        {
-            if (CurrentRoom != null)
-                return;
-
-            Debug.Log("HERE");
-            
-            Rooms[(int) position.x, (int) position.y] = room switch
-            {
-                RoomType.BossRoom => RoomFactory.MakeBossRoom(),
-                RoomType.MonsterRoom => RoomFactory.MakeMonsterRoom(),
-                RoomType.StartingRoom => RoomFactory.MakeStartingRoom(),
-                _ => null
-            };
-
-            if (CurrentRoom != null)
-            {
-                CurrentRoom.RoomController.Room = CurrentRoom;
-                CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
-                CurrentRoom.Generate();
-                
-                SpawnRoom();
-            }
-        }
-
-        /// <summary>
         /// Determine the type of the next room to be generated
         /// </summary>
         /// <returns></returns>
@@ -362,16 +380,6 @@ namespace OrchestraArmy.Room
             _enemiesFib1 = 0;
             _enemiesFib2 = 1;
         }
-
-        /// <summary>
-        /// Destroy all current rooms.
-        /// </summary>
-        public void DestroyRooms()
-        {
-            foreach (var room in Rooms)
-                room?.RoomController?.DestroyRoom();
-
-            Rooms = new Room[20, 20];
-        }
+        
     }
 }
