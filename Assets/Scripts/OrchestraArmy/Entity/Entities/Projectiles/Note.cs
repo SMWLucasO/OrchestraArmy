@@ -12,12 +12,12 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         public IWeapon Instrument { get; set; }
         public Player Attacker { get; set; }
 
-        public void OnCollisionEnter(Collision collision)
+        public void OnTriggerEnter(Collider collider)
         {
-            switch (collision.collider.tag)
+            switch (collider.tag)
             {
                 case "Player":
-                    Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+                    Physics.IgnoreCollision(collider, GetComponent<Collider>());
                     break;
                 case "World":
                     Hit = true;
@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                     EventManager.Invoke(new PlayerAttackHitEvent()
                     {
                         Attacker = Attacker,
-                        TargetId = collision.collider.gameObject.GetInstanceID(),
+                        TargetId = collider.gameObject.GetInstanceID(),
                         Weapon = Instrument
                     });
                     break;
