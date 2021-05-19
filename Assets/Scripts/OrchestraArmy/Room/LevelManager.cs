@@ -54,8 +54,6 @@ namespace OrchestraArmy.Room
             // set to one such that we can get to other rooms.
             RoomManager.RoomsCleared = 1;
 
-            // set player to middle of room.
-
         }
 
         /// <summary>
@@ -73,10 +71,7 @@ namespace OrchestraArmy.Room
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
 
             // set to one such that we can get to other rooms.
-            RoomManager.RoomsCleared = 1; 
-            
-            // set player in middle of room.
-            player.transform.position = new Vector3(0, 0, 0);
+            RoomManager.RoomsCleared = 1;
 
             // Refill player health/stamina.
             player.EntityData.Health = 100;
