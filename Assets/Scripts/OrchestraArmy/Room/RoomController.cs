@@ -6,6 +6,8 @@ using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine.Experimental.Rendering;
 using Random = UnityEngine.Random;
+using UnityEditor.AI;
+using UnityEngine.AI;
 
 namespace OrchestraArmy.Room
 {
