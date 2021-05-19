@@ -5,7 +5,6 @@ using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
-using OrchestraArmy.Room.Rooms;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,6 +19,11 @@ namespace OrchestraArmy.Room
         /// </summary>
         public static RoomManager Instance { get; set; }
 
+        /// <summary>
+        /// The count of currently collected instruments, starting at 0.
+        /// The count ends at 3.
+        /// </summary>
+        public int CollectedInstrumentCount { get; set; } = 0;
 
         /// <summary>
         /// The generator of our rooms.
@@ -60,7 +64,7 @@ namespace OrchestraArmy.Room
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
         
-        private void OnEnable()
+        private void Start()
         {
             Instance = this;
             _player = GameObject.Find("Player").GetComponent<Player>();
@@ -77,6 +81,7 @@ namespace OrchestraArmy.Room
 
         public void MoveToNextRoom(Player player, DoorDirection direction)
         {
+            Debug.Log("Called");
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
 
@@ -167,12 +172,9 @@ namespace OrchestraArmy.Room
 
             // Spawn enemies
             int newestEnemy = Math.Min(
-                _player.WeaponWheel.CollectedInstrumentCount,
+                CollectedInstrumentCount,
                 CurrentRoom.RoomController.Enemies.Count - 1
                 );
-            
-            Debug.Log(CurrentRoom == null);
-            Debug.Log(CurrentRoom.RoomController == null);
             
             int enemyTypes = newestEnemy + 1;
 

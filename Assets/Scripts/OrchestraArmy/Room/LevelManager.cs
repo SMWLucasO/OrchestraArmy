@@ -31,7 +31,7 @@ namespace OrchestraArmy.Room
 
         public GameObject DeathScreen;
         
-        private void OnEnable()
+        private void Start()
         {
             Instance = this;
             RoomManager = GetComponent<RoomManager>();
