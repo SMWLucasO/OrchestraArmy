@@ -250,7 +250,6 @@ namespace OrchestraArmy.Room
                 }
             }
 
-            // TODO fix player spawning at wrong y-level at restart.
             if (_player != null)
             {
                 _player.transform.position = new Vector3(75 - CurrentRoom.OffsetOfRoom.x, _player.transform.position.y,
