@@ -44,28 +44,34 @@ namespace OrchestraArmy.Room
         /// </summary>
         public void MoveToNextLevel(Player player)
         {
-            // TODO: destroy all room data
-
+            RoomManager.Instance.DestroyRooms();
             this.Level += 1;
             
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             
+            // set to one such that we can get to other rooms.
+            RoomManager.RoomsCleared = 1;
+
             // set player to middle of room.
-            
+
         }
 
         public void MoveToPreviousLevel(Player player)
         {
-            // TODO: destroy all room data
             RoomManager.Instance.DestroyRooms();
-            this.Level -= 1;
+            
+            if (this.Level > 1)
+                this.Level -= 1;
             
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
+
+            // set to one such that we can get to other rooms.
+            RoomManager.RoomsCleared = 1; 
             
             // set player in middle of room.
-            
+            player.transform.position = new Vector3(0, 0, 0);
 
             // Refill player health/stamina.
             player.EntityData.Health = 100;

@@ -23,6 +23,7 @@ namespace OrchestraArmy.Room
         Down
     };
     
+    [Serializable]
     public class RoomController : IListener<EnemyDeathEvent>
     {
 
@@ -30,12 +31,6 @@ namespace OrchestraArmy.Room
         /// The room for this controller.
         /// </summary>
         public Room Room { get; set; }
-
-        /// <summary>
-        /// The enemies within the room.
-        /// </summary>
-        public List<Enemy> Enemies { get; set; }
-            = new List<Enemy>();
 
         /// <summary>
         /// All objects within the room. (Rubble, floors, walls, etc.)
@@ -56,9 +51,6 @@ namespace OrchestraArmy.Room
         public void DestroyRoom()
         {
             Objects.ForEach(GameObject.Destroy);
-            
-            // Shouldn't be necessary, but just in case.
-            Enemies.ForEach(GameObject.Destroy);
         }
 
         /// <summary>

@@ -41,11 +41,11 @@ namespace OrchestraArmy.Room
         /// </summary>
         public Vector2 CurrentRoomIndex { get; set; } 
             = new Vector2(10, 10);
-        
+
         /// <summary>
         /// The amount of rooms where all monsters were defeated.
         /// </summary>
-        public int RoomsCleared { get; set; }
+        public int RoomsCleared { get; set; } = 0;
 
         private Player _player;
         
@@ -72,16 +72,17 @@ namespace OrchestraArmy.Room
             Rooms = new Room[20, 20];
             
             this.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
+            RoomsCleared = 1;
             
             EventManager.Bind<RoomDoorDownEvent>(this);
             EventManager.Bind<RoomDoorUpEvent>(this);
             EventManager.Bind<RoomDoorLeftEvent>(this);
             EventManager.Bind<RoomDoorRightEvent>(this);
+            EventManager.Bind<PlayerDeathEvent>(this);
         }
 
         public void MoveToNextRoom(Player player, DoorDirection direction)
         {
-            Debug.Log("Called");
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
 
@@ -90,7 +91,7 @@ namespace OrchestraArmy.Room
             switch (direction)
             {
                 case DoorDirection.Left:
-                    currentRoomIndex.x = 1;
+                    currentRoomIndex.x += 1;
                     break;
 
                 case DoorDirection.Right:
@@ -173,9 +174,9 @@ namespace OrchestraArmy.Room
             // Spawn enemies
             int newestEnemy = Math.Min(
                 CollectedInstrumentCount,
-                CurrentRoom.RoomController.Enemies.Count - 1
+                RoomPrefabData.Enemies.Count - 1
                 );
-            
+
             int enemyTypes = newestEnemy + 1;
 
             int newestEnemyPercentage = (int) (100.0 / enemyTypes + 10.0);
@@ -190,22 +191,22 @@ namespace OrchestraArmy.Room
             {
                 if (newestEnemyAmount > 0)
                 {
-                    Spawn(enemy.x, enemy.y, CurrentRoom.RoomController.Enemies[newestEnemy].gameObject);
+                    Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[newestEnemy].gameObject);
                     newestEnemyAmount--;
                 }
                 else
                 {
                     // Check how many types of enemies may spawn and randomly get enemy to spawn from older ones
-                    Spawn(enemy.x, enemy.y, CurrentRoom.RoomController.Enemies[Random.Range(0, newestEnemy)].gameObject);
+                    Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[Random.Range(0, newestEnemy)].gameObject);
                 }
             }
 
-
-            var player = GameObject.FindGameObjectWithTag("Player");
-
-            if (player != null)
-                player.transform.position = new Vector3(75 - CurrentRoom.OffsetOfRoom.x, player.transform.position.y,
+            if (_player != null)
+            {
+                _player.transform.position = new Vector3(75 - CurrentRoom.OffsetOfRoom.x, _player.transform.position.y,
                     75 - CurrentRoom.OffsetOfRoom.y);
+            }
+                
         }
 
         /// <summary>
@@ -290,6 +291,8 @@ namespace OrchestraArmy.Room
         {
             if (CurrentRoom != null)
                 return;
+
+            Debug.Log("HERE");
             
             Rooms[(int) position.x, (int) position.y] = room switch
             {
@@ -304,9 +307,9 @@ namespace OrchestraArmy.Room
                 CurrentRoom.RoomController.Room = CurrentRoom;
                 CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
                 CurrentRoom.Generate();
+                
+                SpawnRoom();
             }
-            
-            SpawnRoom();
         }
 
         /// <summary>
@@ -316,11 +319,10 @@ namespace OrchestraArmy.Room
         private RoomType DecideNextRoom()
         {
             // calculation for chance boss room (after 5 rooms +20% per room)
-            return (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))) switch
-            {
-                true => RoomType.BossRoom,
-                _ => RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom
-            };
+            if ((Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))))
+                return RoomType.BossRoom;
+            else
+                return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;
         }
 
         /// <summary>
@@ -353,6 +355,7 @@ namespace OrchestraArmy.Room
 
         public void OnEvent(RoomDoorRightEvent invokedEvent)
             => MoveToNextRoom(_player, DoorDirection.Right);
+        
 
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {
@@ -367,6 +370,8 @@ namespace OrchestraArmy.Room
         {
             foreach (var room in Rooms)
                 room?.RoomController?.DestroyRoom();
+
+            Rooms = new Room[20, 20];
         }
     }
 }

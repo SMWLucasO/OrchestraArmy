@@ -16,6 +16,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The controller for this room.
         /// </summary>
+        [field: SerializeField]
         public RoomController RoomController { get; set; }
         
         /// <summary>
