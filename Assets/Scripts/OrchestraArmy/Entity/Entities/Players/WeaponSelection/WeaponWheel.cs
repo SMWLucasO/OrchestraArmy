@@ -26,6 +26,12 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         public WeaponWheelPlaceholder CurrentlySelected { get; set; }
 
         /// <summary>
+        /// The count of currently collected instruments, starting at 0.
+        /// The count ends at 3.
+        /// </summary>
+        public int CollectedInstrumentCount { get; set; } = 0;
+
+        /// <summary>
         /// Select the next weapon for usage.
         /// </summary>
         /// <returns>bool determining if the weapon was switched.</returns>

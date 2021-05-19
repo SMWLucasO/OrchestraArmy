@@ -9,7 +9,9 @@ namespace OrchestraArmy.Keybindings
 
         public static KeybindingManager Instance { get; set; }
             = new KeybindingManager();
-        
+
+        private KeybindingManager() { }
+
         /// <summary>
         /// Store for all the keybindings, where the description points to the bound key.
         /// </summary>
