@@ -93,17 +93,14 @@ namespace OrchestraArmy.Room
         /// <param name="room"></param>
         public void GenerateRoom(Vector2 position, RoomType room)
         {
-            if (CurrentRoom != null)
-                return;
-            
-            CurrentRoom = room switch
+            CurrentRoom ??= room switch
             {
                 RoomType.BossRoom => RoomFactory.MakeBossRoom(),
                 RoomType.MonsterRoom => RoomFactory.MakeMonsterRoom(),
                 RoomType.StartingRoom => RoomFactory.MakeStartingRoom(),
                 _ => null
             };
-
+            
             if (CurrentRoom != null)
             {
                 CurrentRoom.RoomController.Room = CurrentRoom;

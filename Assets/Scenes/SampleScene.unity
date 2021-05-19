@@ -358,7 +358,6 @@ GameObject:
   - component: {fileID: 1628907484}
   - component: {fileID: 1628907483}
   - component: {fileID: 1628907482}
-  - component: {fileID: 1628907481}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -366,18 +365,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1628907481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628907480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966f4463f25e469f84053f1c17189982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &1628907482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -738,87 +725,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824626325}
   m_CullTransparentMesh: 1
---- !u!1001 &5238573126263096438
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526012, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526014, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: m_Name
-      value: TheRoom
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526015, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: <RoomPrefabData>k__BackingField.Enemies.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238573125576526015, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: <RoomPrefabData>k__BackingField.Enemies.Array.data[0]
-      value: 
-      objectReference: {fileID: 630323051058264127, guid: fffcf81fd456aad40a6e72312f9c785a, type: 3}
-    - target: {fileID: 5238573125576526015, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: <RoomPrefabData>k__BackingField.Enemies.Array.data[1]
-      value: 
-      objectReference: {fileID: 630323051058264127, guid: cd3346680a8eb0f458087732602d4d3f, type: 3}
-    - target: {fileID: 5238573125576526015, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: <RoomPrefabData>k__BackingField.Enemies.Array.data[2]
-      value: 
-      objectReference: {fileID: 630323051058264127, guid: 52682ea59764c934596e4ea5605ba21a, type: 3}
-    - target: {fileID: 5238573125576526015, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: <RoomPrefabData>k__BackingField.Enemies.Array.data[3]
-      value: 
-      objectReference: {fileID: 630323051058264127, guid: dfda76dbfcb2c3e459ecd7562da8aae1, type: 3}
-    - target: {fileID: 5940821172318452254, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
-      propertyPath: DeathScreen
-      value: 
-      objectReference: {fileID: 410868433}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
 --- !u!1001 &6774437166434009431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -888,6 +794,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
+--- !u!1001 &6962567358313920419
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505128, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505129, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: DeathScreen
+      value: 
+      objectReference: {fileID: 410868433}
+    - target: {fileID: 6962567360145505131, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: m_Name
+      value: TheRoom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
 --- !u!1001 &7519919699390143343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -938,6 +905,10 @@ PrefabInstance:
     - target: {fileID: 7519919700026670167, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <EntityData>k__BackingField._health
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: m_Name
