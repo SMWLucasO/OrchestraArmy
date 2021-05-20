@@ -190,13 +190,9 @@ namespace Tests.PlayTests
         {
             WeaponType previous = _game.Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType;
 
-            _game.Press(Keyboard.current.qKey);
-            _game.Press(Keyboard.current.eKey);
-
+            _game.PressAndRelease(Keyboard.current.qKey);
+            _game.PressAndRelease(Keyboard.current.eKey);
             yield return null;
-
-            _game.Release(Keyboard.current.qKey);
-            _game.Release(Keyboard.current.eKey);
 
             Assert.AreEqual(
                 previous,
