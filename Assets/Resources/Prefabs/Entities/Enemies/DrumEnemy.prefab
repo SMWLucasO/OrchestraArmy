@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 630323051058264126}
   - component: {fileID: 3900031609583994037}
   - component: {fileID: 8411356818781741381}
+  - component: {fileID: 7133227980014340776}
   m_Layer: 0
   m_Name: DrumEnemy
   m_TagString: Enemy
@@ -66,6 +67,22 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &7133227980014340776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630323051058264127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &3762066057186610187
 GameObject:
   m_ObjectHideFlags: 0
