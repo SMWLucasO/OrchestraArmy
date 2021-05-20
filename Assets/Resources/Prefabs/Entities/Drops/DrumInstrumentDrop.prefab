@@ -80,6 +80,7 @@ MonoBehaviour:
   - Direction: 0
     Sprites:
     - {fileID: 21300000, guid: 918f4a779c7839e4baa835bcbec2866e, type: 3}
+  <WeaponType>k__BackingField: 3
 --- !u!1 &3112111021264378281
 GameObject:
   m_ObjectHideFlags: 0

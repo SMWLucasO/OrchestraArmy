@@ -79,7 +79,7 @@ namespace OrchestraArmy.Room
             Room.EnemySpawnData.NumberOfEnemies--;
 
             // If all enemies are dead
-            if (Room.EnemySpawnData.NumberOfEnemies < 1)
+            if (Room.EnemySpawnData.NumberOfEnemies < 1 && !Room.RoomIsCleared)
             {
                 // Level beaten
                 Room.RoomIsCleared = true;

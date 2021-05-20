@@ -6,6 +6,7 @@ using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Room
@@ -68,6 +69,14 @@ namespace OrchestraArmy.Room
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
         
+        // for testing
+        private void Update()
+        {
+            if (Keyboard.current.fKey.wasPressedThisFrame) 
+                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
+
+        }
+
         private void Start()
         {
             Instance = this;
@@ -311,7 +320,8 @@ namespace OrchestraArmy.Room
         private RoomType DecideNextRoom()
         {
             // calculation for chance boss room (after 5 rooms +20% per room)
-            if ((Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))))
+            // (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)))
+            if (true)
                 return RoomType.BossRoom;
             else
                 return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;

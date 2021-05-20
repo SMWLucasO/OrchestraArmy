@@ -175,3 +175,4 @@ MonoBehaviour:
   - Direction: 0
     Sprites:
     - {fileID: 21300000, guid: bd5ae157a6597634cb692aac22f27045, type: 3}
+  <WeaponType>k__BackingField: 1

@@ -55,6 +55,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
                 return;
 
+            Debug.Log(EntityData.Health);
+            
             EntityData.Health -= invokedEvent.Weapon.GetTotalDamage();
 
             if (EntityData.Health <= 0)

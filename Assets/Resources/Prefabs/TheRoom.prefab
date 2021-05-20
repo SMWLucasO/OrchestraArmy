@@ -53,12 +53,17 @@ MonoBehaviour:
     DoorRightObj: {fileID: 4042273682645184455, guid: b655ad30b6b3dea47a767221f7e6fb8b, type: 3}
     DoorLeftObj: {fileID: 4578508040452837794, guid: 23c146f8151f92f48b0beda83d12d551, type: 3}
     DoorUpObj: {fileID: 6235616627879709886, guid: bf4b80039ae363b47a5d812033ce45b9, type: 3}
+    DoorNextLevelObj: {fileID: 369489508883371697, guid: 9fc9441385c08b747ae324e1ea7a838c, type: 3}
     DoorDownObj: {fileID: 1558094684033946625, guid: 6d2701318e79c654f8989d82f237ec18, type: 3}
     Enemies:
     - {fileID: 630323051058264127, guid: fffcf81fd456aad40a6e72312f9c785a, type: 3}
     - {fileID: 630323051058264127, guid: cd3346680a8eb0f458087732602d4d3f, type: 3}
     - {fileID: 630323051058264127, guid: 52682ea59764c934596e4ea5605ba21a, type: 3}
     - {fileID: 630323051058264127, guid: dfda76dbfcb2c3e459ecd7562da8aae1, type: 3}
+    Bosses:
+    - {fileID: 7035377632560305128, guid: 573adc0c022f50c4d9de498c841635f8, type: 3}
+    - {fileID: 8595554392662443389, guid: 86143442f5127bb498c2efd6fd6add73, type: 3}
+    - {fileID: 4575979035899005427, guid: 0c48f3ff79e94714c99792726ed340be, type: 3}
 --- !u!114 &6962567360145505129
 MonoBehaviour:
   m_ObjectHideFlags: 0
