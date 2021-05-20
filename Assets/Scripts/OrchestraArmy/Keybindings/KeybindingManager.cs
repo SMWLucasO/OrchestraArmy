@@ -31,6 +31,8 @@ namespace OrchestraArmy.Keybindings
                 {"Rotate camera right", Keyboard.current.rightArrowKey},
                 {"Select next instrument", Keyboard.current.eKey},
                 {"Select previous instrument", Keyboard.current.qKey},
+                
+                {"bake", Keyboard.current.mKey},
             };
     }
 }
