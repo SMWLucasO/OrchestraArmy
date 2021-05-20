@@ -33,6 +33,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The controller for selecting the player's weapon(instrument).
         /// </summary>
         public IWeaponSelectionController WeaponSelectionController { get; set; }
+        public IToneController ToneController { get; set; }
 
         /// <summary>
         /// Sprites based on instruments, current instrument's SpriteEntry is written to Sprites
@@ -52,6 +53,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             WeaponSelectionController.HandleWeaponSelection();
             SpriteManager.UpdateSprite();
             AttackController.HandleAttack();
+            ToneController.HandleTone();
         }
 
         protected override void FixedUpdate()
@@ -79,6 +81,8 @@ namespace OrchestraArmy.Entity.Entities.Players
             {
                 Entity = this
             };
+            
+            this.ToneController = new PlayerToneController();
 
             // The main camera is the camera which the player uses.
             this.CameraController = new PlayerCameraController()
