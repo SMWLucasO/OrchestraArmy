@@ -28,7 +28,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// Event for when an enemy dies.
         /// </summary>
         /// <param name="enemyDeathEvent"></param>
-        public void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        public virtual void OnEvent(EnemyDeathEvent enemyDeathEvent)
         {
             if (enemyDeathEvent.KilledEnemy.GetInstanceID() == GetInstanceID())
                 Destroy(gameObject);

@@ -296,7 +296,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Place the four doors around the map
         /// </summary>
-        protected void CreateDoors()
+        protected virtual void CreateDoors()
         {
             // Calculate the center of the made map
             int minX = RoomWidth, minY = RoomHeight, maxX = 0, maxY = 0; 
