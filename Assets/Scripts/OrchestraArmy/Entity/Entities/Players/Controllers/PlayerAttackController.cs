@@ -2,6 +2,8 @@
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
 using OrchestraArmy.Entity.Entities.Projectiles;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
@@ -25,6 +27,8 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             attack.Attacker = Player;
             attack.MaxDistance = 400;
             attack.Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Weapon;
+            
+            EventManager.Invoke(new PlayerAttackEvent() {Tone = Player.ToneController.CurrentTone});
         }
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
@@ -11,22 +13,36 @@ namespace OrchestraArmy.UI
     {
         public GameObject Note;
         public GameObject Background;
+        public Texture[] Notes;
 
-        private Dictionary<Tone, float> _toneMap = new Dictionary<Tone, float>
+        private Dictionary<Tone, (float, int)> _toneMap = new Dictionary<Tone, (float, int)>
         {
-            [Tone.C] = 0,
-            [Tone.D] = 10,
-            [Tone.E] = 20,
-            [Tone.F] = 30,
-            [Tone.G] = 40,
-            [Tone.A] = 50,
-            [Tone.B] = 60
+            [Tone.C] = (-20, 0),
+            [Tone.D] = (-14.2f, 1),
+            [Tone.E] = (-8.4f, 1),
+            [Tone.F] = (-2.6f, 1),
+            [Tone.G] = (3.2f, 1),
+            [Tone.A] = (9, 1),
+            [Tone.B] = (-10f, 1) 
         };
+
+        public void Start()
+        {
+            EventManager.Bind<ToneChangedEvent>(this);
+        }
 
         public void OnEvent(ToneChangedEvent invokedEvent)
         {
+            if (invokedEvent.Tone == Tone.B)
+                Note.transform.rotation = Quaternion.Euler(180, 180, 0);
+            else
+                Note.transform.rotation = Quaternion.Euler(0, 0, 0);
+            
             var position = Note.transform.position;
-            Note.transform.position = new Vector3(position.x, _toneMap[invokedEvent.Tone], position.y);;
+            var noteInfo = _toneMap[invokedEvent.Tone];
+            
+            Note.transform.position = new Vector3(position.x, this.transform.position.y + noteInfo.Item1, position.y);
+            Note.GetComponent<RawImage>().texture = Notes[noteInfo.Item2];
         }
     }
 }

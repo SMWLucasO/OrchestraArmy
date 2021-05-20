@@ -4,6 +4,7 @@ using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Utils;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
@@ -24,27 +25,43 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
         private DoublyLinkedListNode<Tone> _current;
         public Tone CurrentTone { get => _current.Data; }
-
-        public PlayerToneController()
-        {
-            _current = _toneList.Start;
-        }
+        private float _lastChanged = 0; 
         
         public void HandleTone()
         {
-            var scrollValue = Mouse.current.scroll.y.ReadValue();
-            var previousTone = CurrentTone;
-
-            if (scrollValue > 0)
-                _current = _current.Next;
-            else if (scrollValue < 0)
-                _current = _current.Previous;
+            if (_current == null)
+            {
+                _current = _toneList.Start;
             
-            if (CurrentTone != previousTone)
                 EventManager.Invoke(new ToneChangedEvent()
                 {
                     Tone = CurrentTone
                 });
+            }
+            
+            if (Time.time - 0.2 < _lastChanged)
+            {
+                return;
+            }
+
+            var scrollValue = Mouse.current.scroll.y.ReadValue();
+            var previousTone = CurrentTone;
+
+            if (scrollValue < 0)
+                _current = _current.Next;
+            else if (scrollValue > 0)
+                _current = _current.Previous;
+
+            if (CurrentTone != previousTone)
+            {
+                EventManager.Invoke(new ToneChangedEvent()
+                {
+                    Tone = CurrentTone
+                });
+
+                _lastChanged = Time.time;
+            }
+               
         }
     }
 }
