@@ -11,16 +11,16 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         
         public void HandleWeaponSelection()
         {
-            if (KeybindingManager.Instance.Keybindings["Select next instrument"].wasPressedThisFrame &&
-                KeybindingManager.Instance.Keybindings["Select previous instrument"].wasPressedThisFrame)
+            if (KeybindingManager.Instance.Keybindings["Select next instrument"].isPressed &&
+                KeybindingManager.Instance.Keybindings["Select previous instrument"].isPressed)
                 return;
             
             // switch to the next instrument
-            if (KeybindingManager.Instance.Keybindings["Select next instrument"].wasPressedThisFrame)
+            if (KeybindingManager.Instance.Keybindings["Select next instrument"].isPressed)
                 Player.WeaponWheel.SwitchToNextWeapon();
             
             // switch to the previous weapon
-            else if (KeybindingManager.Instance.Keybindings["Select previous instrument"].wasPressedThisFrame)
+            else if (KeybindingManager.Instance.Keybindings["Select previous instrument"].isPressed)
                 Player.WeaponWheel.SwitchToPreviousWeapon();
         }
     }
