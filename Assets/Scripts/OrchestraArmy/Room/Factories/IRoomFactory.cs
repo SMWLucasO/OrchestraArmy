@@ -14,19 +14,19 @@ namespace OrchestraArmy.Room.Factories
         /// <summary>
         /// Generate the boss room.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>BossRoom object</returns>
         public Room MakeBossRoom();
 
         /// <summary>
         /// Generate the starting room.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>StartingRoom object</returns>
         public Room MakeStartingRoom();
 
         /// <summary>
         /// Generate the monster room.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>MonsterRoom object</returns>
         public Room MakeMonsterRoom();
 
     }

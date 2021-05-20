@@ -24,7 +24,7 @@ namespace OrchestraArmy.Room
     };
     
     [Serializable]
-    public class RoomController : IListener<EnemyDeathEvent>
+    public abstract class RoomController : IListener<EnemyDeathEvent>
     {
 
         /// <summary>
@@ -49,6 +49,22 @@ namespace OrchestraArmy.Room
         /// </summary>
         public void DestroyRoom() 
             => Objects.ForEach(GameObject.Destroy);
+
+        /// <summary>
+        /// Unregister any events within the controller.
+        /// </summary>
+        public virtual void UnregisterEvents()
+        {
+            EventManager.Unbind<EnemyDeathEvent>(this);
+        }
+
+        /// <summary>
+        /// Register any events within the controller.
+        /// </summary>
+        public virtual void RegisterEvents()
+        {
+            EventManager.Bind<EnemyDeathEvent>(this);
+        }
 
         /// <summary>
         /// Event for when an enemy dies.

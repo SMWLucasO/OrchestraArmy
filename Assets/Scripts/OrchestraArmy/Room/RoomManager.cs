@@ -39,8 +39,8 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The index of the currently enabled room.
         /// </summary>
-        public Vector2 CurrentRoomIndex { get; set; } 
-            = new Vector2(10, 10);
+        public Vector2Int CurrentRoomIndex { get; set; } 
+            = new Vector2Int(10, 10);
 
         /// <summary>
         /// The amount of rooms where all monsters were defeated.
@@ -54,8 +54,8 @@ namespace OrchestraArmy.Room
         /// </summary>
         public Room CurrentRoom
         {
-            get => Rooms[(int) CurrentRoomIndex.x, (int) CurrentRoomIndex.y];
-            set => Rooms[(int) CurrentRoomIndex.x, (int) CurrentRoomIndex.y] = value;
+            get => Rooms[CurrentRoomIndex.x, CurrentRoomIndex.y];
+            set => Rooms[CurrentRoomIndex.x, CurrentRoomIndex.y] = value;
         }
         
         private int _enemiesFib1 = 1;
@@ -106,7 +106,9 @@ namespace OrchestraArmy.Room
                 CurrentRoom.RoomController.Room = CurrentRoom;
                 CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
                 CurrentRoom.Generate();
-
+                
+                CurrentRoom.RoomController.RegisterEvents();
+                
                 SpawnRoom();
             }
         }
@@ -131,6 +133,9 @@ namespace OrchestraArmy.Room
         {
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
+            
+            // unregister the events of the current room
+            CurrentRoom.RoomController.UnregisterEvents();
 
             // Move to another position on the room grid
             var currentRoomIndex = CurrentRoomIndex;
@@ -153,7 +158,7 @@ namespace OrchestraArmy.Room
                     break;
 
                 default:
-                    currentRoomIndex += new Vector2(0, -1);
+                    currentRoomIndex += new Vector2Int(0, -1);
                     break;
             }
 
@@ -266,46 +271,19 @@ namespace OrchestraArmy.Room
             try
             {
                 outp = outp || CurrentRoom.Grid[x - 1, y] == GridSpace.Empty;
-            }
-
-            catch
-            {
-                return true;
-            }
-
-            try
-            {
                 outp = outp || CurrentRoom.Grid[x + 1, y] == GridSpace.Empty;
-            }
-
-            catch
-            {
-                return true;
-            }
-
-            try
-            {
                 outp = outp || CurrentRoom.Grid[x, y - 1] == GridSpace.Empty;
-            }
-
-            catch
-            {
-                return true;
-            }
-
-            try
-            {
                 outp = outp || CurrentRoom.Grid[x, y + 1] == GridSpace.Empty;
             }
-
             catch
             {
                 return true;
             }
+            
 
             return outp;
         }
-
+        
         /// <summary>
         /// Spawn object into game
         /// </summary>
@@ -325,7 +303,6 @@ namespace OrchestraArmy.Room
         }
         
         // END room object generation //
-        
 
         /// <summary>
         /// Determine the type of the next room to be generated
@@ -358,6 +335,16 @@ namespace OrchestraArmy.Room
 
             return _enemiesNow;
         }
+        
+        private void OnDestroy()
+        {
+            EventManager.Unbind<RoomDoorDownEvent>(this);
+            EventManager.Unbind<RoomDoorUpEvent>(this);
+            EventManager.Unbind<RoomDoorLeftEvent>(this);
+            EventManager.Unbind<RoomDoorRightEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
+        }
+
         
         public void OnEvent(RoomDoorDownEvent invokedEvent)
             => MoveToNextRoom(_player, DoorDirection.Down);

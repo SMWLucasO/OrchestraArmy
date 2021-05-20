@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using OrchestraArmy.Event;
-using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Room.Data;
 
 namespace OrchestraArmy.Room

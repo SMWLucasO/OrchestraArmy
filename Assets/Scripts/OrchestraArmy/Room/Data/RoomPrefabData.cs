@@ -11,7 +11,6 @@ namespace OrchestraArmy.Room.Data
         /// <summary>
         /// Objects for the room surroundings.
         /// </summary>
-        [field: SerializeField]
         public GameObject FillObj,
             RockObj,
             RubbleObj,
@@ -26,7 +25,6 @@ namespace OrchestraArmy.Room.Data
         /// <summary>
         /// The prefabs for the enemies within the room.
         /// </summary>
-        [field: SerializeField]
         public List<GameObject> Enemies
             = new List<GameObject>();
         
