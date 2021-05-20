@@ -10,11 +10,12 @@ namespace Tests.PlayTests
     public class MovementTest
     {
         private Game _game;
-
-        [SetUp]
-        public void Setup()
+        
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             _game = new Game();
+            yield return _game.TestSetup("SampleScene");
         }
 
         [UnityTest]
@@ -24,7 +25,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(0, 100);
-            _game.Input.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -39,11 +40,12 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestSKeyMovesPlayerInMouseDirection()
         {
+            
             var originalPosition = _game.Player.transform.position;
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(0, -100);
-            _game.Input.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -62,7 +64,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(-100, 0);
-            _game.Input.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -81,7 +83,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(100, 0);
-            _game.Input.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -93,10 +95,10 @@ namespace Tests.PlayTests
             Assert.AreEqual(originalPosition.z, newPosition.z, 0.1);
         }
 
-        [TearDown]
-        public void Teardown()
+        [UnityTearDown]
+        public IEnumerator Teardown()
         {
-            _game.Destroy();
+            yield return _game.TestTearDown("SampleScene");
         }
     }
 }
