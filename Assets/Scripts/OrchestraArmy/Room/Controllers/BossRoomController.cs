@@ -46,13 +46,11 @@ namespace OrchestraArmy.Room.Controllers
             float roomMidY = Room.RoomHeight / 2;
             
             // Add the boss.
-            Objects.Add(
-                GameObject.Instantiate(
-                        bossToSpawn, 
-                        new Vector3(roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
-                        Quaternion.identity
-                    )
-                );
+            GameObject.Instantiate(
+                bossToSpawn,
+                new Vector3(roomMidX, 0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
+                Quaternion.identity
+            );
         }
 
         public void OnEvent(BossDeathEvent invokedEvent)
@@ -65,12 +63,10 @@ namespace OrchestraArmy.Room.Controllers
             GameObject dropToSpawn = RoomManager.Instance.RoomPrefabData.InstrumentDrops[instrumentSpawnIndex];
             
             // Add the drop.
-            Objects.Add(
-                GameObject.Instantiate(
-                        dropToSpawn,
-                        invokedEvent.PositionOfDeath + new Vector3(0, 0.5f, 0),
-                        Quaternion.identity
-                    )
+            GameObject.Instantiate(
+                dropToSpawn,
+                invokedEvent.PositionOfDeath + new Vector3(0, 0.5f, 0),
+                Quaternion.identity
                 );
         }
 
@@ -79,7 +75,7 @@ namespace OrchestraArmy.Room.Controllers
             // add instrument to weapons
             Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
             player.WeaponWheel.Unlock(invokedEvent.InstrumentPickedUp);
-            
+
             // We collected an instrument, add one.
             RoomManager.Instance.CollectedInstrumentCount += 1;
             

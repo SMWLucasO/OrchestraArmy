@@ -71,8 +71,16 @@ namespace OrchestraArmy.Room
                 this.Level -= 1;
                 player.WeaponWheel.LockLatestInstrument();
                 RoomManager.CollectedInstrumentCount -= 1;
+
+                // If the player is currently holding the latest instrument, move it back by one.
+                if (player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                    == player.WeaponWheel.LatestUnlock.WeaponWheelPlaceholderData.WeaponType)
+                {
+                    player.WeaponWheel.CurrentlySelected = player.WeaponWheel.CurrentlySelected.Previous;
+                }
+                
             }
-            
+
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
 
