@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5614604150469288978}
-  - component: {fileID: 123254026991131062}
   - component: {fileID: 8803092749221212693}
   - component: {fileID: 6641116484757103259}
   - component: {fileID: 1551350424172047682}
@@ -36,24 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &123254026991131062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4575979035899005427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 066357ec1c9f405dacf1a9b1c353d180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sprites: []
-  <MovementData>k__BackingField:
-    _walkSpeed: 200
-  <EntityData>k__BackingField:
-    _health: 1600
-    _stamina: 800
 --- !u!136 &8803092749221212693
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -100,7 +81,7 @@ MonoBehaviour:
   <MovementData>k__BackingField:
     _walkSpeed: 200
   <EntityData>k__BackingField:
-    _health: 100
+    _health: 3200
     _stamina: 100
 --- !u!1 &6428056871703744237
 GameObject:

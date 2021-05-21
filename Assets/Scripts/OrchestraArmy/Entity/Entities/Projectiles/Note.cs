@@ -23,7 +23,6 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                     Hit = true;
                     break;
                 case "Enemy":
-                    Debug.Log(collider.gameObject.GetInstanceID());
                     Hit = true;
                     EventManager.Invoke(new PlayerAttackHitEvent()
                     {

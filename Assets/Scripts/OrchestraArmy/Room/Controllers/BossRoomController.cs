@@ -13,9 +13,6 @@ namespace OrchestraArmy.Room.Controllers
         
         public override void RegisterEvents()
         {
-            
-            Debug.Log("Boss room!");
-            
             base.RegisterEvents();
             EventManager.Bind<RoomClearedOfEnemiesEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
@@ -33,13 +30,13 @@ namespace OrchestraArmy.Room.Controllers
         public void OnEvent(RoomClearedOfEnemiesEvent invokedEvent)
         {
 
-            int BossSpawnIndex = LevelManager.Instance.Level - 1;
+            int bossSpawnIndex = LevelManager.Instance.Level - 1;
 
-            if (BossSpawnIndex >= RoomManager.Instance.RoomPrefabData.Bosses.Count)
+            if (bossSpawnIndex >= RoomManager.Instance.RoomPrefabData.Bosses.Count)
                 return;
 
             // Get the right boss, since we want to spawn it.
-            GameObject BossToSpawn = RoomManager.Instance.RoomPrefabData.Bosses[BossSpawnIndex];
+            GameObject bossToSpawn = RoomManager.Instance.RoomPrefabData.Bosses[bossSpawnIndex];
 
             // Calculate the center of the room.
             float roomMidX = Room.RoomWidth / 2;
@@ -48,22 +45,35 @@ namespace OrchestraArmy.Room.Controllers
             // Add the boss.
             Objects.Add(
                 GameObject.Instantiate(
-                        BossToSpawn, 
-                        new Vector3( roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
+                        bossToSpawn, 
+                        new Vector3(roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
                         Quaternion.identity
                     )
                 );
-            
-            Debug.Log("Called here");
         }
 
         public void OnEvent(BossDeathEvent invokedEvent)
         {
-            // Spawn instrument to pick up
+            int instrumentSpawnIndex = LevelManager.Instance.Level - 1;
+            
+            if (instrumentSpawnIndex >= RoomManager.Instance.RoomPrefabData.InstrumentDrops.Count)
+                return;
+            
+            GameObject dropToSpawn = RoomManager.Instance.RoomPrefabData.InstrumentDrops[instrumentSpawnIndex];
+            
+            // Add the drop.
+            Objects.Add(
+                GameObject.Instantiate(
+                        dropToSpawn,
+                        invokedEvent.PositionOfDeath,
+                        Quaternion.identity
+                    )
+                );
         }
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
         {
+            Debug.Log("CALL");
             // add instrument to weapons
             // spawn portal
         }

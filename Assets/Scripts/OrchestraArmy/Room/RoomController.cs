@@ -27,7 +27,7 @@ namespace OrchestraArmy.Room
     };
     
     [Serializable]
-    public abstract class RoomController : IListener<EnemyDeathEvent>
+    public abstract class RoomController
     {
 
         /// <summary>
@@ -40,12 +40,6 @@ namespace OrchestraArmy.Room
         /// </summary>
         public List<GameObject> Objects { get; set; }
             = new List<GameObject>();
-
-        public RoomController()
-        {
-            // Register the events which are controlled by this class.
-            EventManager.Bind<EnemyDeathEvent>(this);
-        }
         
         /// <summary>
         /// Destroy the room which this controller controls.
@@ -56,37 +50,12 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Unregister any events within the controller.
         /// </summary>
-        public virtual void UnregisterEvents()
-        {
-            EventManager.Unbind<EnemyDeathEvent>(this);
-        }
+        public virtual void UnregisterEvents() {}
 
         /// <summary>
         /// Register any events within the controller.
         /// </summary>
-        public virtual void RegisterEvents()
-        {
-            EventManager.Bind<EnemyDeathEvent>(this);
-        }
-
-        /// <summary>
-        /// Event for when an enemy dies.
-        /// </summary>
-        /// <param name="enemyDeathEvent"></param>
-        public void OnEvent(EnemyDeathEvent enemyDeathEvent)
-        {
-            // One enemy less
-            Room.EnemySpawnData.NumberOfEnemies--;
-
-            // If all enemies are dead
-            if (Room.EnemySpawnData.NumberOfEnemies < 1 && !Room.RoomIsCleared)
-            {
-                // Level beaten
-                Room.RoomIsCleared = true;
-                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
-            }
-                
-        }
+        public virtual void RegisterEvents() {}
 
     }
 }

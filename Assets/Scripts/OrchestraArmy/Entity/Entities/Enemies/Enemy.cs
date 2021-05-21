@@ -1,8 +1,10 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Room;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
@@ -30,8 +32,18 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// <param name="enemyDeathEvent"></param>
         public virtual void OnEvent(EnemyDeathEvent enemyDeathEvent)
         {
-            if (enemyDeathEvent.KilledEnemy.GetInstanceID() == GetInstanceID())
-                Destroy(gameObject);
+            if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
+
+            Room.Room currentRoom = RoomManager.Instance.CurrentRoom;
+            currentRoom.EnemySpawnData.NumberOfEnemies -= 1;
+
+            if (currentRoom.EnemySpawnData.NumberOfEnemies < 1 && !currentRoom.RoomIsCleared)
+            {
+                currentRoom.RoomIsCleared = true;
+                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
+            }
+            
+            Destroy(gameObject);
         }
 
         /// <summary>
@@ -55,9 +67,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
                 return;
 
-            Debug.Log(invokedEvent.TargetId);
-            Debug.Log(EntityData.Health);
-            
             EntityData.Health -= invokedEvent.Weapon.GetTotalDamage();
 
             if (EntityData.Health <= 0)

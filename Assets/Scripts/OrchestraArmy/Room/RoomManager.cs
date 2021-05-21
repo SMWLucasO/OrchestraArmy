@@ -68,14 +68,6 @@ namespace OrchestraArmy.Room
         /// </summary>
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
-        
-        // for testing
-        private void Update()
-        {
-            if (Keyboard.current.fKey.wasPressedThisFrame) 
-                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
-
-        }
 
         private void Start()
         {
@@ -86,12 +78,24 @@ namespace OrchestraArmy.Room
             
             this.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             RoomsCleared = 1;
-            
+        }
+
+        private void OnEnable()
+        {
             EventManager.Bind<RoomDoorDownEvent>(this);
             EventManager.Bind<RoomDoorUpEvent>(this);
             EventManager.Bind<RoomDoorLeftEvent>(this);
             EventManager.Bind<RoomDoorRightEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unbind<RoomDoorDownEvent>(this);
+            EventManager.Unbind<RoomDoorUpEvent>(this);
+            EventManager.Unbind<RoomDoorLeftEvent>(this);
+            EventManager.Unbind<RoomDoorRightEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
         }
 
         /// <summary>
@@ -345,17 +349,7 @@ namespace OrchestraArmy.Room
 
             return _enemiesNow;
         }
-        
-        private void OnDestroy()
-        {
-            EventManager.Unbind<RoomDoorDownEvent>(this);
-            EventManager.Unbind<RoomDoorUpEvent>(this);
-            EventManager.Unbind<RoomDoorLeftEvent>(this);
-            EventManager.Unbind<RoomDoorRightEvent>(this);
-            EventManager.Unbind<PlayerDeathEvent>(this);
-        }
 
-        
         public void OnEvent(RoomDoorDownEvent invokedEvent)
             => MoveToNextRoom(_player, DoorDirection.Down);
 

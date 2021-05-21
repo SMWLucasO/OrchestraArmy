@@ -13,7 +13,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
         /// </summary>
         public WeaponType WeaponType { get; set; }
         
-        public void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        public override void OnEvent(EnemyDeathEvent enemyDeathEvent)
         {
             if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
             
