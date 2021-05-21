@@ -873,15 +873,15 @@ PrefabInstance:
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[0]
       value: 
-      objectReference: {fileID: 2362887594193373022, guid: 4da141d9aae046b4e837d72663d5786a, type: 3}
+      objectReference: {fileID: 7035377632560305128, guid: 573adc0c022f50c4d9de498c841635f8, type: 3}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[1]
       value: 
-      objectReference: {fileID: 5441601039263411775, guid: 6da6a143ba29a5d4b965b45d483c0272, type: 3}
+      objectReference: {fileID: 8595554392662443389, guid: 86143442f5127bb498c2efd6fd6add73, type: 3}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[2]
       value: 
-      objectReference: {fileID: 1468203969019569687, guid: 5313af693b43f5d4daa4479be3ded2d1, type: 3}
+      objectReference: {fileID: 4575979035899005427, guid: 0c48f3ff79e94714c99792726ed340be, type: 3}
     - target: {fileID: 6962567360145505131, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: m_Name
       value: TheRoom
