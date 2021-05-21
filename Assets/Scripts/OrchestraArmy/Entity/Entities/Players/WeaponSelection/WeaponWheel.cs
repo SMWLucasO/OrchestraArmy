@@ -67,6 +67,22 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         }
         
         /// <summary>
+        /// Unlock the given instrument.
+        /// </summary>
+        /// <param name="weapon"></param>
+        public void Unlock(WeaponType weapon)
+        {
+            WeaponWheelPlaceholder placeholder = CurrentlySelected;
+
+            while (placeholder.WeaponWheelPlaceholderData.WeaponType != weapon)
+                placeholder = placeholder.Next;
+
+            // set unlocked.
+            placeholder.WeaponWheelPlaceholderData.Unlocked = true;
+
+        }
+        
+        /// <summary>
         /// Check whether the weapon in the weapon placeholder is unlocked.
         /// </summary>
         /// <param name="weaponWheelPlaceholder"></param>

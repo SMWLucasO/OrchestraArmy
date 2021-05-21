@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Entity.Entities.Enemies.Bosses;
+using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Enemy;
@@ -65,7 +66,7 @@ namespace OrchestraArmy.Room.Controllers
             Objects.Add(
                 GameObject.Instantiate(
                         dropToSpawn,
-                        invokedEvent.PositionOfDeath,
+                        invokedEvent.PositionOfDeath + new Vector3(0, 0.5f, 0),
                         Quaternion.identity
                     )
                 );
@@ -73,9 +74,27 @@ namespace OrchestraArmy.Room.Controllers
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
         {
-            Debug.Log("CALL");
             // add instrument to weapons
-            // spawn portal
+            Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            player.WeaponWheel.Unlock(invokedEvent.InstrumentPickedUp);
+            
+            // We collected an instrument, add one.
+            RoomManager.Instance.CollectedInstrumentCount += 1;
+            
+            // spawn portal at center of room.
+            float roomMidX = Room.RoomWidth / 2;
+            float roomMidY = Room.RoomHeight / 2;
+            
+            Objects.Add(
+                GameObject.Instantiate(
+                        RoomManager.Instance.RoomPrefabData.DoorNextLevelObj, 
+                        new Vector3(roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
+                        Quaternion.identity
+                    )
+                );
+            
+            
+            
         }
     }
 }
