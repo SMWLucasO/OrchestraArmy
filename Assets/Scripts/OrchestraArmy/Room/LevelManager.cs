@@ -76,7 +76,7 @@ namespace OrchestraArmy.Room
                 if (player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
                     == player.WeaponWheel.LatestUnlock.WeaponWheelPlaceholderData.WeaponType)
                 {
-                    player.WeaponWheel.CurrentlySelected = player.WeaponWheel.CurrentlySelected.Previous;
+                    player.WeaponWheel.SwitchToPreviousWeapon();
                 }
                 
             }
