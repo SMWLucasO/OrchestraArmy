@@ -28,7 +28,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             attack.MaxDistance = 400;
             attack.Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Weapon;
             
-            EventManager.Invoke(new PlayerAttackEvent() {Tone = Player.ToneController.CurrentTone});
+            EventManager.Invoke(new PlayerAttackEvent() {Tone = Player.ToneController.CurrentTone, Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType});
         }
     }
 }

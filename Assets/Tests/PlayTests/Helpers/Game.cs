@@ -1,57 +1,67 @@
-﻿using OrchestraArmy.Entity.Entities.Players;
+﻿using System.Collections;
+using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace Tests.PlayTests.Helpers
 {
-    public class Game
+    public class Game: InputTestFixture
     {
-        public InputTestFixture Input;
-        public Camera Camera;
-        public Player Player;
-        public WeaponWheel WeaponWheel;
-
-        private GameObject _ui;
-
-        public Game()
-        {
-            //initialize input for testing
-            Input = new InputTestFixture();
-            
-            //add input devices
-            InputSystem.AddDevice<Keyboard>();
-            InputSystem.AddDevice<Mouse>();
-            
-            //get Prefabs
-            var cameraPrefab = Resources.Load("Prefabs/Main Camera");
-            var uiPrefab = Resources.Load("Prefabs/UI/UI");
-            var playerPrefab = Resources.Load("Prefabs/Entities/Player");
-
-            _ui = (GameObject)Object.Instantiate(uiPrefab);
-
-            Camera = ((GameObject)Object.Instantiate(cameraPrefab)).GetComponent<Camera>();
-            WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
-            Player = ((GameObject) Object.Instantiate(playerPrefab, new Vector3(0, 0.5f, 0), Quaternion.identity))
-                .GetComponent<Player>();
-        }
-
+        /// <summary>
+        /// The player.
+        /// </summary>
+        public Player Player { get; set; }
+        
+        /// <summary>
+        /// The player's camera.
+        /// </summary>
+        public Camera Camera { get; set; }
+        
+        /// <summary>
+        /// The player's weapon wheel.
+        /// </summary>
+        public WeaponWheel WeaponWheel { get; set; }
+        
         public void SetMousePositionRelativeToPlayer(float xMod, float yMod)
         {
             var originalPosition = Player.transform.position;
             var mouseScreenPosition = Camera.WorldToScreenPoint(originalPosition);
             
-            Input.Set(Mouse.current.position, new Vector2(mouseScreenPosition.x + xMod, mouseScreenPosition.y + yMod));
+            Set(Mouse.current.position, new Vector2(mouseScreenPosition.x + xMod, mouseScreenPosition.y + yMod));
         }
-
-        public void Destroy()
+        
+        public IEnumerator TestSetup(string scene = null)
         {
-            Object.Destroy(Camera.gameObject);
-            Object.Destroy(Player.gameObject);
-            Object.Destroy(_ui);
+            Setup();
+            InputSystem.AddDevice<Keyboard>();
+            InputSystem.AddDevice<Mouse>();
+
+            if (scene != null)
+                yield return LoadScene(scene);
+        }
+        
+        public IEnumerator LoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            yield return SceneManager.LoadSceneAsync(scene);
             
-            InputSystem.RemoveDevice(Keyboard.current);
-            InputSystem.RemoveDevice(Mouse.current);
+            Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            WeaponWheel = Player.WeaponWheel;
+            Camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+
+            yield return null;
+        }
+        
+        /// <summary>
+        /// Destruction at the end.
+        /// </summary>
+        public IEnumerator TestTearDown(string scene = null)
+        {
+            TearDown();
+
+            if (scene != null)
+                yield return SceneManager.UnloadSceneAsync(scene);
         }
     }
 }

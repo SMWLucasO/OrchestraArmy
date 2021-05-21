@@ -22,9 +22,8 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Tone.A,
             Tone.B
         });
-
         private DoublyLinkedListNode<Tone> _current;
-        public Tone CurrentTone { get => _current.Data; }
+        public Tone CurrentTone { get; private set; }
         private float _lastChanged = 0;
 
         private void Initialize()
@@ -43,23 +42,39 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             if (scrollValue != 0)
             {
-                var previousTone = CurrentTone;
-
-                if (scrollValue < 0)
+                //debounce scrolling to prevent switching to fast
+                if (Time.time - 0.2 < _lastChanged)
+                {
+                    return;
+                }
+                
+                if (scrollValue > 0)
                     _current = _current.Next;
-                else if (scrollValue > 0)
+                else if (scrollValue < 0)
                     _current = _current.Previous;
+
+                CurrentTone = _current.Data;
+                _lastChanged = Time.time;
             }
             else
             {
-                var keyboard = Keyboard.current;
-                
-                switch (true)
-                {
-                    case keyboard
-                        break;
-                    
-                }
+                if (Keyboard.current.digit1Key.wasPressedThisFrame)
+                    CurrentTone = Tone.C;
+                else if (Keyboard.current.digit2Key.wasPressedThisFrame)
+                    CurrentTone = Tone.D;
+                else if (Keyboard.current.digit3Key.wasPressedThisFrame)
+                    CurrentTone = Tone.E;
+                else if (Keyboard.current.digit4Key.wasPressedThisFrame)
+                    CurrentTone = Tone.F;
+                else if (Keyboard.current.digit5Key.wasPressedThisFrame)
+                    CurrentTone = Tone.G;
+                else if (Keyboard.current.digit6Key.wasPressedThisFrame)
+                    CurrentTone = Tone.A;
+                else if (Keyboard.current.digit7Key.wasPressedThisFrame)
+                    CurrentTone = Tone.B;
+
+                while (_current.Data != CurrentTone)
+                    _current = _current.Next;
             }
         }
         
@@ -69,25 +84,18 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             {
                 Initialize();
             }
+
+            var previousTone = CurrentTone;
             
-            if (Time.time - 0.2 < _lastChanged)
+            SetCurrent();
+
+            if (CurrentTone != previousTone)
             {
-                return;
+                EventManager.Invoke(new ToneChangedEvent()
+                {
+                    Tone = CurrentTone
+                });
             }
-
-            var scrollValue = Mouse.current.scroll.y.ReadValue();
-            
-
-            // if (CurrentTone != previousTone)
-            // {
-            //     EventManager.Invoke(new ToneChangedEvent()
-            //     {
-            //         Tone = CurrentTone
-            //     });
-            //
-            //     _lastChanged = Time.time;
-            // }
-            //    
         }
     }
 }

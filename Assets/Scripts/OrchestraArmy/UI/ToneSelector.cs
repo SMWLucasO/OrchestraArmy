@@ -26,7 +26,7 @@ namespace OrchestraArmy.UI
             [Tone.B] = (-10f, 1) 
         };
 
-        public void Start()
+        public void OnEnable()
         {
             EventManager.Bind<ToneChangedEvent>(this);
         }
@@ -38,10 +38,9 @@ namespace OrchestraArmy.UI
             else
                 Note.transform.rotation = Quaternion.Euler(0, 0, 0);
             
-            var position = Note.transform.position;
             var noteInfo = _toneMap[invokedEvent.Tone];
             
-            Note.transform.position = new Vector3(position.x, this.transform.position.y + noteInfo.Item1, position.y);
+            Note.transform.localPosition = new Vector3(0, noteInfo.Item1, 0);
             Note.GetComponent<RawImage>().texture = Notes[noteInfo.Item2];
         }
     }
