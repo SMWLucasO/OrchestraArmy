@@ -106,6 +106,14 @@ namespace OrchestraArmy.Room
         /// <param name="room"></param>
         public void GenerateRoom(Vector2 position, RoomType room)
         {
+
+            if (room == RoomType.StartingRoom)
+            {
+                _enemiesFib1 = 0;
+                _enemiesFib2 = 1;
+                _enemiesNow = 0;
+            }
+            
             CurrentRoom ??= room switch
             {
                 RoomType.BossRoom => RoomFactory.MakeBossRoom(),

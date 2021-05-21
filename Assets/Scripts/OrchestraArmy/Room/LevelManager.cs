@@ -47,7 +47,7 @@ namespace OrchestraArmy.Room
         {
             RoomManager.Instance.DestroyRooms();
             this.Level += 1;
-            
+
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             
@@ -63,9 +63,14 @@ namespace OrchestraArmy.Room
         public void MoveToPreviousLevel(Player player)
         {
             RoomManager.Instance.DestroyRooms();
-            
+
+            // we do not want the guitar to be locked, it should only be available in the final level.
             if (this.Level > 1)
+            {
                 this.Level -= 1;
+                player.WeaponWheel.LockLatestInstrument();
+                RoomManager.CollectedInstrumentCount -= 1;
+            }
             
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);

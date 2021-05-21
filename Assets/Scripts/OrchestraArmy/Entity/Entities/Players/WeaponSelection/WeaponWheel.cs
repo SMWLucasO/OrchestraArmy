@@ -26,6 +26,12 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         public WeaponWheelPlaceholder CurrentlySelected { get; set; }
 
         /// <summary>
+        /// The weapon wheel's latest unlocked weapon's placeholder.
+        /// </summary>
+        [field: SerializeField]
+        public WeaponWheelPlaceholder LatestUnlock { get; set; }
+        
+        /// <summary>
         /// Select the next weapon for usage.
         /// </summary>
         /// <returns>bool determining if the weapon was switched.</returns>
@@ -67,6 +73,13 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         }
         
         /// <summary>
+        /// Lock the instrument received the most recent.
+        /// </summary>
+        public void LockLatestInstrument()
+            => LatestUnlock.WeaponWheelPlaceholderData.Unlocked = false;
+        
+        
+        /// <summary>
         /// Unlock the given instrument.
         /// </summary>
         /// <param name="weapon"></param>
@@ -79,6 +92,7 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 
             // set unlocked.
             placeholder.WeaponWheelPlaceholderData.Unlocked = true;
+            LatestUnlock = placeholder;
 
         }
         
@@ -138,5 +152,6 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         /// <param name="invokedEvent"></param>
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => UpdateWeaponWheelImages();
+        
     }
 }
