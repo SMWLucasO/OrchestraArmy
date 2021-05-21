@@ -5,6 +5,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Regular
     public class SousaphoneEnemy : Enemy
     {
         public override WeaponType HittableBy { get; set; }
-            = WeaponType.Flute;
+            = WeaponType.Sousaphone;
     }
 }
