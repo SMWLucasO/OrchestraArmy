@@ -151,9 +151,8 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Move the player to the next room.
         /// </summary>
-        /// <param name="player"></param>
         /// <param name="direction"></param>
-        public void MoveToNextRoom(Player player, DoorDirection direction)
+        public void MoveToNextRoom(DoorDirection direction)
         {
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
@@ -361,16 +360,16 @@ namespace OrchestraArmy.Room
         }
 
         public void OnEvent(RoomDoorDownEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Down);
+            => MoveToNextRoom(DoorDirection.Down);
 
         public void OnEvent(RoomDoorUpEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Up);
+            => MoveToNextRoom(DoorDirection.Up);
 
         public void OnEvent(RoomDoorLeftEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Left);
+            => MoveToNextRoom(DoorDirection.Left);
 
         public void OnEvent(RoomDoorRightEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Right);
+            => MoveToNextRoom(DoorDirection.Right);
         
 
         public void OnEvent(PlayerDeathEvent invokedEvent)
