@@ -92,7 +92,7 @@ namespace OrchestraArmy.Room.Controllers
                         RoomManager.Instance.RoomPrefabData.DoorNextLevelObj, 
                         new Vector3(roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
                         Quaternion.identity
-                    )
+                )
             );
         }
         
