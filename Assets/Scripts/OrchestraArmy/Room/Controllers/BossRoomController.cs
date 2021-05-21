@@ -9,14 +9,13 @@ using UnityEngine;
 namespace OrchestraArmy.Room.Controllers
 {
     public class BossRoomController : RoomController, IListener<RoomClearedOfEnemiesEvent>, IListener<BossDeathEvent>,
-        IListener<InstrumentPickupEvent>, IListener<RoomDoorNextLevelEvent>
+        IListener<RoomDoorNextLevelEvent>
     {
         
         public override void RegisterEvents()
         {
             base.RegisterEvents();
             EventManager.Bind<RoomClearedOfEnemiesEvent>(this);
-            EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<BossDeathEvent>(this);
             EventManager.Bind<RoomDoorNextLevelEvent>(this);
         }
@@ -25,7 +24,6 @@ namespace OrchestraArmy.Room.Controllers
         {
             base.UnregisterEvents();
             EventManager.Unbind<RoomClearedOfEnemiesEvent>(this);
-            EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<BossDeathEvent>(this);
             EventManager.Unbind<RoomDoorNextLevelEvent>(this);
         }
@@ -74,33 +72,11 @@ namespace OrchestraArmy.Room.Controllers
             );
         }
 
-        public void OnEvent(InstrumentPickupEvent invokedEvent)
-        {
-            // add instrument to weapons
-            Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
-            player.WeaponWheel.Unlock(invokedEvent.InstrumentPickedUp);
-
-            // We collected an instrument, add one.
-            RoomManager.Instance.CollectedInstrumentCount += 1;
-            
-            // spawn portal at center of room.
-            float roomMidX = Room.RoomWidth / 2;
-            float roomMidY = Room.RoomHeight / 2;
-            
-            Objects.Add(
-                GameObject.Instantiate(
-                        RoomManager.Instance.RoomPrefabData.DoorNextLevelObj, 
-                        new Vector3(roomMidX,0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
-                        Quaternion.identity
-                    )
-                );
-        }
-        
         /// <summary>
         /// Event for moving to the next level.
         /// </summary>
         /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorNextLevelEvent invokedEvent) 
-            => LevelManager.Instance.MoveToNextLevel(GameObject.FindWithTag("Player").GetComponent<Player>());
+            => LevelManager.Instance.MoveToNextLevel();
     }
 }

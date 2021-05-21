@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 {
-    public class WeaponWheel : MonoBehaviour, IListener<PlayerWeaponChangedEvent>
+    public class WeaponWheel : MonoBehaviour, IListener<PlayerWeaponChangedEvent>, IListener<LockLatestInstrumentEvent>
     {
 
         /// <summary>
@@ -144,6 +144,13 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
             
             // Register weapon changed event.
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
+            EventManager.Bind<LockLatestInstrumentEvent>(this);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unbind<PlayerWeaponChangedEvent>(this);
+            EventManager.Unbind<LockLatestInstrumentEvent>(this);
         }
 
         /// <summary>
@@ -152,6 +159,17 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         /// <param name="invokedEvent"></param>
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => UpdateWeaponWheelImages();
-        
+
+        public void OnEvent(LockLatestInstrumentEvent invokedEvent)
+        {
+            LockLatestInstrument();
+            
+            // If the player is currently holding the latest instrument, move it back by one.
+            if (CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                == LatestUnlock.WeaponWheelPlaceholderData.WeaponType)
+            {
+                SwitchToPreviousWeapon();
+            }
+        }
     }
 }
