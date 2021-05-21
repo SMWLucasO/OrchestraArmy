@@ -47,7 +47,7 @@ namespace OrchestraArmy.Room.Controllers
             
             // Add the boss.
             Objects.Add(
-            GameObject.Instantiate(
+                GameObject.Instantiate(
                     bossToSpawn,
                     new Vector3(roomMidX, 0, roomMidY) - new Vector3(Room.OffsetOfRoom.x, 0, Room.OffsetOfRoom.y),
                     Quaternion.identity
