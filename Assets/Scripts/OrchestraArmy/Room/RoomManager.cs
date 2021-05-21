@@ -140,7 +140,10 @@ namespace OrchestraArmy.Room
         public void DestroyRooms()
         {
             foreach (var room in Rooms)
+            {
+                room?.RoomController.UnregisterEvents();
                 room?.RoomController?.DestroyRoom();
+            }
 
             Rooms = new Room[20, 20];
         }

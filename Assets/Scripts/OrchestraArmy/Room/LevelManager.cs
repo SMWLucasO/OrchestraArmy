@@ -62,6 +62,7 @@ namespace OrchestraArmy.Room
         /// <param name="player"></param>
         public void MoveToPreviousLevel(Player player)
         {
+
             RoomManager.Instance.DestroyRooms();
 
             // we do not want the guitar to be locked, it should only be available in the final level.

@@ -71,10 +71,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
                 return;
-            
-            Debug.Log(invokedEvent.Weapon.WeaponType);
-            Debug.Log(HittableBy);
-            
+
             // Enemy can only be hit by specific instrument.
             if (invokedEvent.Weapon.WeaponType != HittableBy)
                 return;
