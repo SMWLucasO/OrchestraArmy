@@ -66,7 +66,7 @@ namespace OrchestraArmy.Room.Controllers
             
             // Add the drop.
             Objects.Add(
-            GameObject.Instantiate(
+                GameObject.Instantiate(
                     dropToSpawn,
                     invokedEvent.PositionOfDeath + new Vector3(0, 0.5f, 0),
                     Quaternion.identity
