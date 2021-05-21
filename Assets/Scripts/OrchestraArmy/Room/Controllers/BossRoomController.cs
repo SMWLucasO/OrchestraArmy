@@ -1,15 +1,15 @@
-﻿using OrchestraArmy.Entity.Entities.Enemies.Bosses;
-using OrchestraArmy.Entity.Entities.Players;
+﻿using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Pickup;
+using OrchestraArmy.Event.Events.Room;
 using UnityEngine;
 
 namespace OrchestraArmy.Room.Controllers
 {
     public class BossRoomController : RoomController, IListener<RoomClearedOfEnemiesEvent>, IListener<BossDeathEvent>,
-        IListener<InstrumentPickupEvent>
+        IListener<InstrumentPickupEvent>, IListener<RoomDoorNextLevelEvent>
     {
         
         public override void RegisterEvents()
@@ -18,6 +18,7 @@ namespace OrchestraArmy.Room.Controllers
             EventManager.Bind<RoomClearedOfEnemiesEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<BossDeathEvent>(this);
+            EventManager.Bind<RoomDoorNextLevelEvent>(this);
         }
 
         public override void UnregisterEvents()
@@ -26,6 +27,7 @@ namespace OrchestraArmy.Room.Controllers
             EventManager.Unbind<RoomClearedOfEnemiesEvent>(this);
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<BossDeathEvent>(this);
+            EventManager.Unbind<RoomDoorNextLevelEvent>(this);
         }
 
         public void OnEvent(RoomClearedOfEnemiesEvent invokedEvent)
@@ -59,7 +61,6 @@ namespace OrchestraArmy.Room.Controllers
             
             if (instrumentSpawnIndex >= RoomManager.Instance.RoomPrefabData.InstrumentDrops.Count)
                 return;
-            
             // Spawn the drop for this level.
             GameObject dropToSpawn = RoomManager.Instance.RoomPrefabData.InstrumentDrops[instrumentSpawnIndex];
             
@@ -97,5 +98,12 @@ namespace OrchestraArmy.Room.Controllers
             
             
         }
+        
+        /// <summary>
+        /// Event for moving to the next level.
+        /// </summary>
+        /// <param name="invokedEvent"></param>
+        public void OnEvent(RoomDoorNextLevelEvent invokedEvent) 
+            => LevelManager.Instance.MoveToNextLevel(GameObject.FindWithTag("Player").GetComponent<Player>());
     }
 }

@@ -4,7 +4,7 @@ using OrchestraArmy.Event.Events.Pickup;
 
 namespace OrchestraArmy.Room.Rooms
 {
-    public class BossRoom : Room, IListener<BossDeathEvent>, IListener<InstrumentPickupEvent>
+    public class BossRoom : Room
     {
         public override void SetupSettings()
         {
@@ -19,15 +19,6 @@ namespace OrchestraArmy.Room.Rooms
         {
             // do nothing. We do not want to spawn doors at this point.
         }
-        
-        public void OnEvent(BossDeathEvent invokedEvent)
-        {
-                       
-        }
 
-        public void OnEvent(InstrumentPickupEvent invokedEvent)
-        {
-            
-        }
     }
 }
