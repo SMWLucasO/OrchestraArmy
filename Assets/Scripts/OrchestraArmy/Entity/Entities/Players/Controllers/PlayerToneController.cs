@@ -25,18 +25,49 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
         private DoublyLinkedListNode<Tone> _current;
         public Tone CurrentTone { get => _current.Data; }
-        private float _lastChanged = 0; 
+        private float _lastChanged = 0;
+
+        private void Initialize()
+        {
+            _current = _toneList.Start;
+            
+            EventManager.Invoke(new ToneChangedEvent()
+            {
+                Tone = CurrentTone
+            });
+        }
+        
+        private void SetCurrent()
+        {
+            var scrollValue = Mouse.current.scroll.y.ReadValue();
+            
+            if (scrollValue != 0)
+            {
+                var previousTone = CurrentTone;
+
+                if (scrollValue < 0)
+                    _current = _current.Next;
+                else if (scrollValue > 0)
+                    _current = _current.Previous;
+            }
+            else
+            {
+                var keyboard = Keyboard.current;
+                
+                switch (true)
+                {
+                    case keyboard
+                        break;
+                    
+                }
+            }
+        }
         
         public void HandleTone()
         {
             if (_current == null)
             {
-                _current = _toneList.Start;
-            
-                EventManager.Invoke(new ToneChangedEvent()
-                {
-                    Tone = CurrentTone
-                });
+                Initialize();
             }
             
             if (Time.time - 0.2 < _lastChanged)
@@ -45,23 +76,18 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             }
 
             var scrollValue = Mouse.current.scroll.y.ReadValue();
-            var previousTone = CurrentTone;
+            
 
-            if (scrollValue < 0)
-                _current = _current.Next;
-            else if (scrollValue > 0)
-                _current = _current.Previous;
-
-            if (CurrentTone != previousTone)
-            {
-                EventManager.Invoke(new ToneChangedEvent()
-                {
-                    Tone = CurrentTone
-                });
-
-                _lastChanged = Time.time;
-            }
-               
+            // if (CurrentTone != previousTone)
+            // {
+            //     EventManager.Invoke(new ToneChangedEvent()
+            //     {
+            //         Tone = CurrentTone
+            //     });
+            //
+            //     _lastChanged = Time.time;
+            // }
+            //    
         }
     }
 }
