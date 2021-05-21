@@ -17,7 +17,8 @@ namespace OrchestraArmy.Event
                 return;
             }
             
-            var listeners = _listeners[invokedEvent.GetType()];
+            var listeners = new dynamic[_listeners[invokedEvent.GetType()].Count];
+            _listeners[invokedEvent.GetType()].CopyTo(listeners, 0);
 
             foreach (var listener in listeners)
             {

@@ -791,15 +791,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6774437165678734097, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6774437165757693220, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6774437167009963769, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7266606502635143941, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: m_Name

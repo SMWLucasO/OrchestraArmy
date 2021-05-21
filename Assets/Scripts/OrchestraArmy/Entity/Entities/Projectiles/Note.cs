@@ -1,6 +1,7 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;

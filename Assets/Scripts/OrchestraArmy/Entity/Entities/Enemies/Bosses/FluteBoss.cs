@@ -6,6 +6,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
 {
     public class FluteBoss : Boss
     {
+
+        public override WeaponType HittableBy { get; set; }
+            = WeaponType.Drum;
         
         public FluteBoss()
         {

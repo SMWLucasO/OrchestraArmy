@@ -60,6 +60,7 @@ namespace OrchestraArmy.Room.Controllers
             if (instrumentSpawnIndex >= RoomManager.Instance.RoomPrefabData.InstrumentDrops.Count)
                 return;
             
+            // Spawn the drop for this level.
             GameObject dropToSpawn = RoomManager.Instance.RoomPrefabData.InstrumentDrops[instrumentSpawnIndex];
             
             // Add the drop.

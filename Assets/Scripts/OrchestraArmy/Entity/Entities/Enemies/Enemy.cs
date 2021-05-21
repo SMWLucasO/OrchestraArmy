@@ -1,5 +1,6 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Players;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
 using OrchestraArmy.Event.Events.Enemy;
@@ -14,6 +15,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public BehaviourStateMachine Behaviour { get; set; }
 
         public float LastCollisionTime { get; set; }
+        
+        /// <summary>
+        /// The type of instrument which the enemy can be damaged with.
+        /// </summary>
+        public abstract WeaponType HittableBy { get; set; }
 
         protected override void OnEnable()
         {
@@ -66,7 +72,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
                 return;
-
+            
+            // Enemy can only be hit by specific instrument.
+            if (invokedEvent.Weapon.WeaponType != HittableBy)
+                return;
+            
             EntityData.Health -= invokedEvent.Weapon.GetTotalDamage();
 
             if (EntityData.Health <= 0)
