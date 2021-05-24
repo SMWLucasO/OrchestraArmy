@@ -9,6 +9,8 @@ namespace OrchestraArmy.Room.Rooms
             CreateSpawn(); 
             CreateWalls();
             CreateDoors();
+
+            RoomIsCleared = true;
         }
         
         public override void SetupSettings() { }
