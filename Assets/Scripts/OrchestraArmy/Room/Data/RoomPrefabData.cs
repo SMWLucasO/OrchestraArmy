@@ -19,6 +19,7 @@ namespace OrchestraArmy.Room.Data
             DoorRightObj,
             DoorLeftObj,
             DoorUpObj,
+            DoorNextLevelObj,
             DoorDownObj;
         
         
@@ -27,6 +28,20 @@ namespace OrchestraArmy.Room.Data
         /// </summary>
         public List<GameObject> Enemies
             = new List<GameObject>();
-        
+
+        /// <summary>
+        /// The prefabs for bosses within the room.
+        /// The spawn order goes from 0...n
+        /// </summary>
+        public List<GameObject> Bosses 
+            = new List<GameObject>();
+
+        /// <summary>
+        /// The prefabs for boss drops within the room.
+        /// The drop order goes from 0...n
+        /// </summary>
+        public List<GameObject> InstrumentDrops =
+            new List<GameObject>();
+
     }
 }

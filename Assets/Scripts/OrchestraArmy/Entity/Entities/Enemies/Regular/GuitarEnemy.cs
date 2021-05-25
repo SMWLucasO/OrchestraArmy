@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Entity.Entities.Enemies.Data;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -7,6 +8,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Regular
 {
     public class GuitarEnemy : Enemy
     {
+
+        public override WeaponType HittableBy { get; set; }
+            = WeaponType.Guitar;
+        
         private NavMeshAgent _navMeshAgent;
 
         void Start()
@@ -22,5 +27,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Regular
                 _navMeshAgent.SetDestination(dest);
             }
         }
+        
     }
 }

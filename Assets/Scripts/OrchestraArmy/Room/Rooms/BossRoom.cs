@@ -1,4 +1,8 @@
-﻿namespace OrchestraArmy.Room.Rooms
+﻿using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
+using OrchestraArmy.Event.Events.Pickup;
+
+namespace OrchestraArmy.Room.Rooms
 {
     public class BossRoom : Room
     {
@@ -10,5 +14,11 @@
             RoomGenerationData.MaxAliveWalkers = 20;
             RoomGenerationData.PercentToFill = 0.1f;
         }
+
+        protected override void CreateDoors()
+        {
+            // do nothing. We do not want to spawn doors at this point.
+        }
+
     }
 }

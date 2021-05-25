@@ -8,6 +8,7 @@ using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
@@ -70,7 +71,7 @@ namespace OrchestraArmy.Room
         /// </summary>
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
-        
+
         private void Start()
         {
             Instance = this;
@@ -80,12 +81,24 @@ namespace OrchestraArmy.Room
             
             this.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             RoomsCleared = 1;
-            
+        }
+
+        private void OnEnable()
+        {
             EventManager.Bind<RoomDoorDownEvent>(this);
             EventManager.Bind<RoomDoorUpEvent>(this);
             EventManager.Bind<RoomDoorLeftEvent>(this);
             EventManager.Bind<RoomDoorRightEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unbind<RoomDoorDownEvent>(this);
+            EventManager.Unbind<RoomDoorUpEvent>(this);
+            EventManager.Unbind<RoomDoorLeftEvent>(this);
+            EventManager.Unbind<RoomDoorRightEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
         }
 
         /// <summary>
@@ -96,6 +109,14 @@ namespace OrchestraArmy.Room
         /// <param name="room"></param>
         public void GenerateRoom(Vector2 position, RoomType room)
         {
+
+            if (room == RoomType.StartingRoom)
+            {
+                _enemiesFib1 = 0;
+                _enemiesFib2 = 1;
+                _enemiesNow = 0;
+            }
+            
             CurrentRoom ??= room switch
             {
                 RoomType.BossRoom => RoomFactory.MakeBossRoom(),
@@ -122,7 +143,10 @@ namespace OrchestraArmy.Room
         public void DestroyRooms()
         {
             foreach (var room in Rooms)
+            {
+                room?.RoomController.UnregisterEvents();
                 room?.RoomController?.DestroyRoom();
+            }
 
             Rooms = new Room[20, 20];
         }
@@ -130,13 +154,16 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Move the player to the next room.
         /// </summary>
-        /// <param name="player"></param>
         /// <param name="direction"></param>
-        public void MoveToNextRoom(Player player, DoorDirection direction)
+        public void MoveToNextRoom(DoorDirection direction)
         {
+            // room has to be cleared before continuing.
+            if (!CurrentRoom.RoomIsCleared)
+                return;
+            
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
-            
+
             // unregister the events of the current room
             CurrentRoom.RoomController.UnregisterEvents();
 
@@ -344,29 +371,18 @@ namespace OrchestraArmy.Room
 
             return _enemiesNow;
         }
-        
-        private void OnDestroy()
-        {
-            EventManager.Unbind<RoomDoorDownEvent>(this);
-            EventManager.Unbind<RoomDoorUpEvent>(this);
-            EventManager.Unbind<RoomDoorLeftEvent>(this);
-            EventManager.Unbind<RoomDoorRightEvent>(this);
-            EventManager.Unbind<PlayerDeathEvent>(this);
-        }
 
-        
         public void OnEvent(RoomDoorDownEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Down);
+            => MoveToNextRoom(DoorDirection.Down);
 
         public void OnEvent(RoomDoorUpEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Up);
+            => MoveToNextRoom(DoorDirection.Up);
 
         public void OnEvent(RoomDoorLeftEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Left);
+            => MoveToNextRoom(DoorDirection.Left);
 
         public void OnEvent(RoomDoorRightEvent invokedEvent)
-            => MoveToNextRoom(_player, DoorDirection.Right);
-
+            => MoveToNextRoom(DoorDirection.Right);
 
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {

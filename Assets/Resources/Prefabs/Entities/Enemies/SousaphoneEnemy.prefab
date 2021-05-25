@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 630323051058264126}
-  - component: {fileID: 3900031609583994037}
   - component: {fileID: 2638703045441911382}
   - component: {fileID: 378727449657303988}
+  - component: {fileID: 6798857598047305587}
   m_Layer: 0
   m_Name: SousaphoneEnemy
   m_TagString: Enemy
@@ -35,24 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3900031609583994037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630323051058264127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 066357ec1c9f405dacf1a9b1c353d180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sprites: []
-  <MovementData>k__BackingField:
-    _walkSpeed: 200
-  <EntityData>k__BackingField:
-    _health: 100
-    _stamina: 100
 --- !u!136 &2638703045441911382
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -83,6 +65,24 @@ MonoBehaviour:
   m_Area: 0
   m_IgnoreFromBuild: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &6798857598047305587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630323051058264127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6839edfa9d3b99047a50d849dc82037a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sprites: []
+  <MovementData>k__BackingField:
+    _walkSpeed: 200
+  <EntityData>k__BackingField:
+    _health: 100
+    _stamina: 100
 --- !u!1 &3762066057186610187
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
-﻿using System;
-using OrchestraArmy.Entity.Entities.Players;
+﻿using OrchestraArmy.Entity.Entities.Players;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Room;
+using OrchestraArmy.Room;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
@@ -12,6 +14,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public BehaviourStateMachine Behaviour { get; set; }
 
         public float LastCollisionTime { get; set; }
+        
+        /// <summary>
+        /// The type of instrument which the enemy can be damaged with.
+        /// </summary>
+        public abstract WeaponType HittableBy { get; set; }
 
         protected override void OnEnable()
         {
@@ -28,10 +35,20 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// Event for when an enemy dies.
         /// </summary>
         /// <param name="enemyDeathEvent"></param>
-        public void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        public virtual void OnEvent(EnemyDeathEvent enemyDeathEvent)
         {
-            if (enemyDeathEvent.KilledEnemy.GetInstanceID() == GetInstanceID())
-                Destroy(gameObject);
+            if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
+
+            Room.Room currentRoom = RoomManager.Instance.CurrentRoom;
+            currentRoom.EnemySpawnData.NumberOfEnemies -= 1;
+
+            if (currentRoom.EnemySpawnData.NumberOfEnemies < 1 && !currentRoom.RoomIsCleared)
+            {
+                currentRoom.RoomIsCleared = true;
+                EventManager.Invoke(new RoomClearedOfEnemiesEvent());
+            }
+            
+            Destroy(gameObject);
         }
 
         /// <summary>
@@ -55,6 +72,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
                 return;
 
+            // Enemy can only be hit by specific instrument.
+            if (invokedEvent.Weapon.WeaponType != HittableBy)
+                return;
+            
             EntityData.Health -= invokedEvent.Weapon.GetTotalDamage();
 
             if (EntityData.Health <= 0)

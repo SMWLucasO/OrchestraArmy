@@ -44,7 +44,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
             Entity.transform.forward = directionVector;
             
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
             {
                 AimDirection = CalculateAimDirection(mousePosition, entityPosition) ?? directionVector;
             }

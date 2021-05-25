@@ -42,12 +42,13 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Go to the next level.
         /// </summary>
-        /// <param name="player"></param>
-        public void MoveToNextLevel(Player player)
+        public void MoveToNextLevel()
         {
             RoomManager.Instance.DestroyRooms();
             this.Level += 1;
-            
+
+            RoomManager.CurrentRoomIndex = new Vector2Int(10, 10);
+
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             
@@ -59,23 +60,27 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Go to the previous level.
         /// </summary>
-        /// <param name="player"></param>
-        public void MoveToPreviousLevel(Player player)
+        public void MoveToPreviousLevel()
         {
+
             RoomManager.Instance.DestroyRooms();
-            
+
+            // we do not want the guitar to be locked, it should only be available in the final level.
             if (this.Level > 1)
+            {
                 this.Level -= 1;
+                EventManager.Invoke(new LockLatestInstrumentEvent());
+                RoomManager.CollectedInstrumentCount -= 1;
+
+            }
             
+            RoomManager.CurrentRoomIndex = new Vector2Int(10, 10);
+
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
 
             // set to one such that we can get to other rooms.
             RoomManager.RoomsCleared = 1;
-
-            // Refill player health/stamina.
-            player.EntityData.Health = 100;
-            player.EntityData.Stamina = 100;
         }
 
         private void Update()
@@ -97,7 +102,7 @@ namespace OrchestraArmy.Room
                 case (3):
                     if (Time.time - _timeOfDeath >= 2)  //extends the time of the deathscreen on fast computers
                     {
-                        MoveToPreviousLevel(GameObject.FindWithTag("Player").GetComponent<Player>());
+                        MoveToPreviousLevel();
                         DeathScreen.SetActive(false); //deactivate death screen
                         _deathState = 0; //deactivate death 'loop'
                     }
