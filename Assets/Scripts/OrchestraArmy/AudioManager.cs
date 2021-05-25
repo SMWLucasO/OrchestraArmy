@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Enum;
@@ -38,30 +39,17 @@ namespace OrchestraArmy
             if (instrumentAudio.C == null)
                 return;
 
-            switch (invokedEvent.Tone)
+            _audioSource.clip = invokedEvent.Tone switch
             {
-                case Tone.C:
-                    _audioSource.clip = instrumentAudio.C;
-                    break;
-                case Tone.D:
-                    _audioSource.clip = instrumentAudio.D;
-                    break;
-                case Tone.E:
-                    _audioSource.clip = instrumentAudio.E;
-                    break;
-                case Tone.F:
-                    _audioSource.clip = instrumentAudio.F;
-                    break;
-                case Tone.G:
-                    _audioSource.clip = instrumentAudio.G;
-                    break;
-                case Tone.A:
-                    _audioSource.clip = instrumentAudio.A;
-                    break;
-                case Tone.B:
-                    _audioSource.clip = instrumentAudio.B;
-                    break;
-            }
+                Tone.C => instrumentAudio.C,
+                Tone.D => instrumentAudio.D,
+                Tone.E => instrumentAudio.E,
+                Tone.F => instrumentAudio.F,
+                Tone.G => instrumentAudio.G,
+                Tone.A => instrumentAudio.A,
+                Tone.B => instrumentAudio.B,
+                _ => throw new InvalidEnumArgumentException()
+            };
             
             _audioSource.Play();
         }
