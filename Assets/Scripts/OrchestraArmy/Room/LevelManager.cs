@@ -47,6 +47,8 @@ namespace OrchestraArmy.Room
             RoomManager.Instance.DestroyRooms();
             this.Level += 1;
 
+            RoomManager.CurrentRoomIndex = new Vector2Int(10, 10);
+
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);
             
@@ -71,6 +73,8 @@ namespace OrchestraArmy.Room
                 RoomManager.CollectedInstrumentCount -= 1;
 
             }
+            
+            RoomManager.CurrentRoomIndex = new Vector2Int(10, 10);
 
             // generate the starting room for the player.
             RoomManager.Instance.GenerateRoom(new Vector2(10, 10), RoomType.StartingRoom);

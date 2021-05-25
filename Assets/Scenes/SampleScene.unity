@@ -861,7 +861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: <EntityData>k__BackingField._health
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: m_Name
