@@ -15,9 +15,9 @@ namespace OrchestraArmy.UI
          Lower,
          Higher
      };
+    
     public class ToneSelector: MonoBehaviour, IListener<ToneChangedEvent>
     {
-        
         public GameObject Note;
         public Texture BaseNoteTexture;
         public Texture NoteTexture;

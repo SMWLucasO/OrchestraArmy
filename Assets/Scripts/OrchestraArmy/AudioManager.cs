@@ -21,7 +21,8 @@ namespace OrchestraArmy
         public AudioClip A;
         public AudioClip B;
     }
-    public class AudioManager: MonoBehaviour, IListener<PlayerAttackEvent>
+    
+    public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>
     {
         public InstrumentAudio[] AttackSounds;
         private AudioSource _audioSource;
@@ -52,11 +53,6 @@ namespace OrchestraArmy
             };
             
             _audioSource.Play();
-        }
-
-        public void OnDisable()
-        {
-            EventManager.Unbind<PlayerAttackEvent>(this);
         }
     }
 }

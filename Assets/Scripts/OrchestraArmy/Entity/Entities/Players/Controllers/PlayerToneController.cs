@@ -22,8 +22,11 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Tone.A,
             Tone.B
         });
+        
         private DoublyLinkedListNode<Tone> _current;
+        
         public Tone CurrentTone { get; private set; }
+        
         private float _lastChanged = 0;
 
         private void Initialize()
