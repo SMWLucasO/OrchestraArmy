@@ -4,6 +4,8 @@ using System.Threading;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Level;
 using System;
+using System.Collections;
+using OrchestraArmy.Event.Events.Player;
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -31,6 +33,18 @@ namespace OrchestraArmy.Music.Controllers
             RhythmData.BPM = 120;
             EventManager.Bind<EnteredNewLevelEvent>(this);
             RhythmData.SetStopwatch();
+        }
+
+        public void BeatCheck()
+        {
+            var beatDuration = 60f / RhythmData.BPM;
+            var timeSinceLastBeat = RhythmData.ElapsedSeconds - RhythmData.LastChangedBeat;
+            
+            if (timeSinceLastBeat > beatDuration)
+            {
+                EventManager.Invoke(new PlayerFiredAttackEvent());
+                RhythmData.LastChangedBeat = RhythmData.ElapsedSeconds - (timeSinceLastBeat - beatDuration);
+            }
         }
 
         /// <summary>

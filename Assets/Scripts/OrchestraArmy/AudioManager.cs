@@ -28,7 +28,7 @@ namespace OrchestraArmy
     /// <summary>
     /// Class that plays instrument audio
     /// </summary>
-    public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>
+    public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>, IListener<PlayerFiredAttackEvent>
     {
         /// <summary>
         /// InstrumentAudio collection
@@ -43,6 +43,7 @@ namespace OrchestraArmy
         public void OnEnable()
         {
             EventManager.Bind<PlayerAttackEvent>(this);
+            EventManager.Bind<PlayerFiredAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
         }
         
@@ -68,6 +69,13 @@ namespace OrchestraArmy
                 _ => throw new InvalidEnumArgumentException()
             };
             
+            _audioSource.Play();
+        }
+
+        public void OnEvent(PlayerFiredAttackEvent invokedEvent)
+        {
+            var instrumentAudio = AttackSounds.FirstOrDefault(s => s.Instrument == WeaponType.Drum);
+            _audioSource.clip = instrumentAudio.C;
             _audioSource.Play();
         }
     }

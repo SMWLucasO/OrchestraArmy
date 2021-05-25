@@ -8,6 +8,7 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Pickup;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Music.Controllers;
+using OrchestraArmy.Music.Data;
 using OrchestraArmy.Room;
 using UnityEngine;
 
@@ -58,6 +59,7 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         protected override void Update()
         {
+            RhythmController.BeatCheck();
             base.Update();
             DirectionController.HandleDirection();
             WeaponSelectionController.HandleWeaponSelection();
@@ -82,6 +84,8 @@ namespace OrchestraArmy.Entity.Entities.Players
         {
             InitializeSprites();
 
+            RhythmController = new RhythmController();
+            //StartCoroutine(RhythmController.Beat());
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
