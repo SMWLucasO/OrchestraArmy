@@ -12,7 +12,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerToneController: IToneController
     {
-        private DoublyLinkedList<Tone> _toneList = new DoublyLinkedList<Tone>(new []
+        private DoublyLoopedLinkedList<Tone> _toneList = new DoublyLoopedLinkedList<Tone>(new []
         {
             Tone.C,
             Tone.D,

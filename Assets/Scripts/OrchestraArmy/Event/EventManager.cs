@@ -39,5 +39,10 @@ namespace OrchestraArmy.Event
         {
             _listeners[typeof(T)].Remove(listener);
         }
+
+        public static void Reset()
+        {
+            _listeners = new Dictionary<Type, IList<dynamic>>();
+        }
     }
 }

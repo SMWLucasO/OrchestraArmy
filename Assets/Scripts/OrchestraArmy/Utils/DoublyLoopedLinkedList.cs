@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+
 namespace OrchestraArmy.Utils
 {
-    public class DoublyLinkedList<T>
+    public class DoublyLoopedLinkedList<T>
     {
         public DoublyLinkedListNode<T> Start;
         public DoublyLinkedListNode<T> End;
 
-        public DoublyLinkedList(T[] values)
+        public DoublyLoopedLinkedList(IEnumerable<T> values)
         {
             foreach (var value in values)
             {
@@ -24,7 +26,8 @@ namespace OrchestraArmy.Utils
 
                 Start.Previous = Start;
                 Start.Next = Start;
-            } else if (End == null)
+            } 
+            else if (End == null)
             {
                 End = new DoublyLinkedListNode<T>()
                 {
