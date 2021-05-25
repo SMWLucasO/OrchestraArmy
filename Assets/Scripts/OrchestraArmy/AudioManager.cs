@@ -53,5 +53,10 @@ namespace OrchestraArmy
             
             _audioSource.Play();
         }
+
+        public void OnDisable()
+        {
+            EventManager.Unbind<PlayerAttackEvent>(this);
+        }
     }
 }
