@@ -22,13 +22,15 @@ namespace OrchestraArmy.Music.UI
         void Start()
         {
             _rhythmController = new RhythmController();
-            _rhythmSlider.maxValue = 100; // set max value to 100
+            // set max value to 100
+            _rhythmSlider.maxValue = 100; 
         }
 
         // Update is called once per frame
         void Update()
         {
-            _rhythmSlider.value = _rhythmController.RhythmScore(); // update value of slider each frame
+            // update value of slider each frame
+            _rhythmSlider.value = _rhythmController.RhythmScore(); 
         }
     }
 }

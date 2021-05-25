@@ -58,7 +58,8 @@ namespace OrchestraArmy.Music.Controllers
             try {
                 newBPM = (int) obj;
             }
-            catch (InvalidCastException) { // do nothing
+            catch (InvalidCastException) { 
+                // do nothing
                 newBPM = RhythmData.BPM;
             }
 
@@ -77,7 +78,8 @@ namespace OrchestraArmy.Music.Controllers
                 {
                     break;
                 }
-                Thread.Sleep(20); // sleep 1/50th of a second
+                // sleep 1/50th of a second
+                Thread.Sleep(20); 
             }
         }
         

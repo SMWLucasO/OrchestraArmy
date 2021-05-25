@@ -58,7 +58,8 @@ namespace OrchestraArmy.Music.Data
         /// </summary>
         public static void SetStopwatch()
         {
-            if(_rhythmStopwatch == null) // only set if not existing, or you reset the current stopwatch
+            // only set if not existing, or you reset the current stopwatch
+            if(_rhythmStopwatch == null) 
             {
                 _rhythmStopwatch = new Stopwatch();
                 _rhythmStopwatch.Start();
