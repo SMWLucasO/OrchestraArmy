@@ -58,7 +58,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Physics.Raycast(r,out RaycastHit hitEntity, detectionRange);
             if (hitEntity.transform.CompareTag("Player"))
             {
-                machine.SetState(new WanderBehaviour());    //TODO:connect to aggroBehaviour
+                machine.SetState(new AggroBehaviour());    //TODO:connect to aggroBehaviour
             }
             
         }

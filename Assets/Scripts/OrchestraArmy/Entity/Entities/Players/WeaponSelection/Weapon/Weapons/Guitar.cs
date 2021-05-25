@@ -1,4 +1,5 @@
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons
 {
@@ -8,7 +9,9 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons
     /// </summary>
     public class Guitar : IWeapon
     {
-        
+        public WeaponType WeaponType { get; set; }
+            = WeaponType.Guitar;
+
         public int GetTotalDamage()
         {
             return 10;
