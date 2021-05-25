@@ -1,26 +1,27 @@
 ﻿using System;
-using OrchestraArmy.Entity.Entities.Enemies.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Utils;
+using OrchestraArmy.Entity.Entities.Enemies;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-namespace OrchestraArmy.Entity.Entities.Enemies
+namespace OrchestraArmy.Entity.Entities.Behaviour
 {
     public class WanderBehaviour : IBehaviourState
     {
-        /// <summary>
-        /// variables needed for wander behaviour
-        /// </summary>
 
-        private float _displacementLength = Random.value * 25;           //distance from center
-        private float _displacementAngle = Random.value * (2*Mathf.PI);  //angle of displacement
-        private float _displacementAltStrength = 5f;
-        
         /// <summary>
         /// Data used by the state.
         /// </summary>
         public StateData StateData { get; set; }
 
+        /// <summary>
+        /// The point where the enemy is going.
+        /// </summary>
+        public Vector3 WanderDestination { get; set; }
+        
         /// <summary>
         /// Enter this state.
         /// </summary>
@@ -34,7 +35,34 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
-            _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
+
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3))
+            {
+                //machine.SetState(new AttackBehaviour());
+                return;
+            }
+
+
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
+            {
+                machine.SetState(new MoveToPlayerBehaviour());
+                return;
+            }
+            
+            NavMeshPathStatus pathStatus = StateData.Enemy.NavMeshAgent.pathStatus;
+            if (!StateData.Enemy.transform.position.Equals(StateData.Enemy.NavMeshAgent.destination) &&
+                pathStatus != NavMeshPathStatus.PathInvalid && pathStatus != NavMeshPathStatus.PathPartial)
+                return;
+            
+            Vector3 randomTowards = new Vector3(Random.Range(3, 5), 0, Random.Range(3, 5));
+            StateData.Enemy.NavMeshAgent.SetDestination(StateData.Enemy.SpawnLocation + randomTowards);
+            
+        }
+
+        /*
+        OLD:
+        
+        _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
             _displacementLength = Mathf.Abs(_displacementLength);                           //calculate the new displacementLength
             
             _displacementAngle += (Random.value * 2 - 1) * _displacementAltStrength;
@@ -60,9 +88,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 machine.SetState(new AggroBehaviour());    //TODO:connect to aggroBehaviour
             }
-            
-        }
-
+        
+        */
+        
+        
         /// <summary>
         /// Exit this state.
         /// </summary>

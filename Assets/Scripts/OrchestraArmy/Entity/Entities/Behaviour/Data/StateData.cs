@@ -1,6 +1,7 @@
-﻿using OrchestraArmy.Entity.Entities.Players;
+﻿using OrchestraArmy.Entity.Entities.Enemies;
+using OrchestraArmy.Entity.Entities.Players;
 
-namespace OrchestraArmy.Entity.Entities.Enemies.Data
+namespace OrchestraArmy.Entity.Entities.Behaviour.Data
 {
     public class StateData
     {

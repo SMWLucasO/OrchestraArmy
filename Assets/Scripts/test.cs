@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using OrchestraArmy.Entity.Controllers;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Keybindings;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
-using OrchestraArmy.Entity.Entities.Enemies.Data;
 using UnityEngine.InputSystem;
 
 public class test : MonoBehaviour
