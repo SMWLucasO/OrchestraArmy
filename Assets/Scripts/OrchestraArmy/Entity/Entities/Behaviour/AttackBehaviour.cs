@@ -49,7 +49,10 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
             }
             
+            // TODO: aanvallen d.m.v. projectielen implementeren.
+            
             /*//next behaviour check
+             TODO: OLD, Bram van der Leest may remove this.
             Vector3 direction = (StateData.Player.RigidBody.position-StateData.Enemy.RigidBody.position).normalized;    //angle to the player
             Ray r = new Ray(StateData.Enemy.RigidBody.position, direction);             //ray to the player
             float attackRange = 4f;                                                          //2 units detection range

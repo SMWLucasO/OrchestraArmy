@@ -28,10 +28,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// <summary>
         /// Enter this state.
         /// </summary>
-        public void Enter()
-        {
-            
-        }
+        public void Enter() { }
 
         /// <summary>
         /// Process this state.
@@ -87,7 +84,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         }
 
         /*
-        OLD:
+        TODO: OLD (kept just in case. Bram van der Leest may remove this.):
         
         _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
             _displacementLength = Mathf.Abs(_displacementLength);                           //calculate the new displacementLength
@@ -117,23 +114,11 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             }
         
         */
-        
-        
+
         /// <summary>
         /// Exit this state.
         /// </summary>
-        public void Exit()
-        {
-            
-        }
-        
-        /// <summary>
-        /// calculate the x and y force of a given angle and velocity
-        /// </summary>
-        public Vector3 setAngle(Vector3 vec, float angleChange) {
-            float len = vec.magnitude;
-            return new Vector3(Mathf.Cos(angleChange),0,Mathf.Sin(angleChange));
-        }
+        public void Exit() { }
 
     }
 }

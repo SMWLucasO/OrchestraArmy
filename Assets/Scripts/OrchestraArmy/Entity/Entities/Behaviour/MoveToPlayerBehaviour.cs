@@ -14,7 +14,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
         public void Process(BehaviourStateMachine machine)
         {
-
             Vector3 playerPosition = StateData.Player.transform.position;
             Vector3 enemyPosition = StateData.Enemy.transform.position;
 
