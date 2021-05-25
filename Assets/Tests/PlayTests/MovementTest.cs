@@ -10,12 +10,11 @@ namespace Tests.PlayTests
     public class MovementTest
     {
         private Game _game;
-        
-        [UnitySetUp]
-        public IEnumerator Setup()
+
+        [SetUp]
+        public void Setup()
         {
             _game = new Game();
-            yield return _game.TestSetup("SampleScene");
         }
 
         [UnityTest]
@@ -25,7 +24,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(0, 100);
-            _game.Press(Keyboard.current.wKey);
+            _game.Input.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -40,12 +39,11 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestSKeyMovesPlayerInMouseDirection()
         {
-            
             var originalPosition = _game.Player.transform.position;
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(0, -100);
-            _game.Press(Keyboard.current.wKey);
+            _game.Input.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -64,7 +62,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(-100, 0);
-            _game.Press(Keyboard.current.wKey);
+            _game.Input.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -83,7 +81,7 @@ namespace Tests.PlayTests
 
             //get it's position
             _game.SetMousePositionRelativeToPlayer(100, 0);
-            _game.Press(Keyboard.current.wKey);
+            _game.Input.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -95,10 +93,10 @@ namespace Tests.PlayTests
             Assert.AreEqual(originalPosition.z, newPosition.z, 0.1);
         }
 
-        [UnityTearDown]
-        public IEnumerator Teardown()
+        [TearDown]
+        public void Teardown()
         {
-            yield return _game.TestTearDown("SampleScene");
+            _game.Destroy();
         }
     }
 }

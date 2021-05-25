@@ -52,10 +52,7 @@ namespace OrchestraArmy.Entity
         protected virtual void LateUpdate() {}
         
         protected  virtual void OnEnable() {}
-
-        protected virtual void OnDisable() { }
         
         protected  virtual void Awake() {}
-
     }
 }

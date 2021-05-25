@@ -11,13 +11,12 @@ namespace Tests.PlayTests
     {
         private Game _game;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        [SetUp]
+        public void Setup()
         {
             _game = new Game();
-            yield return _game.TestSetup("SampleScene");
         }
-
+        
         [UnityTest]
         [TestCase(0, 100, EntityDirection.Top, ExpectedResult = (IEnumerator) null)]
         [TestCase(0, -100, EntityDirection.Down, ExpectedResult = (IEnumerator) null)]
@@ -32,10 +31,10 @@ namespace Tests.PlayTests
             Assert.AreEqual(direction, _game.Player.DirectionController.CurrentDirection);
         }
         
-        [UnityTearDown]
-        public IEnumerator Teardown()
+        [TearDown]
+        public void Teardown()
         {
-            yield return _game.TestTearDown("SampleScene");
+            _game.Destroy();
         }
     }
 }

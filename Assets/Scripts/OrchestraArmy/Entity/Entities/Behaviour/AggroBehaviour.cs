@@ -32,13 +32,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
-            Vector3 direction = (StateData.Player.RigidBody.position-StateData.Enemy.RigidBody.position).normalized;    //angle to the player
-            Ray r = new Ray(StateData.Enemy.RigidBody.position, direction);             //ray to the player
-            float attackRange = 2f;                                                          //2 units detection range
             
-            Physics.Raycast(r,out RaycastHit hitEntity, attackRange);
-            if (hitEntity.transform.CompareTag("Player"))                                    //if closer then 2 units from player
-                machine.SetState(new AttackBehaviour());    //TODO:connect to attackBehaviour
+            
         }
 
         /// <summary>

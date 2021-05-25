@@ -1,5 +1,3 @@
-using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
-
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon
 {
     /// <summary>
@@ -7,12 +5,6 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon
     /// </summary>
     public interface IWeapon
     {
-
-        /// <summary>
-        /// The type of this weapon.
-        /// </summary>
-        public WeaponType WeaponType { get; set; }
-        
         /// <summary>
         /// The damage caused by the weapon upon attack.
         /// </summary>

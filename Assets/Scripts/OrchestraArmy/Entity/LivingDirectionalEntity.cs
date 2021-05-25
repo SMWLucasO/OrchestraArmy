@@ -12,7 +12,6 @@ namespace OrchestraArmy.Entity
     {
         [field: SerializeField]
         public LivingEntityData EntityData { get; set; }
-        
     }
 
 }

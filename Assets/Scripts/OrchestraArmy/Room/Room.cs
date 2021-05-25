@@ -1,97 +1,142 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using OrchestraArmy.Room.Data;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
 
 namespace OrchestraArmy.Room
 {
-    
-    public abstract class Room
+    public class Room : IListener<EnemyDeathEvent>
     {
-     
         /// <summary>
-        /// The controller for this room.
+        /// Enum for the different types of objects on the map
         /// </summary>
-        [field: SerializeField]
-        public RoomController RoomController { get; set; }
-        
+        public enum GridSpace
+        {
+            Empty,
+            Floor,
+            Wall,
+            DoorU,
+            DoorD,
+            DoorL,
+            DoorR
+        };
+
         /// <summary>
-        /// The grid of the room, to be filled with objects.
+        /// The field for this room
         /// </summary>
         public GridSpace[,] Grid { get; set; }
 
         /// <summary>
-        /// The locations where the enemies are to be spawned at.
+        /// The locations for enemies to spawn
         /// </summary>
         public List<Vector2> EnemySpawnLocations { get; set; }
-            = new List<Vector2>();
 
         /// <summary>
-        /// The width of the room.
-        /// </summary>
-        public int RoomWidth { get; set; }
-        
-        /// <summary>
-        /// The height of the room.
+        /// The height of this field
         /// </summary>
         public int RoomHeight { get; set; }
-        
+
         /// <summary>
-        /// Bool to determine whether the room was cleared of enemies.
+        /// The width of this field
         /// </summary>
-        public bool RoomIsCleared { get; set; }
-        
+        public int RoomWidth { get; set; }
+
+        /// <summary>
+        /// To see is the room is cleared of enemies yet
+        /// </summary>
+        public bool Beaten { get; set; }
+
         /// <summary>
         /// Size of the room in Vector2
         /// </summary>
-        public Vector2 RoomSizeWorldUnits { get; set; } 
-            = new Vector2(150, 150);
+        public Vector2 RoomSizeWorldUnits { get; set; } = new Vector2(150, 150);
 
         /// <summary>
         /// For getting the center of the room
         /// </summary>
-        public Vector2 OffsetOfRoom { get; set; } 
-            = new Vector2(0, 0);
+        public Vector2 OffsetOfRoom { get; set; } = new Vector2(0, 0);
 
-        /// <summary>
-        /// Data for spawning enemies.
-        /// </summary>
-        public EnemySpawnData EnemySpawnData { get; set; }
-            = new EnemySpawnData();
+        private float _worldUnitsInOneGridCell = 1;
 
-        /// <summary>
-        /// Data for the room generation.
-        /// </summary>
-        public RoomGenerationData RoomGenerationData { get; set; }
-            = new RoomGenerationData();
-        
-        /// <summary>
-        /// Generate the room.
-        /// </summary>
-        public virtual void Generate()
+        private struct Walker
         {
-            SetupSettings();
+            public Vector2 Dir;
+            public Vector2 Pos;
+        }
 
-            Setup();
-            CreateFloors();
-            CreateWalls();
-            RemoveSingleWalls();
-            CreateDoors();
+        private List<Walker> _walkers;
 
-            if (!RoomIsCleared)
-                RecursivelyGenerateEnemySpawnLocation();
+        private float _chanceWalkerChangeDir = .7f, _chanceWalkerSpawn = 0.2f;
+        private float _chanceWalkerDestoy = 0.2f;
 
+        private int _maxWalkers = 6;
+
+        private float _percentToFill = 0.05f;
+
+        private int _numberOfEnemies;
+        
+        private List<Vector2> _floors = new List<Vector2>();
+        
+        private int _distanceBetweenEnemies = 10;
+
+        
+        public Room(int numberOfEnemies, bool spawn = false, bool boss = false)
+        {
+            _numberOfEnemies = numberOfEnemies;
+            
+            if (spawn) 
+            {
+                CreateSpawn();
+                CreateWalls();
+                CreateDoors();
+            }
+            else 
+            {
+                if (boss) 
+                {
+                    BossSettings();
+                }
+                Setup();
+                CreateFloors();
+                CreateWalls();
+                RemoveSingleWalls();
+                CreateDoors();
+            }
+            
+            if (!Beaten)
+                CreateEnemySpawnLocationsRecursive();
+        }
+
+        /// <summary>
+        /// Create room according to boss level settings
+        /// </summary>
+        private void BossSettings()
+        {
+            _chanceWalkerChangeDir = .99f;
+            _chanceWalkerSpawn = 0.8f;
+            _chanceWalkerDestoy = 0.8f;
+            _maxWalkers = 20;
+            _percentToFill = 0.1f;
         }
 
         private void Setup()
         {
+            // Register enemy events.
+            EventManager.Bind<EnemyDeathEvent>(this);
 
-            RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / RoomGenerationData.WorldUnitsInOneGridCell);
-            RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / RoomGenerationData.WorldUnitsInOneGridCell);
-            
+            _floors = new List<Vector2>();
+            this.Beaten = false;
+
+            // Find grid size
+            RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / _worldUnitsInOneGridCell);
+            RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / _worldUnitsInOneGridCell);
+
+            // Create grid
             Grid = new GridSpace[RoomWidth, RoomHeight];
-            
+
             // Set grid's default state
             for (int x = 0; x < RoomWidth - 1; x++)
             {
@@ -101,100 +146,123 @@ namespace OrchestraArmy.Room
                     Grid[x, y] = GridSpace.Empty;
                 }
             }
-            
+
+            // Set first walker
+            // Init list
+            _walkers = new List<Walker>();
+
             // Create a walker 
-            Walker newWalker = new Walker {Direction = RandomDirection()};
+            Walker newWalker = new Walker();
+            newWalker.Dir = RandomDirection();
 
             // Find center of grid
-            Vector2 spawnPosition = new Vector2(Mathf.RoundToInt(RoomWidth / 2.0f),
+            Vector2 spawnPos = new Vector2(Mathf.RoundToInt(RoomWidth / 2.0f),
                 Mathf.RoundToInt(RoomHeight / 2.0f));
-            newWalker.Position = spawnPosition;
+            newWalker.Pos = spawnPos;
 
             // Add walker to list
-            RoomGenerationData.Walkers.Add(newWalker);
+            _walkers.Add(newWalker);
+        }
+        
+        void CreateSpawn()  //creates the spawn room layout 
+        {
+            this.Beaten = false;
+            //find grid size
+            RoomHeight = Mathf.RoundToInt(RoomSizeWorldUnits.x / _worldUnitsInOneGridCell);
+            RoomWidth = Mathf.RoundToInt(RoomSizeWorldUnits.y / _worldUnitsInOneGridCell);
+            //create grid
+            Grid = new GridSpace[RoomWidth, RoomHeight];
+            Vector2 center = RoomSizeWorldUnits / 2;
+            for (int x = (int)-center.x; x < center.x; x++) {
+                for (int y = (int)-center.y; y < center.y; y++) {
+                    if (x*x+y*y<=100) {
+                        Grid[(int) (x+center.x),(int) (y+center.y)] = GridSpace.Floor;
+                    } else {
+                        Grid[(int)(x+center.x),(int)(y+center.y)] = GridSpace.Empty;
+                    }
+                }
+            }
         }
         
         /// <summary>
         /// Create floors with random walkers
         /// </summary>
-        protected void CreateFloors()
+        private void CreateFloors()
         {
             // Loop will not run forever
             int iterations = 0;
             do
             {
                 // Create floor at position of every walker
-                foreach (Walker myWalker in RoomGenerationData.Walkers)
+                foreach (Walker myWalker in _walkers)
                 {
                     // Add position to floor list
-                    Grid[(int) myWalker.Position.x, (int) myWalker.Position.y] = GridSpace.Floor;
-                    EnemySpawnData.Floors.Add(new Vector2((int) myWalker.Position.x, (int) myWalker.Position.y));
+                    Grid[(int) myWalker.Pos.x, (int) myWalker.Pos.y] = GridSpace.Floor;
+                    _floors.Add(new Vector2((int) myWalker.Pos.x, (int) myWalker.Pos.y));
                 }
 
                 // Chance: destroy walker
                 // Might modify count while in this loop
-                int numberChecks = RoomGenerationData.Walkers.Count;
+                int numberChecks = _walkers.Count;
                 for (int i = 0; i < numberChecks; i++)
                 {
                     // Only if its not the only one, and at a low chance
-                    if (Random.value < RoomGenerationData.WalkerDestructionChance && RoomGenerationData.Walkers.Count > 1)
+                    if (Random.value < _chanceWalkerDestoy && _walkers.Count > 1)
                     {
                         // Only destroy one per iteration
-                        RoomGenerationData.Walkers.RemoveAt(i);
+                        _walkers.RemoveAt(i);
                         break;
                     }
                 }
 
                 // Chance: walker pick new direction
-                for (int i = 0; i < RoomGenerationData.Walkers.Count; i++)
+                for (int i = 0; i < _walkers.Count; i++)
                 {
-                    if (Random.value < RoomGenerationData.WalkerDirectionChangeChance)
+                    if (Random.value < _chanceWalkerChangeDir)
                     {
-                        Walker thisWalker = RoomGenerationData.Walkers[i];
-                        thisWalker.Direction = RandomDirection();
-                        RoomGenerationData.Walkers[i] = thisWalker;
+                        Walker thisWalker = _walkers[i];
+                        thisWalker.Dir = RandomDirection();
+                        _walkers[i] = thisWalker;
                     }
                 }
 
                 // Chance: spawn new walker
                 // Might modify count while in this loop
-                numberChecks = RoomGenerationData.Walkers.Count;
+                numberChecks = _walkers.Count;
                 for (int i = 0; i < numberChecks; i++)
                 {
                     // Only if # of walkers < max, and at a low chance
-                    if (Random.value < RoomGenerationData.WalkerSpawnChance 
-                        && RoomGenerationData.Walkers.Count < RoomGenerationData.MaxAliveWalkers)
+                    if (Random.value < _chanceWalkerSpawn && _walkers.Count < _maxWalkers)
                     {
                         // Create a walker 
                         Walker newWalker = new Walker();
-                        newWalker.Direction = RandomDirection();
-                        newWalker.Position = RoomGenerationData.Walkers[i].Position;
-                        RoomGenerationData.Walkers.Add(newWalker);
+                        newWalker.Dir = RandomDirection();
+                        newWalker.Pos = _walkers[i].Pos;
+                        _walkers.Add(newWalker);
                     }
                 }
 
                 // Move walkers
-                for (int i = 0; i < RoomGenerationData.Walkers.Count; i++)
+                for (int i = 0; i < _walkers.Count; i++)
                 {
-                    Walker thisWalker = RoomGenerationData.Walkers[i];
-                    thisWalker.Position += thisWalker.Direction;
-                    RoomGenerationData.Walkers[i] = thisWalker;
+                    Walker thisWalker = _walkers[i];
+                    thisWalker.Pos += thisWalker.Dir;
+                    _walkers[i] = thisWalker;
                 }
 
                 // Avoid boarder of grid
-                for (int i = 0; i < RoomGenerationData.Walkers.Count; i++)
+                for (int i = 0; i < _walkers.Count; i++)
                 {
-                    Walker thisWalker = RoomGenerationData.Walkers[i];
+                    Walker thisWalker = _walkers[i];
 
                     // Clamp x,y to leave a 1 space boarder: leave room for walls
-                    thisWalker.Position.x = Mathf.Clamp(thisWalker.Position.x, 1, RoomWidth - 2);
-                    thisWalker.Position.y = Mathf.Clamp(thisWalker.Position.y, 1, RoomHeight - 2);
-                    RoomGenerationData.Walkers[i] = thisWalker;
+                    thisWalker.Pos.x = Mathf.Clamp(thisWalker.Pos.x, 1, RoomWidth - 2);
+                    thisWalker.Pos.y = Mathf.Clamp(thisWalker.Pos.y, 1, RoomHeight - 2);
+                    _walkers[i] = thisWalker;
                 }
 
                 // Check to exit loop
-                // might be able to replace NumberOfFloors with the Floors.Count within EnemySpawnData.
-                if ((float) NumberOfFloors() / (float) Grid.Length > RoomGenerationData.PercentToFill)
+                if ((float) NumberOfFloors() / (float) Grid.Length > _percentToFill)
                 {
                     break;
                 }
@@ -203,10 +271,11 @@ namespace OrchestraArmy.Room
             } while (iterations < 100000);
         }
 
+
         /// <summary>
         /// Create walls surrounding the floors
         /// </summary>
-        protected void CreateWalls()
+        private void CreateWalls()
         {
             // Loop though every grid space
             for (int x = 0; x < RoomWidth - 1; x++)
@@ -240,11 +309,11 @@ namespace OrchestraArmy.Room
                 }
             }
         }
-        
+
         /// <summary>
         /// Replace single walls with a floor
         /// </summary>
-        protected void RemoveSingleWalls()
+        private void RemoveSingleWalls()
         {
             // Loop though every grid space
             for (int x = 0; x < RoomWidth - 1; x++)
@@ -286,7 +355,7 @@ namespace OrchestraArmy.Room
                         {
                             Grid[x, y] = GridSpace.Floor;
                             // Add position to floor list
-                            EnemySpawnData.Floors.Add(new Vector2(x, y));
+                            _floors.Add(new Vector2(x, y));
                         }
                     }
                 }
@@ -296,7 +365,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Place the four doors around the map
         /// </summary>
-        protected virtual void CreateDoors()
+        private void CreateDoors()
         {
             // Calculate the center of the made map
             int minX = RoomWidth, minY = RoomHeight, maxX = 0, maxY = 0; 
@@ -363,7 +432,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// Create enemy spawn locations with a try-catch
         /// </summary>
-        protected void RecursivelyGenerateEnemySpawnLocation()
+        private void CreateEnemySpawnLocationsRecursive()
         {
             try
             {
@@ -374,12 +443,12 @@ namespace OrchestraArmy.Room
             {
                 // Spreading out with distancebetweenenemies was not possible
                 //If distance between enemies is higher than 0
-                if (EnemySpawnData.DistanceBetweenEnemies > 0) 
+                if (_distanceBetweenEnemies > 0) 
                 {
                     // Subtract 1 from distance between enemies
-                    EnemySpawnData.DistanceBetweenEnemies--;
-                    Debug.Log("Distance between enemies too high. New distance: " + EnemySpawnData.DistanceBetweenEnemies);
-                    RecursivelyGenerateEnemySpawnLocation();
+                    _distanceBetweenEnemies--;
+                    Debug.Log("Distance between enemies too high. New distance: " + _distanceBetweenEnemies);
+                    CreateEnemySpawnLocationsRecursive();
                 }
                 else
                 {
@@ -389,73 +458,56 @@ namespace OrchestraArmy.Room
                 }
             }
         }
-        
+
         /// <summary>
         /// Create enemies on floor-tiles
         /// </summary>
-        protected void CreateEnemySpawnLocations()
+        private void CreateEnemySpawnLocations()
         {
             EnemySpawnLocations = new List<Vector2>();
-            Vector2 location;
-            List<Vector2> possibleFloors = EnemySpawnData.Floors;
+            Vector2 _location;
+            List<Vector2> _possibleFloors = _floors;
 
             // For every enemy
-            for (int i = EnemySpawnData.NumberOfEnemies; i > 0; i--)
+            for (int i = _numberOfEnemies; i > 0; i--)
             {
                 // Get random location
-                location = possibleFloors[Random.Range(0, possibleFloors.Count)]; 
+                _location = _possibleFloors[Random.Range(0, _possibleFloors.Count)]; 
                 
                 // Add location to enemy spawn
-                EnemySpawnLocations.Add(location); 
+                EnemySpawnLocations.Add(_location); 
 
-                // Remove from possibleFloors in a manhattan distance around enemy to prevent 
+                // Remove from _possiblefloors in a manhatten distance around enemy to prevent 
                 // groups of enemies in one spot
-                List<Vector2> tempFloors = new List<Vector2>();
+                List<Vector2> _tempFloors = new List<Vector2>();
                 Vector2 vec;
                 int diff;
                 
-                foreach (Vector2 floor in possibleFloors)
+                foreach (Vector2 floor in _possibleFloors)
                 {
                     // Get distance between current location and possible floor
-                    vec = location - floor; 
+                    vec = _location - floor; 
                     
                     // Get Manhattan distance
                     diff = (int) (Math.Abs(vec.x) + Math.Abs(vec.y)); 
                     
                     // If difference is large enough to keep enemies apart
-                    if (diff > EnemySpawnData.DistanceBetweenEnemies) 
+                    if (diff > _distanceBetweenEnemies) 
                     {
                         // Add floor to save to temp list
-                        tempFloors.Add(floor); 
+                        _tempFloors.Add(floor); 
                     }
                 }
 
                 // Make temp list permanent
-                possibleFloors = tempFloors; 
+                _possibleFloors = _tempFloors; 
             }
         }
 
         /// <summary>
-        /// Get number of floors in this room
-        /// </summary>
-        protected float NumberOfFloors()
-        {
-            int count = 0;
-            foreach (GridSpace space in Grid)
-            {
-                if (space == GridSpace.Floor)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }        
-
-        /// <summary>
         /// Get a random direction from four options
         /// </summary>
-        protected Vector2 RandomDirection()
+        private Vector2 RandomDirection()
         {
             // Pick random int between 0 and 3
             int choice = Mathf.FloorToInt(Random.value * 3.99f);
@@ -469,27 +521,37 @@ namespace OrchestraArmy.Room
                 _ => Vector2.right
             };
         }
-        
-        /// <summary>
-        /// Set the settings for the room generation.
-        /// </summary>
-        public abstract void SetupSettings();
-        
-        
-    }
-    
-    /// <summary>
-    /// Enum for the different types of objects on the map
-    /// </summary>
-    public enum GridSpace
-    {
-        Empty,
-        Floor,
-        Wall,
-        DoorU,
-        DoorD,
-        DoorL,
-        DoorR
-    }
 
+        /// <summary>
+        /// Get number of floors in this room
+        /// </summary>
+        private int NumberOfFloors()
+        {
+            int count = 0;
+            foreach (GridSpace space in Grid)
+            {
+                if (space == GridSpace.Floor)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Event for when an enemy dies.
+        /// </summary>
+        /// <param name="enemyDeathEvent"></param>
+        public void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        {
+            // One enemy less
+            _numberOfEnemies--;
+
+            // If all enemies are dead
+            if (_numberOfEnemies < 1)
+                // Level beaten
+                Beaten = true;
+        }
+    }
 }

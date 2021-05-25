@@ -9,9 +9,7 @@ namespace OrchestraArmy.Keybindings
 
         public static KeybindingManager Instance { get; set; }
             = new KeybindingManager();
-
-        private KeybindingManager() { }
-
+        
         /// <summary>
         /// Store for all the keybindings, where the description points to the bound key.
         /// </summary>
@@ -31,8 +29,6 @@ namespace OrchestraArmy.Keybindings
                 {"Rotate camera right", Keyboard.current.rightArrowKey},
                 {"Select next instrument", Keyboard.current.eKey},
                 {"Select previous instrument", Keyboard.current.qKey},
-                
-                {"bake", Keyboard.current.mKey},
             };
     }
 }
