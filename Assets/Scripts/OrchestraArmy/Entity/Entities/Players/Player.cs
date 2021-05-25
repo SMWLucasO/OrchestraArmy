@@ -6,6 +6,7 @@ using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Music.Controllers;
 using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Players
@@ -17,7 +18,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         public WeaponType Instrument;
     }
     
-    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>
+    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>, IListener<PlayerFiredAttackEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -28,6 +29,11 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The controller for the player's attacking.
         /// </summary>
         public IAttackController AttackController { get; set; }
+
+        /// <summary>
+        /// The controller for the rhythm.
+        /// </summary>
+        public RhythmController RhythmController { get; set; }
         
         /// <summary>
         /// The controller for selecting the player's weapon(instrument).
@@ -102,6 +108,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             
             // register player events.
             EventManager.Bind<PlayerDamageEvent>(this);
+            EventManager.Bind<PlayerFiredAttackEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
         }
 
@@ -128,6 +135,11 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
         {
             Sprites = InstrumentSprites.First(s => s.Instrument == invokedEvent.NewlySelectedWeapon).SpriteEntries;
+        }
+
+        public void OnEvent(PlayerFiredAttackEvent invokedEvent)
+        {
+            //int staminaDamage = ;
         }
     }
 }
