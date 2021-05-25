@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
+using OrchestraArmy.Event.Events.GenerateRoom;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Room
@@ -130,7 +133,7 @@ namespace OrchestraArmy.Room
                 
                 CurrentRoom.RoomController.RegisterEvents();
                 
-                SpawnRoom();
+                StartCoroutine(nameof(SpawnRoom));
             }
         }
         
@@ -200,11 +203,11 @@ namespace OrchestraArmy.Room
         // room object generation //
         
         /// <summary>
-        /// Spawn room into game
+        /// Spawn room into game (corotine)
         /// </summary>
-        private void SpawnRoom()
+        private IEnumerator SpawnRoom()
         {
-
+            // Spawn static game room objects into game
             for (int x = 0; x < CurrentRoom.RoomWidth; x++)
             {
                 for (int y = 0; y < CurrentRoom.RoomHeight; y++)
@@ -248,8 +251,14 @@ namespace OrchestraArmy.Room
                     }
                 }
             }
-
-            // Spawn enemies
+            
+            yield return null;
+            // Bake navMesh into game
+            NavMeshSurface[] objs = FindObjectsOfType(typeof(NavMeshSurface)) as NavMeshSurface[];
+            objs[0].BuildNavMesh();
+            
+            yield return null;
+            // Spawn enemies into game
             int newestEnemy = Math.Min(
                 CollectedInstrumentCount,
                 RoomPrefabData.Enemies.Count - 1
@@ -374,7 +383,6 @@ namespace OrchestraArmy.Room
 
         public void OnEvent(RoomDoorRightEvent invokedEvent)
             => MoveToNextRoom(DoorDirection.Right);
-        
 
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {
