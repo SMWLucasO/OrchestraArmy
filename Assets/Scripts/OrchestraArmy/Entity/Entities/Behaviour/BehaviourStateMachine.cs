@@ -1,4 +1,6 @@
-﻿namespace OrchestraArmy.Entity.Entities.Enemies
+﻿using OrchestraArmy.Entity.Entities.Enemies;
+
+namespace OrchestraArmy.Entity.Entities.Behaviour
 {
     public class BehaviourStateMachine
     {
@@ -29,6 +31,9 @@
             
             CurrentState.Exit();
             newState.Enter();
+
+            // Transfer StateData over to new state.
+            newState.StateData = CurrentState.StateData;
             
             this.PreviousState = CurrentState;
             this.CurrentState = newState;

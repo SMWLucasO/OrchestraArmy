@@ -26,7 +26,7 @@ namespace OrchestraArmy.Music.UI
         public int BPM = 120;
 
         // Start is called before the first frame update
-        void Start()
+        void OnEnable()
         {
             _rhythmController = new RhythmController(BPM);
             // set max value to 100

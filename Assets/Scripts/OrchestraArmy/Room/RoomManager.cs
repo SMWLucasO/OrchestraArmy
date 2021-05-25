@@ -3,12 +3,10 @@ using System.Collections;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
-using OrchestraArmy.Event.Events.GenerateRoom;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 

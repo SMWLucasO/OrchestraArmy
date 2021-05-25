@@ -10,8 +10,6 @@ namespace OrchestraArmy.Music.Controllers
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
 
-        
-
         /// <summary>
         /// Create with custom BPM
         /// </summary>

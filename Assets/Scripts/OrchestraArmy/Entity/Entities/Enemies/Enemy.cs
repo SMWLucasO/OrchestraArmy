@@ -1,4 +1,6 @@
-﻿using OrchestraArmy.Entity.Entities.Players;
+﻿using OrchestraArmy.Entity.Entities.Behaviour;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
@@ -6,11 +8,13 @@ using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Event.Events.Room;
 using OrchestraArmy.Room;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
     public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>
     {
+        
         public BehaviourStateMachine Behaviour { get; set; }
 
         public float LastCollisionTime { get; set; }
@@ -19,16 +23,48 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// The type of instrument which the enemy can be damaged with.
         /// </summary>
         public abstract WeaponType HittableBy { get; set; }
-
+        
+        /// <summary>
+        /// The NavMeshAgent for the enemy.
+        /// </summary>
+        public NavMeshAgent NavMeshAgent { get; set; }
+        
+        /// <summary>
+        /// The location where this player started.
+        /// </summary>
+        public Vector3 SpawnLocation { get; set; }
+        
         protected override void OnEnable()
         {
             base.OnEnable();
 
             LastCollisionTime = Time.time;
 
+            Behaviour = new BehaviourStateMachine()
+            {
+                CurrentState = new WanderBehaviour()
+            };
+
+            SpawnLocation = transform.position;
+            
+            // set initial state data.
+            Behaviour.CurrentState.StateData = new StateData()
+            {
+                Player = GameObject.FindWithTag("Player").GetComponent<Player>(),
+                Enemy = this
+            };
+
+            NavMeshAgent = this.GetComponent<NavMeshAgent>();
+
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            Behaviour.Update();
         }
 
         /// <summary>
