@@ -26,21 +26,19 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3))
             {
-                //machine.SetState(new AttackBehaviour());
+                machine.SetState(new AttackBehaviour());
                 return;
             }
+
+            if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy)) return;
             
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
-            {
-                Vector3 offset = (StateData.Enemy.transform.forward.normalized * 5);
-                Vector3 enemyDestination = StateData.Player.transform.position - offset;
+            Vector3 offset = (StateData.Enemy.transform.forward.normalized * 3);
+            Vector3 enemyDestination = StateData.Player.transform.position - offset;
                 
-                StateData.Enemy.NavMeshAgent.SetDestination(
-                    enemyDestination
-                );
-                
-            }
-            
+            StateData.Enemy.NavMeshAgent.SetDestination(
+                enemyDestination
+            );
+
         }
 
         public void Exit() { }

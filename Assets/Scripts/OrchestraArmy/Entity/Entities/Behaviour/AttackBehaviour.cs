@@ -1,5 +1,6 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -32,6 +33,21 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
+            
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
+            {
+                if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 3)
+                {
+                    machine.SetState(new MoveToPlayerBehaviour());
+                    return;
+                }
+            }
+
+            if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 5)
+            {
+                machine.SetState(new WanderBehaviour());
+                return;
+            }
             
             /*//next behaviour check
             Vector3 direction = (StateData.Player.RigidBody.position-StateData.Enemy.RigidBody.position).normalized;    //angle to the player

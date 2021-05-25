@@ -41,7 +41,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3))
             {
-                //machine.SetState(new AttackBehaviour());
+                machine.SetState(new AttackBehaviour());
                 return;
             }
 
@@ -77,7 +77,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Vector3 newPosition = StateData.Enemy.SpawnLocation + (randomDirection * 3);
             
             StateData.Enemy.NavMeshAgent.SetDestination(newPosition);
-            
         }
 
         /*
