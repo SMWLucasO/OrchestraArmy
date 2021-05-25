@@ -18,10 +18,17 @@ namespace OrchestraArmy.Music.UI
         /// </summary>
         public Slider _rhythmSlider;
 
+        /// <summary>
+        /// BPM
+        /// </summary>
+        [SerializeField]
+        [Range(60, 140)]
+        public int BPM = 120;
+
         // Start is called before the first frame update
         void Start()
         {
-            _rhythmController = new RhythmController();
+            _rhythmController = new RhythmController(BPM);
             // set max value to 100
             _rhythmSlider.maxValue = 100; 
         }
@@ -30,7 +37,8 @@ namespace OrchestraArmy.Music.UI
         void Update()
         {
             // update value of slider each frame
-            _rhythmSlider.value = _rhythmController.RhythmScore(); 
+            _rhythmSlider.value = _rhythmController.RhythmScore();
+            _rhythmController.ChangeBPMImmediately(BPM); 
         }
     }
 }

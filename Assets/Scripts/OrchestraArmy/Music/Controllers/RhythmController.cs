@@ -10,6 +10,8 @@ namespace OrchestraArmy.Music.Controllers
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
 
+        
+
         /// <summary>
         /// Create with custom BPM
         /// </summary>
@@ -47,7 +49,8 @@ namespace OrchestraArmy.Music.Controllers
             return RhythmData.GetRhythmScore();
         }
 
-        
+        // DOESN'T WORK, FIX LATER
+
         /// <summary>
         /// Gradually change bpm for a better flow
         /// </summary>
@@ -79,14 +82,14 @@ namespace OrchestraArmy.Music.Controllers
                     break;
                 }
                 // sleep 1/50th of a second
-                Thread.Sleep(20); 
+                Thread.Sleep(200); 
             }
         }
         
         /// <summary>
         /// Public starting point for GraduallyChangeBPM
         /// </summary>
-        public void ChangeBPM(int changeInPercentage)
+        public void ChangeBPMByPercentage(int changeInPercentage)
         {
             int newBPM = RhythmData.BPM / 100 * changeInPercentage + RhythmData.BPM;
             
@@ -94,6 +97,25 @@ namespace OrchestraArmy.Music.Controllers
             Thread t = new Thread(GraduallyChangeBPM);
             t.IsBackground = true;
             t.Start(newBPM);
+        }
+
+        /// <summary>
+        /// Public starting point for GraduallyChangeBPM
+        /// </summary>
+        public void ChangeBPMByBPM(int changeInBPM)
+        {
+            // Start new thread for BPM change
+            Thread t = new Thread(GraduallyChangeBPM);
+            t.IsBackground = true;
+            t.Start(changeInBPM);
+        }
+
+        /// <summary>
+        /// Change BPM Immediately
+        /// </summary>
+        public void ChangeBPMImmediately(int changeInBPM)
+        {
+            RhythmData.BPM = changeInBPM;
         }
 
         public void OnEvent(EnteredNewLevelEvent invokedEvent)
