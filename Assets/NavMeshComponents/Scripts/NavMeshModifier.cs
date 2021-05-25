@@ -25,11 +25,11 @@ namespace UnityEngine.AI
         [SerializeField]
         List<int> m_AffectedAgents = new List<int>(new int[] { -1 });    // Default value is All
 
-        static readonly List<NavMeshModifier> s_NavMeshModifiers = new List<NavMeshModifier>();
+        static readonly HashSet<NavMeshModifier> s_NavMeshModifiers = new HashSet<NavMeshModifier>();
 
         public static List<NavMeshModifier> activeModifiers
         {
-            get { return s_NavMeshModifiers; }
+            get { return s_NavMeshModifiers.ToList(); }
         }
 
         void OnEnable()

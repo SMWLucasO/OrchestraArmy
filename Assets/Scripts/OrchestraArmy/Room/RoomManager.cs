@@ -154,9 +154,13 @@ namespace OrchestraArmy.Room
         /// <param name="direction"></param>
         public void MoveToNextRoom(DoorDirection direction)
         {
+            // room has to be cleared before continuing.
+            if (!CurrentRoom.RoomIsCleared)
+                return;
+            
             // Clear previous field
             CurrentRoom.RoomController.DestroyRoom();
-            
+
             // unregister the events of the current room
             CurrentRoom.RoomController.UnregisterEvents();
 
