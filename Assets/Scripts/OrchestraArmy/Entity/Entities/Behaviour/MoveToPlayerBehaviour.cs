@@ -18,12 +18,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Vector3 playerPosition = StateData.Player.transform.position;
             Vector3 enemyPosition = StateData.Enemy.transform.position;
 
+            // When the player is more than 5 units away from the enemy: wander.
             if (Vector3.Distance(enemyPosition, playerPosition) > 5)
             {
                 machine.SetState(new WanderBehaviour());
                 return;
             }
             
+            // When the enemy is within 3 units of the player & it can detect the player: attack.
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3))
             {
                 machine.SetState(new AttackBehaviour());

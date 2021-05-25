@@ -39,6 +39,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         public void Process(BehaviourStateMachine machine)
         {
 
+            // When the enemy is within 3 units of the player & it can detect the player: attack.
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3))
             {
                 machine.SetState(new AttackBehaviour());
@@ -46,12 +47,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             }
 
 
+            // When the player is within 5 units of the enemy: move towards player.
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
             {
                 machine.SetState(new MoveToPlayerBehaviour());
                 return;
             }
             
+            // if the entity has not arrived, and the end can be reached: wait till the entity has arrived.
             NavMeshPathStatus pathStatus = StateData.Enemy.NavMeshAgent.pathStatus;
             if (!StateData.Enemy.transform.position.Equals(StateData.Enemy.NavMeshAgent.destination) &&
                 pathStatus != NavMeshPathStatus.PathInvalid && pathStatus != NavMeshPathStatus.PathPartial)
@@ -60,15 +63,19 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             _timeElapsedSinceWanderInSeconds += Time.deltaTime;
             _timeElapsedSinceLastWanderCheckInSeconds += Time.deltaTime;
 
+            // only change directions at most once per second.
             if (Math.Floor(_timeElapsedSinceLastWanderCheckInSeconds) < 1)
                 return;
 
             _timeElapsedSinceLastWanderCheckInSeconds = 0;
             
+            // Chance of movement, depending on [min, max]
             if (_timeElapsedSinceWanderInSeconds < Random.Range(_timePerWanderInSecondsMin, _timePerWanderInSecondsMax))
                 return;
 
             _timeElapsedSinceWanderInSeconds = 0;
+            
+            // vv generate a position to move towards. vv
             
             Vector3 randomDirectionUnitCircle = Random.insideUnitSphere;
             randomDirectionUnitCircle.y = 0;

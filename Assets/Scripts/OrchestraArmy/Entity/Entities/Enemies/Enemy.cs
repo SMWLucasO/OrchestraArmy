@@ -42,7 +42,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             Behaviour = new BehaviourStateMachine()
             {
-                CurrentState = new MoveToPlayerBehaviour()
+                CurrentState = new WanderBehaviour()
             };
 
             SpawnLocation = transform.position;
