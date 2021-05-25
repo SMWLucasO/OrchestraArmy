@@ -9,21 +9,28 @@ using UnityEngine.UI;
 
 namespace OrchestraArmy.UI
 {
+    enum NoteType
+     {
+         Base,
+         Lower,
+         Higher
+     };
     public class ToneSelector: MonoBehaviour, IListener<ToneChangedEvent>
     {
+        
         public GameObject Note;
-        public GameObject Background;
-        public Texture[] Notes;
+        public Texture BaseNoteTexture;
+        public Texture NoteTexture;
 
-        private Dictionary<Tone, (float, int)> _toneMap = new Dictionary<Tone, (float, int)>
+        private Dictionary<Tone, (float, NoteType)> _toneMap = new Dictionary<Tone, (float, NoteType)>
         {
-            [Tone.C] = (-20, 0),
-            [Tone.D] = (-14.2f, 1),
-            [Tone.E] = (-8.4f, 1),
-            [Tone.F] = (-2.6f, 1),
-            [Tone.G] = (3.2f, 1),
-            [Tone.A] = (9, 1),
-            [Tone.B] = (-10f, 1) 
+            [Tone.C] = (-20, NoteType.Base),
+            [Tone.D] = (-14.2f, NoteType.Lower),
+            [Tone.E] = (-8.4f, NoteType.Lower),
+            [Tone.F] = (-2.6f, NoteType.Lower),
+            [Tone.G] = (3.2f, NoteType.Lower),
+            [Tone.A] = (9, NoteType.Lower),
+            [Tone.B] = (-10f, NoteType.Higher) 
         };
 
         public void OnEnable()
@@ -33,15 +40,16 @@ namespace OrchestraArmy.UI
 
         public void OnEvent(ToneChangedEvent invokedEvent)
         {
-            if (invokedEvent.Tone == Tone.B)
+            var noteInfo = _toneMap[invokedEvent.Tone];
+            
+            if (noteInfo.Item2 == NoteType.Higher)
                 Note.transform.rotation = Quaternion.Euler(180, 180, 0);
             else
                 Note.transform.rotation = Quaternion.Euler(0, 0, 0);
-            
-            var noteInfo = _toneMap[invokedEvent.Tone];
-            
+
             Note.transform.localPosition = new Vector3(0, noteInfo.Item1, 0);
-            Note.GetComponent<RawImage>().texture = Notes[noteInfo.Item2];
+            var texture = noteInfo.Item2 == NoteType.Base ? BaseNoteTexture : NoteTexture;
+            Note.GetComponent<RawImage>().texture = texture;
         }
     }
 }
