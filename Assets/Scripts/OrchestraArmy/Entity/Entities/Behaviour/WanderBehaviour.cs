@@ -1,8 +1,6 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
-using OrchestraArmy.Entity.Entities.Enemies;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
