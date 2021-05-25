@@ -55,7 +55,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             };
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();
-            
+
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);

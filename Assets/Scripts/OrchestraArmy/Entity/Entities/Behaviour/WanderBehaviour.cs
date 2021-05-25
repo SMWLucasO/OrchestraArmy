@@ -12,16 +12,19 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
     public class WanderBehaviour : IBehaviourState
     {
 
+
+        private float _timePerWanderInSecondsMin = 1.5f, 
+            _timePerWanderInSecondsMax = 4f;
+
+        private float _timeElapsedSinceLastWanderCheckInSeconds = 0;
+        
+        private float _timeElapsedSinceWanderInSeconds = 0;
+        
         /// <summary>
         /// Data used by the state.
         /// </summary>
         public StateData StateData { get; set; }
 
-        /// <summary>
-        /// The point where the enemy is going.
-        /// </summary>
-        public Vector3 WanderDestination { get; set; }
-        
         /// <summary>
         /// Enter this state.
         /// </summary>
@@ -53,9 +56,27 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             if (!StateData.Enemy.transform.position.Equals(StateData.Enemy.NavMeshAgent.destination) &&
                 pathStatus != NavMeshPathStatus.PathInvalid && pathStatus != NavMeshPathStatus.PathPartial)
                 return;
+
+            _timeElapsedSinceWanderInSeconds += Time.deltaTime;
+            _timeElapsedSinceLastWanderCheckInSeconds += Time.deltaTime;
+
+            if (Math.Floor(_timeElapsedSinceLastWanderCheckInSeconds) < 1)
+                return;
+
+            _timeElapsedSinceLastWanderCheckInSeconds = 0;
             
-            Vector3 randomTowards = new Vector3(Random.Range(3, 5), 0, Random.Range(3, 5));
-            StateData.Enemy.NavMeshAgent.SetDestination(StateData.Enemy.SpawnLocation + randomTowards);
+            if (_timeElapsedSinceWanderInSeconds < Random.Range(_timePerWanderInSecondsMin, _timePerWanderInSecondsMax))
+                return;
+
+            _timeElapsedSinceWanderInSeconds = 0;
+            
+            Vector3 randomDirectionUnitCircle = Random.insideUnitSphere;
+            randomDirectionUnitCircle.y = 0;
+            
+            Vector3 randomDirection = StateData.Enemy.transform.forward + randomDirectionUnitCircle;
+            Vector3 newPosition = StateData.Enemy.SpawnLocation + (randomDirection * 3);
+            
+            StateData.Enemy.NavMeshAgent.SetDestination(newPosition);
             
         }
 

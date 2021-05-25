@@ -31,6 +31,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Utils
             
             return hitEntity.transform.CompareTag("Player");
         }
-        
+
     }
 }
