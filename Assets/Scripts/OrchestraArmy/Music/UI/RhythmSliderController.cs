@@ -25,8 +25,10 @@ namespace OrchestraArmy.Music.UI
         [Range(60, 140)]
         public int BPM = 120;
 
-        // Start is called before the first frame update
-        void Start()
+        /// <summary>
+        /// This function is called when the object becomes enabled and active.
+        /// </summary>
+        void OnEnable()
         {
             _rhythmController = new RhythmController(BPM);
             // set max value to 100
@@ -37,7 +39,7 @@ namespace OrchestraArmy.Music.UI
         void Update()
         {
             // update value of slider each frame
-            _rhythmSlider.value = _rhythmController.RhythmScore();
+            _rhythmSlider.value = _rhythmController.GetRhythmScore();
             _rhythmController.ChangeBPMImmediately(BPM); 
         }
     }

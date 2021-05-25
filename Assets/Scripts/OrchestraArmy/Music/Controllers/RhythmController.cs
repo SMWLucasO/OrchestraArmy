@@ -36,7 +36,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Get stamina damage in negative int
         /// </summary>
-        public int StaminaDamage()
+        public int GetStaminaDamage()
         {
             return RhythmData.GetStaminaDamage();
         }
@@ -44,7 +44,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Get the rhythm score between 0 and 100
         /// </summary>
-        public int RhythmScore()
+        public int GetRhythmScore()
         {
             return RhythmData.GetRhythmScore();
         }

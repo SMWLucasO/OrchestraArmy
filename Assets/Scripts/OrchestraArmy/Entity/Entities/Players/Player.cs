@@ -22,7 +22,7 @@ namespace OrchestraArmy.Entity.Entities.Players
     
 
     public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>,
-        IListener<InstrumentPickupEvent>, IListener<PlayerDeathEvent>, IListener<PlayerFiredAttackEvent>
+        IListener<InstrumentPickupEvent>, IListener<PlayerDeathEvent>, IListener<PlayerAttackEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -110,13 +110,15 @@ namespace OrchestraArmy.Entity.Entities.Players
                 Player = this
             };
 
+            this.RhythmController = new RhythmController();
+
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
             
             // register player events.
             EventManager.Bind<PlayerDamageEvent>(this);
-            EventManager.Bind<PlayerFiredAttackEvent>(this);
+            EventManager.Bind<PlayerAttackEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
@@ -129,6 +131,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
+            EventManager.Bind<PlayerAttackEvent>(this);
         }
 
         /// <summary>
@@ -185,8 +188,23 @@ namespace OrchestraArmy.Entity.Entities.Players
             EntityData.Stamina = 100;
         }
 
-        public void OnEvent(PlayerFiredAttackEvent invokedEvent)
-        {            
+        public void OnEvent(PlayerAttackEvent invokedEvent)
+        {
+            //Update stamina
+            EntityData.Stamina += RhythmController.GetStaminaDamage();
+            
+            // Update health if needed
+            if(EntityData.Stamina < 0)
+            {
+                EntityData.Health += EntityData.Stamina;
+
+                EntityData.Stamina = 0;
+
+                PlayerDamageEvent playerDamageEvent = new PlayerDamageEvent();
+                playerDamageEvent.HealthLost = Math.Abs(EntityData.Stamina);
+                EventManager.Invoke(playerDamageEvent);
+
+            }            
         }
     }
 }
