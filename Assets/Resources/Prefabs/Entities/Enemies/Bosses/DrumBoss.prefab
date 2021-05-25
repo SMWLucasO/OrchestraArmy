@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 7110839334693128649}
   - component: {fileID: 1023337432592711936}
   - component: {fileID: 1117815799854812084}
+  - component: {fileID: 8196661177479404679}
   m_Layer: 0
   m_Name: DrumBoss
   m_TagString: Enemy
@@ -165,6 +166,28 @@ MonoBehaviour:
   <EntityData>k__BackingField:
     _health: 400
     _stamina: 100
+--- !u!195 &8196661177479404679
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035377632560305128}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8431803435440486901
 GameObject:
   m_ObjectHideFlags: 0
