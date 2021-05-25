@@ -9,7 +9,10 @@ namespace OrchestraArmy.Room.DoorCollisions
         void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
+            {
                 EventManager.Invoke(new RoomDoorDownEvent());
+            }
+                
         }
     }
 }
