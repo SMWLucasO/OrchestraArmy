@@ -11,7 +11,7 @@ namespace OrchestraArmy.Music.Controllers
     {
 
         /// <summary>
-        /// Objects for the map surroundings
+        /// Create with custom BPM
         /// </summary>
         public RhythmController(int newBPM)
         {
@@ -21,6 +21,9 @@ namespace OrchestraArmy.Music.Controllers
 
         }
 
+        /// <summary>
+        /// Create with standard BPM (120)
+        /// </summary>
         public RhythmController()
         {
             RhythmData.BPM = 120;
@@ -28,18 +31,27 @@ namespace OrchestraArmy.Music.Controllers
             RhythmData.SetStopwatch();
         }
 
+        /// <summary>
+        /// Get stamina damage in negative int
+        /// </summary>
         public int StaminaDamage()
         {
             return RhythmData.GetStaminaDamage();
         }
+
+        /// <summary>
+        /// Get the rhythm score between 0 and 100
+        /// </summary>
         public int RhythmScore()
         {
             return RhythmData.GetRhythmScore();
         }
 
         
-
-        public void GraduallyChangeBPM(object obj)
+        /// <summary>
+        /// Gradually change bpm for a better flow
+        /// </summary>
+        private void GraduallyChangeBPM(object obj)
         {
             // cast object to newBPM
             int newBPM;
@@ -69,6 +81,9 @@ namespace OrchestraArmy.Music.Controllers
             }
         }
         
+        /// <summary>
+        /// Public starting point for GraduallyChangeBPM
+        /// </summary>
         public void ChangeBPM(int changeInPercentage)
         {
             int newBPM = RhythmData.BPM / 100 * changeInPercentage + RhythmData.BPM;
