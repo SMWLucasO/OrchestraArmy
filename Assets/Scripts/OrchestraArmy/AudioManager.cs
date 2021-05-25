@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace OrchestraArmy
 {
+    /// <summary>
+    /// Struct for the editor to set Audio for instruments
+    /// </summary>
     [Serializable]
     public struct InstrumentAudio
     {
@@ -22,9 +25,19 @@ namespace OrchestraArmy
         public AudioClip B;
     }
     
+    /// <summary>
+    /// Class that plays instrument audio
+    /// </summary>
     public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>
     {
+        /// <summary>
+        /// InstrumentAudio collection
+        /// </summary>
         public InstrumentAudio[] AttackSounds;
+        
+        /// <summary>
+        /// AudioSource to play audio
+        /// </summary>
         private AudioSource _audioSource;
 
         public void OnEnable()
@@ -32,7 +45,10 @@ namespace OrchestraArmy
             EventManager.Bind<PlayerAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
         }
-
+        
+        /// <summary>
+        /// Event to handle player attack sounds
+        /// </summary>
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
             var instrumentAudio = AttackSounds.FirstOrDefault(s => s.Instrument == invokedEvent.Instrument);

@@ -9,6 +9,13 @@ using UnityEngine.UI;
 
 namespace OrchestraArmy.UI
 {
+    /// <summary>
+    /// Note type.
+    /// 
+    /// Base = note that is striped (C4, A5, ect)
+    /// Lower = line up
+    /// Higher = line down
+    /// </summary>
     enum NoteType
      {
          Base,
@@ -16,12 +23,29 @@ namespace OrchestraArmy.UI
          Higher
      };
     
+    /// <summary>
+    /// Used to display the current tone on the UI
+    /// </summary>
     public class ToneSelector: MonoBehaviour, IListener<ToneChangedEvent>
     {
+        /// <summary>
+        /// The Note object in the UI that will be moved up/down
+        /// </summary>
         public GameObject Note;
+        
+        /// <summary>
+        /// Base note texture
+        /// </summary>
         public Texture BaseNoteTexture;
+        
+        /// <summary>
+        /// Note texture
+        /// </summary>
         public Texture NoteTexture;
-
+        
+        /// <summary>
+        /// Note location and type for tone. (y coord, NoteType) 
+        /// </summary>
         private Dictionary<Tone, (float, NoteType)> _toneMap = new Dictionary<Tone, (float, NoteType)>
         {
             [Tone.C] = (-20, NoteType.Base),
@@ -38,6 +62,9 @@ namespace OrchestraArmy.UI
             EventManager.Bind<ToneChangedEvent>(this);
         }
 
+        /// <summary>
+        /// Event to handle tone change
+        /// </summary>
         public void OnEvent(ToneChangedEvent invokedEvent)
         {
             var noteInfo = _toneMap[invokedEvent.Tone];

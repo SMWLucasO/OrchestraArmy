@@ -12,6 +12,9 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
     public class PlayerToneController: IToneController
     {
+        /// <summary>
+        /// LinkedList of tones for easy looping
+        /// </summary>
         private DoublyLoopedLinkedList<Tone> _toneList = new DoublyLoopedLinkedList<Tone>(new []
         {
             Tone.C,
@@ -23,10 +26,19 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Tone.B
         });
         
+        /// <summary>
+        /// Current LinkedList node
+        /// </summary>
         private DoublyLinkedListNode<Tone> _current;
         
+        /// <summary>
+        /// The currently selected tone
+        /// </summary>
         public Tone CurrentTone { get; private set; }
         
+        /// <summary>
+        /// Last change made by mousewheel, used to debounce
+        /// </summary>
         private float _lastChanged = 0;
 
         private void Initialize()
@@ -39,6 +51,9 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             });
         }
         
+        /// <summary>
+        /// Set the current tone based on user input
+        /// </summary>
         private void SetCurrent()
         {
             var scrollValue = Mouse.current.scroll.y.ReadValue();
@@ -80,7 +95,10 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
                     _current = _current.Next;
             }
         }
-        
+
+        /// <summary>
+        /// Handle tone updates
+        /// </summary>
         public void HandleTone()
         {
             if (_current == null)

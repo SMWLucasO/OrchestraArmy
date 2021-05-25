@@ -2,11 +2,24 @@ using System.Collections.Generic;
 
 namespace OrchestraArmy.Utils
 {
+    /// <summary>
+    /// Doubly Linked list that loops from start to end 
+    /// </summary>
     public class DoublyLoopedLinkedList<T>
     {
+        /// <summary>
+        /// Start node
+        /// </summary>
         public DoublyLinkedListNode<T> Start;
+        
+        /// <summary>
+        /// End node
+        /// </summary>
         public DoublyLinkedListNode<T> End;
-
+        
+        /// <summary>
+        /// Constructor, pass IEnumerable to initialize
+        /// </summary>
         public DoublyLoopedLinkedList(IEnumerable<T> values)
         {
             foreach (var value in values)
@@ -15,6 +28,9 @@ namespace OrchestraArmy.Utils
             }
         }
         
+        /// <summary>
+        /// Add an item of type T to the linked list
+        /// </summary>
         public void AddToEnd(T data)
         {
             if (Start == null)

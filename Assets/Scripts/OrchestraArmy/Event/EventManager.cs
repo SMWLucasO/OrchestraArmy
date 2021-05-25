@@ -6,9 +6,14 @@ namespace OrchestraArmy.Event
 {
     public static class EventManager
     {
-        // List of dynamics to save the pain of generic lists, guaranteed to be IListener because the only way to add is through bind
+        /// <summary>
+        /// List of dynamics to save the pain of generic lists, guaranteed to be IListener because the only way to add is through bind
+        /// </summary>
         private static Dictionary<Type, IList<dynamic>> _listeners = new Dictionary<Type, IList<dynamic>>();
-
+        
+        /// <summary>
+        /// Fire an event.
+        /// </summary>
         public static void Invoke<T>(T invokedEvent) where T: IEvent
         {
             if (!_listeners.ContainsKey(invokedEvent.GetType()))
@@ -27,6 +32,9 @@ namespace OrchestraArmy.Event
             }
         }
         
+        /// <summary>
+        /// Start listening to an event
+        /// </summary>
         public static void Bind<T>(IListener<T> listener) where T: IEvent
         {
             if (!_listeners.ContainsKey(typeof(T)))
@@ -35,11 +43,17 @@ namespace OrchestraArmy.Event
             _listeners[typeof(T)].Add(listener);
         }
         
+        /// <summary>
+        /// Stop listening to an event
+        /// </summary>
         public static void Unbind<T>(IListener<T> listener) where T: IEvent
         {
             _listeners[typeof(T)].Remove(listener);
         }
 
+        /// <summary>
+        /// Remove all listeners
+        /// </summary>
         public static void Reset()
         {
             _listeners = new Dictionary<Type, IList<dynamic>>();
