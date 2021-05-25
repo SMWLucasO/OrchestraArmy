@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
+using OrchestraArmy.Event;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -59,6 +60,8 @@ namespace Tests.PlayTests.Helpers
         public IEnumerator TestTearDown(string scene = null)
         {
             TearDown();
+            
+            EventManager.Reset();
 
             if (scene != null)
                 yield return SceneManager.UnloadSceneAsync(scene);

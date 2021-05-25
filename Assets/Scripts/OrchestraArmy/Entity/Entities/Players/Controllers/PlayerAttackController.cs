@@ -2,6 +2,8 @@
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
 using OrchestraArmy.Entity.Entities.Projectiles;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
@@ -14,7 +16,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         
         public void HandleAttack()
         {
-            if (!Mouse.current.leftButton.wasPressedThisFrame)
+            if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
                 return;
 
             var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/NoteProjectile"), Player.transform.position, Player.transform.GetChild(0).transform.rotation);
@@ -25,6 +27,9 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             attack.Attacker = Player;
             attack.MaxDistance = 400;
             attack.Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Weapon;
+            attack.Tone = Player.ToneController.CurrentTone;
+            
+            EventManager.Invoke(new PlayerAttackEvent() {Tone = Player.ToneController.CurrentTone, Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType});
         }
     }
 }
