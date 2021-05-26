@@ -1,7 +1,9 @@
 ﻿using OrchestraArmy.Entity.Entities.Behaviour;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Enemies.Bosses;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
@@ -12,7 +14,8 @@ using UnityEngine.AI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>,
+        IListener<PlayerWeaponChangedEvent>
     {
         
         public BehaviourStateMachine Behaviour { get; set; }
@@ -38,6 +41,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// The location where this player started.
         /// </summary>
         public Vector3 SpawnLocation { get; set; }
+
+        /// <summary>
+        /// The mesh renderer of the enemy.
+        /// </summary>
+        private MeshRenderer _meshRenderer;
+        
         
         protected override void OnEnable()
         {
@@ -61,9 +70,27 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();
 
+            _meshRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
+            Material material = _meshRenderer.material;
+
+            ApplyVisibilityChangesForWeapon(
+                    GameObject.FindWithTag("Player").GetComponent<Player>().WeaponWheel
+                    .CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                );
+            
+            material.SetFloat("_Mode", 2);
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.DisableKeyword("_ALPHATEST_ON");
+            material.EnableKeyword("_ALPHABLEND_ON");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = 3000;
+            
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
+            EventManager.Bind<PlayerWeaponChangedEvent>(this);
         }
 
         protected override void FixedUpdate()
@@ -129,6 +156,22 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             EventManager.Unbind<EnemyDeathEvent>(this);
             EventManager.Unbind<PlayerAttackHitEvent>(this);
+            EventManager.Unbind<PlayerWeaponChangedEvent>(this);
+        }
+
+        public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
+            => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);
+
+        private void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
+        {
+            if (this is Boss) return;
+            
+            var material = _meshRenderer.material;
+            Color color = material.color;
+            
+            // set the transparency 
+            color.a = selectedWeapon == HittableBy ? 1f : 0.3f;
+            material.color = color;
         }
     }
 }
