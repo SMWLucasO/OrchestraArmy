@@ -25,6 +25,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public abstract WeaponType HittableBy { get; set; }
         
         /// <summary>
+        /// The weapon of the enemy.
+        /// </summary>
+        public abstract WeaponType WeaponType { get; set; }
+        
+        /// <summary>
         /// The NavMeshAgent for the enemy.
         /// </summary>
         public NavMeshAgent NavMeshAgent { get; set; }
