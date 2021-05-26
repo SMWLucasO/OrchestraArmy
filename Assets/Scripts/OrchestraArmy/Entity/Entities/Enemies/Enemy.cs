@@ -9,6 +9,7 @@ using OrchestraArmy.Event.Events.Room;
 using OrchestraArmy.Room;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
@@ -123,6 +124,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 EventManager.Invoke(new EnemyDeathEvent() { KilledEnemy = this });
             }
+            
+            //update healthbar
+            transform.Find("Canvas/BackgroundBar/FilledPart").GetComponent<Image>().fillAmount =
+                EntityData.Health / 100.0f;
         }
 
         public void OnDestroy()
