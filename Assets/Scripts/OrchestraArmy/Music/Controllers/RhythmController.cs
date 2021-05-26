@@ -9,8 +9,6 @@ namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
-       
-
         public RhythmController()
         {
             EventManager.Bind<EnteredNewLevelEvent>(this);

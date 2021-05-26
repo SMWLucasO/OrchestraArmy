@@ -16,7 +16,7 @@ namespace OrchestraArmy.Music.UI
         /// <summary>
         /// The UI slider
         /// </summary>
-        public Slider _rhythmSlider;
+        public Slider RhythmSlider;
 
 
         /// <summary>
@@ -25,14 +25,14 @@ namespace OrchestraArmy.Music.UI
         void OnEnable()
         {
             // set max value to 100
-            _rhythmSlider.maxValue = 100; 
+            RhythmSlider.maxValue = 100; 
         }
 
         // Update is called once per frame
         void Update()
         {
             // update value of slider each frame
-            _rhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore();
+            RhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore();
         }
     }
 }

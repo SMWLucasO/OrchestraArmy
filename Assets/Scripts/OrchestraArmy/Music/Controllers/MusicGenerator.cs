@@ -29,6 +29,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         void OnEnable()
         {
+            RhythmController = new RhythmController();
             RhythmController.ChangeBPMImmediately(BPM);
         }
 
