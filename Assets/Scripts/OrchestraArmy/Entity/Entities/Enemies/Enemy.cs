@@ -73,7 +73,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             _meshRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
             Material material = _meshRenderer.material;
             
-            // setup material of Enemy
             material.SetFloat("_Mode", 2);
             material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -163,7 +162,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Color color = material.color;
             
             // set the transparency 
-            color.a = invokedEvent.NewlySelectedWeapon == HittableBy ? 1f : 0.1f;
+            color.a = invokedEvent.NewlySelectedWeapon == HittableBy ? 1f : 0.3f;
             material.color = color;
         }
     }
