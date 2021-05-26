@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Diagnostics;
 using System;
+using Debug = UnityEngine.Debug;
 
 namespace OrchestraArmy.Music.Data
 {
@@ -16,9 +17,9 @@ namespace OrchestraArmy.Music.Data
         /// </summary>
         private static Stopwatch _rhythmStopwatch;
 
-        public static float ElapsedSeconds => _rhythmStopwatch.ElapsedTicks / (float)TimeSpan.TicksPerSecond;
+        public static float ElapsedSeconds => (float)_rhythmStopwatch.Elapsed.TotalSeconds;
         public static int CurrentBeat = 0;
-        public static float LastChangedBeat = 0;
+        public static float LastChangedBeat = Time.time;
 
         /// <summary>
         /// BPM
@@ -52,7 +53,7 @@ namespace OrchestraArmy.Music.Data
         {
             // Get elapsed time in seconds
             TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
-            double sTime = timeSpan.TotalSeconds;
+            double sTime = Time.time;
 
             return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
         }

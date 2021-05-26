@@ -75,7 +75,7 @@ namespace OrchestraArmy
         public void OnEvent(PlayerFiredAttackEvent invokedEvent)
         {
             var instrumentAudio = AttackSounds.FirstOrDefault(s => s.Instrument == WeaponType.Drum);
-            _audioSource.clip = instrumentAudio.C;
+            _audioSource.clip = instrumentAudio.D;
             _audioSource.Play();
         }
     }

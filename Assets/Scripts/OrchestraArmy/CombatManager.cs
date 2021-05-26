@@ -9,50 +9,60 @@ using UnityEngine;
 
 namespace OrchestraArmy
 {
-    public class CombatManager: MonoBehaviour, IListener<BeatEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
+    public class CombatManager: IListener<OffBeatEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
         private HashSet<int> _registeredEnemies = new HashSet<int>();
-        private DoublyLoopedLinkedList<Enemy> _enemies = new DoublyLoopedLinkedList<Enemy>();
-        private DoublyLinkedListNode<Enemy> _current;
-        public void OnEnable()
+        private DoublyLoopedLinkedList<int> _enemies = new DoublyLoopedLinkedList<int>();
+        private DoublyLinkedListNode<int> _current;
+        private static CombatManager _instance;
+        
+        [RuntimeInitializeOnLoadMethod]
+        public static void Initialize()
         {
-            EventManager.Bind<BeatEvent>(this);
+            _instance = new CombatManager();
+        }
+
+        private CombatManager()
+        {
+            EventManager.Bind<OffBeatEvent>(this);
             EventManager.Bind<CombatInitiatedEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
         }
 
-        public void OnEvent(BeatEvent invokedEvent)
+        public void OnEvent(OffBeatEvent invokedEvent)
         {
-            EventManager.Invoke(new EnemyTurnEvent() {EnemyId = _current.Data.GetInstanceID()});
+            if (_current == null && _enemies.Start == null)
+                return;
+
+            if (_current == null)
+                _current = _enemies.Start;
+
+            EventManager.Invoke(new EnemyTurnEvent() {EnemyId = _current.Data});
+            
             _current = _current.Next;
         }
 
         public void OnEvent(CombatInitiatedEvent invokedEvent)
         {
-            if (_registeredEnemies.Contains(invokedEvent.Entity.GetInstanceID()))
-            {
-                _registeredEnemies.Add(invokedEvent.Entity.GetInstanceID());
-                _enemies.AddToEnd(invokedEvent.Entity);
-            }
+            if (_registeredEnemies.Contains(invokedEvent.EntityId)) return;
+            
+            _registeredEnemies.Add(invokedEvent.EntityId);
+            _enemies.AddToEnd(invokedEvent.EntityId);
+
+            if (_current == null)
+                _current = _enemies.Start;
         }
 
         public void OnEvent(LeaveCombatEvent invokedEvent)
         {
-            if (invokedEvent.Entity == _current.Data)
+            if (_current != null && invokedEvent.EntityId == _current.Data)
                 _current = _current.Next;
             
-            if (_registeredEnemies.Contains(invokedEvent.Entity.GetInstanceID()))
+            if (_registeredEnemies.Contains(invokedEvent.EntityId))
             {
-                _registeredEnemies.Remove(invokedEvent.Entity.GetInstanceID());
-                _enemies.Remove(invokedEvent.Entity);
+                _registeredEnemies.Remove(invokedEvent.EntityId);
+                _enemies.Remove(invokedEvent.EntityId);
             }
-        }
-
-        public void OnDisable()
-        {
-            EventManager.Unbind<BeatEvent>(this);
-            EventManager.Unbind<CombatInitiatedEvent>(this);
-            EventManager.Unbind<LeaveCombatEvent>(this);
         }
     }
 }

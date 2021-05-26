@@ -1,7 +1,6 @@
 ﻿namespace OrchestraArmy.Event.Events.Rhythm
 {
-    public class BeatEvent : IEvent
+    public class OffBeatEvent : IEvent
     {
-        public int Beat;
     }
 }

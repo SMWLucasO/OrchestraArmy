@@ -2,6 +2,6 @@
 {
     public class CombatInitiatedEvent : IEvent
     {
-        public Entity.Entities.Enemies.Enemy Entity;
+        public int EntityId;
     }
 }

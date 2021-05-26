@@ -2,6 +2,6 @@
 {
     public class LeaveCombatEvent: IEvent
     {
-        public Entity.Entities.Enemies.Enemy Entity;
+        public int EntityId;
     }
 }

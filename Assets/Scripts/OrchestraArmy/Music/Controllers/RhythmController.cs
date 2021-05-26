@@ -12,8 +12,7 @@ namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
-
-        
+        private bool _started = false;
 
         /// <summary>
         /// Create with custom BPM
@@ -38,15 +37,25 @@ namespace OrchestraArmy.Music.Controllers
 
         public void BeatCheck()
         {
-            var beatDuration = 60f / RhythmData.BPM;
-            var timeSinceLastBeat = RhythmData.ElapsedSeconds - RhythmData.LastChangedBeat;
+            var score = RhythmData.GetRhythmScore();
             
-            if (timeSinceLastBeat > beatDuration)
+            if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
             {
+                
                 RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
-                EventManager.Invoke(new BeatEvent() {Beat = RhythmData.CurrentBeat});
-                RhythmData.LastChangedBeat = RhythmData.ElapsedSeconds - (timeSinceLastBeat - beatDuration);
+                
+                if (RhythmData.CurrentBeat % 2 == 1)
+                {
+                    EventManager.Invoke(new PlayerFiredAttackEvent()
+                    {
+                
+                    });
+                    EventManager.Invoke(new OffBeatEvent());
+                }
+                
+                RhythmData.LastChangedBeat = Time.time;
             }
+            
         }
 
         /// <summary>

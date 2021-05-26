@@ -1,12 +1,15 @@
-﻿using System;
-using OrchestraArmy.Entity.Entities.Enemies.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Utils;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+using OrchestraArmy.Entity.Entities.Projectiles;
+using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
-using UnityEditor;
+using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Object = UnityEngine.Object;
 
-namespace OrchestraArmy.Entity.Entities.Enemies
+namespace OrchestraArmy.Entity.Entities.Behaviour
 {
     public class AttackBehaviour : IBehaviourState, IListener<EnemyTurnEvent>
     {
@@ -21,7 +24,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public void Enter()
         {
             EventManager.Bind<EnemyTurnEvent>(this);
-            EventManager.Invoke(new CombatInitiatedEvent() {Entity = StateData.Enemy});
+            EventManager.Invoke(new CombatInitiatedEvent() {EntityId = StateData.Enemy.GetInstanceID()});
         }
 
         /// <summary>
@@ -30,14 +33,20 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public void Process(BehaviourStateMachine machine)
         {
             
-            //next behaviour check
-            Vector3 direction = (StateData.Player.RigidBody.position-StateData.Enemy.RigidBody.position).normalized;    //angle to the player
-            Ray r = new Ray(StateData.Enemy.RigidBody.position, direction);             //ray to the player
-            float attackRange = 4f;                                                          //2 units detection range
-            
-            Physics.Raycast(r,out RaycastHit hitEntity, attackRange);
-            if (!hitEntity.transform.CompareTag("Player"))                                    //if further then 4 units from player
-                machine.SetState(new AggroBehaviour());    //TODO:connect to aggroBehaviour
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
+            {
+                if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 3)
+                {
+                    machine.SetState(new MoveToPlayerBehaviour());
+                    return;
+                }
+            }
+
+            if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 5)
+            {
+                machine.SetState(new WanderBehaviour());
+                return;
+            }
         }
 
         /// <summary>
@@ -46,15 +55,52 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public void Exit()
         {
             EventManager.Unbind<EnemyTurnEvent>(this);
-            EventManager.Invoke(new LeaveCombatEvent() {Entity = StateData.Enemy});
+            EventManager.Invoke(new LeaveCombatEvent() {EntityId = StateData.Enemy.GetInstanceID()});
         }
 
         public void OnEvent(EnemyTurnEvent invokedEvent)
         {
             if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
                 return;
+            Transform enemyTransform = StateData.Enemy.transform;
+            Transform playerTransform = StateData.Player.transform;
+
+            Vector3 scale = enemyTransform.localScale;
+            scale.y = 0;
+
+            Vector3 enemyPosition = enemyTransform.position;
+            enemyPosition.y = 0.5f;
+
+            // calculate vector from enemy to player
+            var playerPosition = playerTransform.position;
+            enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
+            // generate the enemy note to be shot.
+            var obj = (GameObject) Object.Instantiate(
+                Resources.Load("Prefabs/EnemyNoteProjectile"),
+                enemyPosition + (enemyTransform.forward * scale.x),
+                StateData.Enemy.transform.GetChild(0).transform.rotation
+            );
             
+            var attack = obj.GetComponent<EnemyNote>();
+            // calculate the vector from the note prefab to the player
+            attack.transform.forward = (playerPosition - obj.transform.position).normalized;
+            
+            // set the attacking source.
+            attack.Source = obj.transform.position;
+            
+            // max distance = 5 Unity units
+            attack.MaxDistance = 5;
+            
+            attack.Instrument = WeaponFactory.Make(StateData.Enemy.WeaponType);
+            attack.Attacker = StateData.Enemy;
+            attack.Tone = Tone.A; // TODO: determine this another way.
+
+            EventManager.Invoke(new EnemyAttackEvent()
+            {
+                Tone = attack.Tone,
+                Instrument = StateData.Enemy.WeaponType
+            });
         }
     }
 }
