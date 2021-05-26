@@ -72,6 +72,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             _meshRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
             Material material = _meshRenderer.material;
+
+            ApplyVisibilityChangesForWeapon(
+                    GameObject.FindWithTag("Player").GetComponent<Player>().WeaponWheel
+                    .CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
+                );
             
             material.SetFloat("_Mode", 2);
             material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -155,6 +160,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         }
 
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
+            => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);
+
+        private void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
         {
             if (this is Boss) return;
             
@@ -162,7 +170,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Color color = material.color;
             
             // set the transparency 
-            color.a = invokedEvent.NewlySelectedWeapon == HittableBy ? 1f : 0.3f;
+            color.a = selectedWeapon == HittableBy ? 1f : 0.3f;
             material.color = color;
         }
     }
