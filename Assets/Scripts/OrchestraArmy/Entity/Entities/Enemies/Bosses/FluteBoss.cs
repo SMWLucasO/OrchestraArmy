@@ -9,11 +9,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
 
         public override WeaponType HittableBy { get; set; }
             = WeaponType.Drum;
-        
-        public FluteBoss()
-        {
-            WeaponType = WeaponType.Flute;
-        }
-        
+
+        public override WeaponType WeaponType { get; set; }
+            = WeaponType.Flute;
+
     }
 }

@@ -7,11 +7,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
 
         public override WeaponType HittableBy { get; set; }
             = WeaponType.Flute;
-        
-        public SousaphoneBoss()
-        {
-            WeaponType = WeaponType.Sousaphone;
-        }
-        
+
+        public override WeaponType WeaponType { get; set; }
+            = WeaponType.Sousaphone;
     }
 }

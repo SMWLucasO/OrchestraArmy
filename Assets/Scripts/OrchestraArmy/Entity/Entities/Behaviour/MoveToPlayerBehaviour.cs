@@ -1,6 +1,4 @@
-﻿using System;
-using System.Numerics;
-using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using Vector3 = UnityEngine.Vector3;
 
@@ -33,7 +31,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy)) return;
             
-            Vector3 offset = (StateData.Enemy.transform.forward.normalized * 3);
+            Vector3 offset = (StateData.Enemy.transform.forward.normalized * 2.9f);
             Vector3 enemyDestination = StateData.Player.transform.position - offset;
                 
             StateData.Enemy.NavMeshAgent.SetDestination(
