@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                     Tone = Tone
                 });
             }
-            else
+            else if(collider.CompareTag("World") || collider.CompareTag("Enemy"))
             {
                 Hit = true;
             }
