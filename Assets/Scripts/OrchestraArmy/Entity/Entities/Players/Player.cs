@@ -190,7 +190,8 @@ namespace OrchestraArmy.Entity.Entities.Players
         }
 
         public void OnEvent(PlayerFiredAttackEvent invokedEvent)
-        {            
+        {
+                
         }
     }
 }

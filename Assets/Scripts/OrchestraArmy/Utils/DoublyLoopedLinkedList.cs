@@ -87,11 +87,28 @@ namespace OrchestraArmy.Utils
                 {
                     Start = Start.Next;
                 }
+            } else if (End.Data.Equals(item))
+            {
+                End.Previous.Next = Start;
+                End = End.Previous;
+                Start.Previous = End;
             }
-            
-            var current = Start;
-            
-            
+            else
+            {
+                var current = Start.Next;
+                
+                while (current != Start)
+                {
+                    if (current.Data.Equals(item))
+                    {
+                        current.Previous.Next = current.Next;
+                        current.Next.Previous = current.Previous;
+                        break;
+                    }
+
+                    current = current.Next;
+                }
+            }
         }
     }
 }

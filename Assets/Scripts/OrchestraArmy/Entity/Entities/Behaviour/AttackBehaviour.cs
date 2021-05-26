@@ -8,14 +8,8 @@ using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public class AttackBehaviour : IBehaviourState
+    public class AttackBehaviour : IBehaviourState, IListener<EnemyTurnEvent>
     {
-        /// <summary>
-        /// variables needed for wander behaviour
-        /// </summary>
-        
-        
-        
         /// <summary>
         /// Data used by the state.
         /// </summary>
@@ -26,6 +20,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Enter()
         {
+            EventManager.Bind<EnemyTurnEvent>(this);
             EventManager.Invoke(new CombatInitiatedEvent() {Entity = StateData.Enemy});
         }
 
@@ -50,7 +45,16 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Exit()
         {
+            EventManager.Unbind<EnemyTurnEvent>(this);
             EventManager.Invoke(new LeaveCombatEvent() {Entity = StateData.Enemy});
+        }
+
+        public void OnEvent(EnemyTurnEvent invokedEvent)
+        {
+            if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
+                return;
+            
+            
         }
     }
 }
