@@ -6,6 +6,7 @@ using OrchestraArmy.Event.Events.Level;
 using System;
 using System.Collections;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Rhythm;
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -42,7 +43,8 @@ namespace OrchestraArmy.Music.Controllers
             
             if (timeSinceLastBeat > beatDuration)
             {
-                EventManager.Invoke(new PlayerFiredAttackEvent());
+                RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
+                EventManager.Invoke(new BeatEvent() {Beat = RhythmData.CurrentBeat});
                 RhythmData.LastChangedBeat = RhythmData.ElapsedSeconds - (timeSinceLastBeat - beatDuration);
             }
         }

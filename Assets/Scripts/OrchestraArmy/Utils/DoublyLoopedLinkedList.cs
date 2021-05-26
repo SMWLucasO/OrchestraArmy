@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using OrchestraArmy.Entity.Entities.Enemies;
 
 namespace OrchestraArmy.Utils
 {
@@ -16,6 +17,13 @@ namespace OrchestraArmy.Utils
         /// End node
         /// </summary>
         public DoublyLinkedListNode<T> End;
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public DoublyLoopedLinkedList()
+        {
+        }
         
         /// <summary>
         /// Constructor, pass IEnumerable to initialize
@@ -64,6 +72,26 @@ namespace OrchestraArmy.Utils
 
                 End = newEl;
             }
+        }
+
+        public void Remove(T item)
+        {
+            if (Start.Data.Equals(item))
+            {
+                if (Start.Next.Equals(Start))
+                {
+                    Start = null;
+                    End = null;
+                }
+                else
+                {
+                    Start = Start.Next;
+                }
+            }
+            
+            var current = Start;
+            
+            
         }
     }
 }

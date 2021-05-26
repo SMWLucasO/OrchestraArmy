@@ -1,5 +1,7 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Enemies.Data;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -24,7 +26,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Enter()
         {
-            
+            EventManager.Invoke(new CombatInitiatedEvent() {Entity = StateData.Enemy});
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public void Exit()
         {
-            
+            EventManager.Invoke(new LeaveCombatEvent() {Entity = StateData.Enemy});
         }
     }
 }
