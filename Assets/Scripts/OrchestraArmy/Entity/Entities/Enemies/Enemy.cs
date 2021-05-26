@@ -40,6 +40,11 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public Vector3 SpawnLocation { get; set; }
         
+        /// <summary>
+        /// particles that spawn if enemy is damaged
+        /// </summary>
+        public GameObject DamageParticles;
+        
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -128,6 +133,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             //update healthbar
             transform.Find("Canvas/BackgroundBar/FilledPart").GetComponent<Image>().fillAmount =
                 EntityData.Health / 100.0f;
+            //spawn damage particles
+            Instantiate(DamageParticles, transform.position, Quaternion.identity);
         }
 
         public void OnDestroy()
