@@ -70,7 +70,7 @@ namespace OrchestraArmy.Room
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
             _player = GameObject.Find("Player").GetComponent<Player>();
