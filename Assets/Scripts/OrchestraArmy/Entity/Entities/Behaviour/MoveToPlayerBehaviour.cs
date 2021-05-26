@@ -1,6 +1,4 @@
-﻿using System;
-using System.Numerics;
-using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using Vector3 = UnityEngine.Vector3;
 

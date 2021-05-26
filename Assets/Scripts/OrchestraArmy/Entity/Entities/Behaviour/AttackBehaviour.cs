@@ -1,15 +1,12 @@
-﻿using System;
-using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Entity.Entities.Behaviour
 {
@@ -52,9 +49,8 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 machine.SetState(new WanderBehaviour());
                 return;
             }
-
-            Debug.Log("call");
             
+            // tmp, should evt. be called on first and third beat. Perhaps through events.
             _timeSinceLastAttackInSeconds += Time.deltaTime;
             
             if (_timeSinceLastAttackInSeconds < _timePerAttackInSeconds)
