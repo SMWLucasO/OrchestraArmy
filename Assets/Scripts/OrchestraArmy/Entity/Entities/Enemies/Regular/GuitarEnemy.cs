@@ -7,6 +7,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Regular
 
         public override WeaponType HittableBy { get; set; }
             = WeaponType.Guitar;
-        
+
+        public override WeaponType WeaponType { get; set; }
+            = WeaponType.Guitar;
     }
 }
