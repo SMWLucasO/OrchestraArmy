@@ -9,7 +9,7 @@ namespace OrchestraArmy.Music.Data
         
         [Min(0)]
         [SerializeField]
-        private static int _BPM = 120;
+        private static int _BPM;
 
         /// <summary>
         /// Rhythm stopwatch
@@ -36,7 +36,7 @@ namespace OrchestraArmy.Music.Data
             double sTime = timeSpan.TotalSeconds;
 
             // Calculate damage and return
-            return (int)(maxStamina * ((Math.Cos(sTime*Math.PI*(BPM/60)+Math.PI)-1)/4));
+            return (int)(maxStamina * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)-1)/4));
             
         }
 
@@ -50,7 +50,7 @@ namespace OrchestraArmy.Music.Data
             TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
             double sTime = timeSpan.TotalSeconds;
 
-            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60)+Math.PI)+1)/2));
+            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
         }
 
         /// <summary>

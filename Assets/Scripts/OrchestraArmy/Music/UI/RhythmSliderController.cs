@@ -30,7 +30,7 @@ namespace OrchestraArmy.Music.UI
         /// </summary>
         void OnEnable()
         {
-            _rhythmController = new RhythmController(BPM);
+            _rhythmController = new RhythmController();
             // set max value to 100
             _rhythmSlider.maxValue = 100; 
         }

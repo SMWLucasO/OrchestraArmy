@@ -9,26 +9,10 @@ namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
+       
 
-        
-
-        /// <summary>
-        /// Create with custom BPM
-        /// </summary>
-        public RhythmController(int newBPM)
-        {
-            RhythmData.BPM = newBPM;
-            EventManager.Bind<EnteredNewLevelEvent>(this);
-            RhythmData.SetStopwatch();
-
-        }
-
-        /// <summary>
-        /// Create with standard BPM (120)
-        /// </summary>
         public RhythmController()
         {
-            RhythmData.BPM = 120;
             EventManager.Bind<EnteredNewLevelEvent>(this);
             RhythmData.SetStopwatch();
         }
@@ -91,7 +75,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public void ChangeBPMByPercentage(int changeInPercentage)
         {
-            int newBPM = RhythmData.BPM / 100 * changeInPercentage + RhythmData.BPM;
+            int newBPM = (int)(RhythmData.BPM / 100f * changeInPercentage + RhythmData.BPM);
             
             // Start new thread for BPM change
             Thread t = new Thread(GraduallyChangeBPM);
@@ -120,7 +104,7 @@ namespace OrchestraArmy.Music.Controllers
 
         public void OnEvent(EnteredNewLevelEvent invokedEvent)
         {
-            RhythmData.SetStopwatch();
+            // Behaviour not specified yet
         }
     }
 }
