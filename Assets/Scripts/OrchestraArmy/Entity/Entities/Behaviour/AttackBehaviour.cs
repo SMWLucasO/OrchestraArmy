@@ -73,14 +73,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             // generate the enemy note to be shot.
             var obj = (GameObject) Object.Instantiate(
-                Resources.Load("Prefabs/EnemyNoteProjectile"),
-                enemyPosition + (enemyTransform.forward * scale.x),
-                StateData.Enemy.transform.GetChild(0).transform.rotation
+                    Resources.Load("Prefabs/EnemyNoteProjectile"),
+                    enemyPosition + (enemyTransform.forward * scale.x),
+                    StateData.Enemy.transform.GetChild(0).transform.rotation
                 );
             
             var attack = obj.GetComponent<EnemyNote>();
             // calculate the vector from the note prefab to the player
-            attack.transform.forward = ((playerPosition - obj.transform.position)).normalized;
+            attack.transform.forward = (playerPosition - obj.transform.position).normalized;
             
             // set the attacking source.
             attack.Source = obj.transform.position;
