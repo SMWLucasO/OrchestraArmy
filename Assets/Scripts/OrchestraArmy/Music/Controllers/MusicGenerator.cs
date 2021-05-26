@@ -21,7 +21,7 @@ namespace OrchestraArmy.Music.Controllers
         [Range(0,100)]
         public int MasterVolume = 50;
 
-        private RhythmController _rhythmController;
+        public RhythmController RhythmController;
 
 
         /// <summary>
@@ -29,15 +29,14 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         void OnEnable()
         {
-            _rhythmController = new RhythmController();
-            _rhythmController.ChangeBPMImmediately(BPM);
+            RhythmController.ChangeBPMImmediately(BPM);
         }
 
         // Update is called once per frame
         void Update()
         {
             // Keep BPM up to date
-            _rhythmController.ChangeBPMImmediately(BPM);
+            //RhythmController.ChangeBPMImmediately(BPM);
         }
     }
 }

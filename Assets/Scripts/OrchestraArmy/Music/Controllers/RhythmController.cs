@@ -35,7 +35,7 @@ namespace OrchestraArmy.Music.Controllers
 
         // DOESN'T WORK, FIX LATER
 
-        /// <summary>
+        /*/// <summary>
         /// Gradually change bpm for a better flow
         /// </summary>
         private void GraduallyChangeBPM(object obj)
@@ -93,7 +93,7 @@ namespace OrchestraArmy.Music.Controllers
             t.IsBackground = true;
             t.Start(changeInBPM);
         }
-
+*/
         /// <summary>
         /// Change BPM Immediately
         /// </summary>

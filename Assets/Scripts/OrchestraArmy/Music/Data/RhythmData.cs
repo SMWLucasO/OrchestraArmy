@@ -9,7 +9,7 @@ namespace OrchestraArmy.Music.Data
         
         [Min(0)]
         [SerializeField]
-        private static int _BPM;
+        private static int _BPM = 120;
 
         /// <summary>
         /// Rhythm stopwatch
