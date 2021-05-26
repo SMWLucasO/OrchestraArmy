@@ -16,26 +16,21 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
 
         public void OnTriggerEnter(Collider collider)
         {
-            switch (collider.tag)
+            if (collider.CompareTag("Player"))
             {
-                case "Player":
-                    Hit = true;
-                    EventManager.Invoke(new EnemyAttackHitEvent()
-                    {
-                        Attacker = Attacker,
-                        Target = collider.gameObject.GetComponent<Player>(),
-                        Weapon = Instrument,
-                        Tone = Tone
-                    });
-                    break;
-                case "World":
-                    Hit = true;
-                    break;
-                case "Enemy":
-                    Hit = true;
-                    break;
+                Hit = true;
+                EventManager.Invoke(new EnemyAttackHitEvent()
+                {
+                    Attacker = Attacker,
+                    Target = collider.gameObject.GetComponent<Player>(),
+                    Weapon = Instrument,
+                    Tone = Tone
+                });
+            }
+            else
+            {
+                Hit = true;
             }
         }
-        
     }
 }
