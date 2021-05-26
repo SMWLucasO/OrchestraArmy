@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -357,39 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c3d6402c7d4bb1bd97ea87e7268cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackSounds:
-  - Instrument: 0
-    C: {fileID: 8300000, guid: e66d557122f4c884abf255b81325d926, type: 3}
-    D: {fileID: 8300000, guid: ce2a360be916fbb4eaf5c8d8f583deeb, type: 3}
-    E: {fileID: 8300000, guid: 5f9cb19cac684754c80ae0d9909ebd18, type: 3}
-    F: {fileID: 8300000, guid: 9980021ce818512429db1088be69ac05, type: 3}
-    G: {fileID: 8300000, guid: 7c36fbff2f854aa4fa30b4d9e9ea2218, type: 3}
-    A: {fileID: 8300000, guid: 70566b4c42ff3834bb4722410d21e82d, type: 3}
-    B: {fileID: 8300000, guid: 90bc6b6a671b4374bb38769743c8cf05, type: 3}
-  - Instrument: 2
-    C: {fileID: 8300000, guid: 82607534bf99e1649b2630e682e39614, type: 3}
-    D: {fileID: 8300000, guid: d0127b9ad87b5b04194242329c1fa459, type: 3}
-    E: {fileID: 8300000, guid: 34e828b10bd044d48aa645119f4a672f, type: 3}
-    F: {fileID: 8300000, guid: 7ec9a954daf5aaa47832f18818a4bd68, type: 3}
-    G: {fileID: 8300000, guid: 32a5ef4ea056c134499ccb4064b5c857, type: 3}
-    A: {fileID: 8300000, guid: a224f9b1b915ca34a986ae13dafde1a8, type: 3}
-    B: {fileID: 8300000, guid: bae74a0a166e5024498d8f5ae71f5164, type: 3}
-  - Instrument: 1
-    C: {fileID: 8300000, guid: 22474fbe8c46b3848a0278faa61ec90a, type: 3}
-    D: {fileID: 8300000, guid: 02c8333603a555a46bf15ae6e79cc47c, type: 3}
-    E: {fileID: 8300000, guid: 5078432cf46c1e04aae5e741d8a35622, type: 3}
-    F: {fileID: 8300000, guid: f55cb617a6768ad45a66da55e31be572, type: 3}
-    G: {fileID: 8300000, guid: 8283c1c059fd28c43a0b894d57b168f0, type: 3}
-    A: {fileID: 8300000, guid: e132251246e022540957dced18cabe78, type: 3}
-    B: {fileID: 8300000, guid: 1b67e85070c3d75488af33d9ee70cb01, type: 3}
-  - Instrument: 3
-    C: {fileID: 8300000, guid: af463978c04051146929d10f2aff80a0, type: 3}
-    D: {fileID: 8300000, guid: b5b0917080934bb4a861f31310475db2, type: 3}
-    E: {fileID: 8300000, guid: 6156a353ce7001345a5e12dd4eee9e66, type: 3}
-    F: {fileID: 8300000, guid: f0b4e88ca33752448af8ee1ae2c11ec8, type: 3}
-    G: {fileID: 8300000, guid: 89a2f4020e8d5b94f98bd5311797414b, type: 3}
-    A: {fileID: 8300000, guid: 7f587a04d3a32414681825a66e820f67, type: 3}
-    B: {fileID: 8300000, guid: 6593118cdada5f74a97de889a1218472, type: 3}
+  AttackSounds: []
 --- !u!4 &1046799603
 Transform:
   m_ObjectHideFlags: 0
@@ -1160,6 +1128,42 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 410868433}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.FillObj
+      value: 
+      objectReference: {fileID: 5653770303511150955, guid: 6b3367c4821e0414ab506876c2c88f1e, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.RockObj
+      value: 
+      objectReference: {fileID: 1288774306415360725, guid: 3c1511041bc20694d871cd1c56da1235, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.WallObj
+      value: 
+      objectReference: {fileID: 630323051058264127, guid: e04d6d0b03c812a408f5135790adc9c0, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.FloorObj
+      value: 
+      objectReference: {fileID: 3710422614201592498, guid: db2860bb68ddae54fb10bfc43c61a766, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.DoorUpObj
+      value: 
+      objectReference: {fileID: 6235616627879709886, guid: bf4b80039ae363b47a5d812033ce45b9, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.RubbleObj
+      value: 
+      objectReference: {fileID: 3795800702150541342, guid: dea0514496cac094292f2752a918eb3b, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.DoorDownObj
+      value: 
+      objectReference: {fileID: 1558094684033946625, guid: 6d2701318e79c654f8989d82f237ec18, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.DoorLeftObj
+      value: 
+      objectReference: {fileID: 4578508040452837794, guid: 23c146f8151f92f48b0beda83d12d551, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.DoorRightObj
+      value: 
+      objectReference: {fileID: 4042273682645184455, guid: b655ad30b6b3dea47a767221f7e6fb8b, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.DoorNextLevelObj
       value: 
       objectReference: {fileID: 369489508883371697, guid: 9fc9441385c08b747ae324e1ea7a838c, type: 3}
@@ -1236,6 +1240,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: DamageParticles
+      value: 
+      objectReference: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
     - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: <EntityData>k__BackingField._health
       value: 100
