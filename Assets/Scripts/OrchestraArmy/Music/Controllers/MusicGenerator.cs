@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using OrchestraArmy.Enum;
+using OrchestraArmy.Music.Instruments;
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -17,9 +18,21 @@ namespace OrchestraArmy.Music.Controllers
 
         public TimeSignature TimeSignature = TimeSignature.CommonTime;
 
+        public bool[] OnBeats;
+
+        public List<IInstrument> InstrumentsRandom;
+
+        public List<IInstrument> InstrumentsFixedOnBeat;
+
+        public List<IInstrument> InstrumentsFixedOffBeat;
+
+
+
         [SerializeField]
         [Range(0,100)]
         public int MasterVolume = 50;
+
+        
 
         public RhythmController RhythmController;
 
