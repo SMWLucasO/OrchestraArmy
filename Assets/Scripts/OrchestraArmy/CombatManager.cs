@@ -49,8 +49,7 @@ namespace OrchestraArmy
             _registeredEnemies.Add(invokedEvent.EntityId);
             _enemies.AddToEnd(invokedEvent.EntityId);
 
-            if (_current == null)
-                _current = _enemies.Start;
+            _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
         }
 
         public void OnEvent(LeaveCombatEvent invokedEvent)
@@ -63,6 +62,8 @@ namespace OrchestraArmy
                 _registeredEnemies.Remove(invokedEvent.EntityId);
                 _enemies.Remove(invokedEvent.EntityId);
             }
+            
+            _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
         }
     }
 }

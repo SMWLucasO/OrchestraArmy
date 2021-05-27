@@ -41,17 +41,12 @@ namespace OrchestraArmy.Music.Controllers
             
             if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
             {
-                
                 RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
                 
                 if (RhythmData.CurrentBeat % 2 == 1)
-                {
-                    EventManager.Invoke(new PlayerFiredAttackEvent()
-                    {
-                
-                    });
                     EventManager.Invoke(new OffBeatEvent());
-                }
+                else
+                    EventManager.Invoke(new EvenBeatEvent());
                 
                 RhythmData.LastChangedBeat = Time.time;
             }

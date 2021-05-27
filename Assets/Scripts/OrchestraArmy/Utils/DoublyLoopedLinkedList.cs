@@ -95,20 +95,37 @@ namespace OrchestraArmy.Utils
             }
             else
             {
-                var current = Start.Next;
-                
-                while (current != Start)
-                {
-                    if (current.Data.Equals(item))
-                    {
-                        current.Previous.Next = current.Next;
-                        current.Next.Previous = current.Previous;
-                        break;
-                    }
+                var current = Get(item);
 
-                    current = current.Next;
-                }
+                if (current == null)
+                    return;
+                
+                current.Previous.Next = current.Next;
+                current.Next.Previous = current.Previous;
             }
+        }
+
+        public DoublyLinkedListNode<T> Get(T item)
+        {
+            if (Start == null)
+                return null;
+
+            if (Start.Next == null)
+                return Start.Data.Equals(item) ? Start : null;
+            
+            var current = Start.Next;
+                
+            while (current != Start)
+            {
+                if (current.Data.Equals(item))
+                {
+                    return current;
+                }
+
+                current = current.Next;
+            }
+
+            return null;
         }
     }
 }

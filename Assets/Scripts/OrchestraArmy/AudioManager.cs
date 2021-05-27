@@ -4,6 +4,7 @@ using System.Linq;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace OrchestraArmy
     /// <summary>
     /// Class that plays instrument audio
     /// </summary>
-    public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>, IListener<PlayerFiredAttackEvent>
+    public class AudioManager : MonoBehaviour, IListener<PlayerAttackEvent>, IListener<EnemyAttackEvent>
     {
         /// <summary>
         /// InstrumentAudio collection
@@ -43,7 +44,7 @@ namespace OrchestraArmy
         public void OnEnable()
         {
             EventManager.Bind<PlayerAttackEvent>(this);
-            EventManager.Bind<PlayerFiredAttackEvent>(this);
+            EventManager.Bind<EnemyAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
         }
         
@@ -72,11 +73,26 @@ namespace OrchestraArmy
             _audioSource.Play();
         }
 
-        public void OnEvent(PlayerFiredAttackEvent invokedEvent)
+        public void OnEvent(EnemyAttackEvent invokedEvent)
         {
-            var instrumentAudio = AttackSounds.FirstOrDefault(s => s.Instrument == WeaponType.Drum);
-            _audioSource.clip = instrumentAudio.D;
-            _audioSource.Play();
+            var instrumentAudio = AttackSounds.FirstOrDefault(s => s.Instrument == invokedEvent.Instrument);
+
+            if (instrumentAudio.C == null)
+                return;
+
+            var clip = invokedEvent.Tone switch
+            {
+                Tone.C => instrumentAudio.C,
+                Tone.D => instrumentAudio.D,
+                Tone.E => instrumentAudio.E,
+                Tone.F => instrumentAudio.F,
+                Tone.G => instrumentAudio.G,
+                Tone.A => instrumentAudio.A,
+                Tone.B => instrumentAudio.B,
+                _ => throw new InvalidEnumArgumentException()
+            };
+            
+            AudioSource.PlayClipAtPoint(clip, invokedEvent.Position);
         }
     }
 }

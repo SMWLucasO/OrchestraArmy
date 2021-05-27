@@ -1,4 +1,4 @@
-using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
@@ -60,8 +60,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
         public void OnEvent(EnemyTurnEvent invokedEvent)
         {
-            if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
-                return;
             Transform enemyTransform = StateData.Enemy.transform;
             Transform playerTransform = StateData.Player.transform;
 
@@ -96,10 +94,15 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             attack.Attacker = StateData.Enemy;
             attack.Tone = Tone.A; // TODO: determine this another way.
 
+            if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
+                return;
+            
+            //only fire the attack event when it is the relevant enemies turn
             EventManager.Invoke(new EnemyAttackEvent()
             {
                 Tone = attack.Tone,
-                Instrument = StateData.Enemy.WeaponType
+                Instrument = StateData.Enemy.WeaponType,
+                Position = StateData.Enemy.transform.position
             });
         }
     }
