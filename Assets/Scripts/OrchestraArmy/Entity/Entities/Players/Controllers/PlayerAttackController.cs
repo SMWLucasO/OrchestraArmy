@@ -13,7 +13,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         
         public void HandleAttack()
         {
-            if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
+            if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].Invoke().wasPressedThisFrame)
                 return;
 
             var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/NoteProjectile"), Player.transform.position, Player.transform.GetChild(0).transform.rotation);
