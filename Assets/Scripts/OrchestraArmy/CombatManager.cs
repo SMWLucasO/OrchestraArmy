@@ -54,7 +54,6 @@ namespace OrchestraArmy
         {
             if (_enemies.Contains(invokedEvent.EntityId)) return;
             
-            Debug.Log($"Added {invokedEvent.EntityId}");
             _enemies.AddToEnd(invokedEvent.EntityId);
 
             _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
