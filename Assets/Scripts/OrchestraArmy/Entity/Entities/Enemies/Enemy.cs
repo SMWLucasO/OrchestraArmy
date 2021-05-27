@@ -160,8 +160,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             //update healthbar
             transform.Find("Canvas/BackgroundBar/FilledPart").GetComponent<Image>().fillAmount =
                 EntityData.Health / 100.0f;
+
+            Vector3 particlePosition = transform.position;
+            particlePosition.y = 0.5f;
+            
             //spawn damage particles
-            Instantiate(DamageParticles, transform.position, Quaternion.identity);
+            Instantiate(DamageParticles, particlePosition, Quaternion.identity);
         }
 
         public void OnDestroy()

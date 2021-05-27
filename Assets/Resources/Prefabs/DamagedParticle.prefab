@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4813351722596478778}
   - component: {fileID: 4813351722596478777}
   m_Layer: 0
-  m_Name: DamegeParticle
+  m_Name: DamagedParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,7 +865,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 21.17
+      scalar: 1000
       minScalar: 10
       maxCurve:
         serializedVersion: 2

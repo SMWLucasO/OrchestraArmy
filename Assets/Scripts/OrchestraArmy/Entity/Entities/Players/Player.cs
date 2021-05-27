@@ -147,8 +147,12 @@ namespace OrchestraArmy.Entity.Entities.Players
             if (healthAfterAttack > 0)
             {
                 EntityData.Health = healthAfterAttack;
+                
+                Vector3 particlePosition = transform.position;
+                particlePosition.y = 0.5f;
+                
                 //spawn damage particles
-                Instantiate(DamageParticles, transform.position, Quaternion.identity);
+                Instantiate(DamageParticles, particlePosition, Quaternion.identity);
             }
             else
             {
