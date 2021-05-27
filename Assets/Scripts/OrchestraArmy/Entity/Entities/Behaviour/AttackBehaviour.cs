@@ -81,6 +81,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 );
             
             var attack = obj.GetComponent<EnemyNote>();
+            
             // calculate the vector from the note prefab to the player
             attack.transform.forward = (playerPosition - obj.transform.position).normalized;
             

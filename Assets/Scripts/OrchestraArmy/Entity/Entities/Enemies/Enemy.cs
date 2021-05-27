@@ -21,8 +21,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         
         public BehaviourStateMachine Behaviour { get; set; }
 
-        public float LastCollisionTime { get; set; }
-        
         /// <summary>
         /// The type of instrument which the enemy can be damaged with.
         /// </summary>
@@ -57,8 +55,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            LastCollisionTime = Time.time;
 
             Behaviour = new BehaviourStateMachine()
             {
@@ -123,22 +119,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             }
             
             Destroy(gameObject);
-        }
-
-        /// <summary>
-        /// Temporary player attacking event.
-        /// </summary>
-        /// <param name="other"></param>
-        public void OnCollisionStay(Collision other)
-        {
-            if (!other.gameObject.TryGetComponent<Player>(out Player player))
-                return;
-
-            if (!((Time.time - LastCollisionTime) > 1))
-                return;
-
-            LastCollisionTime = Time.time;
-            EventManager.Invoke(new PlayerDamageEvent() { HealthLost = 10 });
         }
 
         public void OnEvent(PlayerAttackHitEvent invokedEvent)
