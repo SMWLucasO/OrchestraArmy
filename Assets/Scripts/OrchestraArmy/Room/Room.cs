@@ -506,7 +506,7 @@ namespace OrchestraArmy.Room
         /// </summary>
         /// <param name="doorDirection"></param>
         /// <returns></returns>
-        public Vector3 GetPlayerSpawnPosition(DoorDirection doorDirection)
+        public virtual Vector3 GetPlayerSpawnPosition(DoorDirection doorDirection)
         {
             Vector2 gridDoorPosition = GetOppositeDoorPosition(doorDirection, _gridDoorPositions);
             Vector2 mapDoorPosition = GetOppositeDoorPosition(doorDirection, DoorPositions);
