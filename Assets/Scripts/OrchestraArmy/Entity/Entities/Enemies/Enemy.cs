@@ -12,7 +12,7 @@ using UnityEngine.AI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>
     {
         
         public BehaviourStateMachine Behaviour { get; set; }
@@ -64,6 +64,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
+            EventManager.Bind<PlayerDeathEvent>(this);
         }
 
         protected override void FixedUpdate()
@@ -131,6 +132,13 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             EventManager.Unbind<EnemyDeathEvent>(this);
             EventManager.Unbind<PlayerAttackHitEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
+            
+        }
+
+        public void OnEvent(PlayerDeathEvent invokedEvent)
+        {
+            Behaviour.ClearState();
         }
     }
 }

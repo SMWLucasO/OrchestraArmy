@@ -44,7 +44,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// Process the current state of the state machine.
         /// </summary>
         public void Update() 
-            => CurrentState.Process(this);
+            => CurrentState?.Process(this);
 
         public void ClearState()
         {

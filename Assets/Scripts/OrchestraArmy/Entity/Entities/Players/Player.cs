@@ -5,6 +5,7 @@ using OrchestraArmy.Entity.Entities.Players.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Pickup;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Music.Controllers;
@@ -23,7 +24,7 @@ namespace OrchestraArmy.Entity.Entities.Players
     
 
     public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>,
-        IListener<InstrumentPickupEvent>, IListener<PlayerDeathEvent>, IListener<PlayerFiredAttackEvent>
+        IListener<InstrumentPickupEvent>, IListener<PlayerDeathEvent>, IListener<PlayerFiredAttackEvent>, IListener<EnemyAttackHitEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -124,6 +125,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
+            EventManager.Bind<EnemyAttackHitEvent>(this);
         }
 
         protected override void OnDisable()
@@ -133,6 +135,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
+            EventManager.Unbind<EnemyAttackHitEvent>(this);
         }
 
         /// <summary>
@@ -191,7 +194,12 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         public void OnEvent(PlayerFiredAttackEvent invokedEvent)
         {
-                
+        }
+
+        public void OnEvent(EnemyAttackHitEvent invokedEvent)
+        {
+            //do some fancy damage calc here later
+            EventManager.Invoke(new PlayerDamageEvent() {HealthLost = 10});
         }
     }
 }
