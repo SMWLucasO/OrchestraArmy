@@ -56,6 +56,9 @@ namespace OrchestraArmy.Utils
             }
         }
 
+        /// <summary>
+        /// Remove item from the list
+        /// </summary>
         public void Remove(T item)
         {
             if (Start.Data.Equals(item))
@@ -89,6 +92,9 @@ namespace OrchestraArmy.Utils
             }
         }
 
+        /// <summary>
+        /// Get the item
+        /// </summary>
         public DoublyLinkedListNode<T> Get(T item)
         {
             if (Start == null)
@@ -112,6 +118,9 @@ namespace OrchestraArmy.Utils
             return null;
         }
 
+        /// <summary>
+        /// Check if the item is in the list
+        /// </summary>
         public bool Contains(T item)
         {
             return Get(item) != null;

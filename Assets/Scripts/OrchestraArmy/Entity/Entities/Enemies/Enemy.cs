@@ -162,10 +162,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             
         }
 
-        public void OnEvent(PlayerDeathEvent invokedEvent)
-        {
-            Behaviour.ClearState();
-        }
+        public void OnEvent(PlayerDeathEvent invokedEvent) => Behaviour.ClearState();
         
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);

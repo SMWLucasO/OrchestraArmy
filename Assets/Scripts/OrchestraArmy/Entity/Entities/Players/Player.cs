@@ -86,7 +86,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             InitializeSprites();
 
             RhythmController = new RhythmController();
-            //StartCoroutine(RhythmController.Beat());
+            
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
