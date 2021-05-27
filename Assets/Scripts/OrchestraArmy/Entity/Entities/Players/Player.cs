@@ -59,8 +59,8 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         protected override void Update()
         {
-            RhythmController.BeatCheck();
             base.Update();
+            RhythmController.BeatCheck();
             DirectionController.HandleDirection();
             WeaponSelectionController.HandleWeaponSelection();
             SpriteManager.UpdateSprite();

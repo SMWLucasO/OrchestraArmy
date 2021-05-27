@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using OrchestraArmy.Entity.Entities.Enemies;
+using OrchestraArmy.Enum;
 
 namespace OrchestraArmy.Utils
 {
@@ -12,11 +13,6 @@ namespace OrchestraArmy.Utils
         /// Start node
         /// </summary>
         public DoublyLinkedListNode<T> Start;
-        
-        /// <summary>
-        /// End node
-        /// </summary>
-        public DoublyLinkedListNode<T> End;
         
         /// <summary>
         /// Constructor
@@ -50,27 +46,13 @@ namespace OrchestraArmy.Utils
 
                 Start.Previous = Start;
                 Start.Next = Start;
-            } 
-            else if (End == null)
-            {
-                End = new DoublyLinkedListNode<T>()
-                {
-                    Data = data,
-                    Previous = Start,
-                    Next = Start
-                };
-                
-                Start.Previous = End;
-                Start.Next = End;
             }
             else
             {
-                var newEl = new DoublyLinkedListNode<T>() {Data = data, Next = Start, Previous = End};
+                var newEl = new DoublyLinkedListNode<T>() {Data = data, Next = Start, Previous = Start.Previous};
 
+                Start.Previous.Next = newEl;
                 Start.Previous = newEl;
-                End.Next = newEl;
-
-                End = newEl;
             }
         }
 
@@ -78,20 +60,16 @@ namespace OrchestraArmy.Utils
         {
             if (Start.Data.Equals(item))
             {
-                if (Start.Next.Equals(Start))
+                if (Start.Next.Equals(Start) || Start.Next == null)
                 {
                     Start = null;
-                    End = null;
                 }
                 else
                 {
+                    Start.Next.Previous = Start.Previous;
+                    Start.Previous.Next = Start.Next;
                     Start = Start.Next;
                 }
-            } else if (End.Data.Equals(item))
-            {
-                End.Previous.Next = Start;
-                End = End.Previous;
-                Start.Previous = End;
             }
             else
             {
@@ -115,13 +93,13 @@ namespace OrchestraArmy.Utils
         {
             if (Start == null)
                 return null;
-
-            if (Start.Next == null)
-                return Start.Data.Equals(item) ? Start : null;
+            
+            if (Start.Data.Equals(item))
+                return Start;
             
             var current = Start.Next;
                 
-            while (current != Start)
+            while (current != Start && current != null)
             {
                 if (current.Data.Equals(item))
                 {
@@ -132,6 +110,11 @@ namespace OrchestraArmy.Utils
             }
 
             return null;
+        }
+
+        public bool Contains(T item)
+        {
+            return Get(item) != null;
         }
     }
 }

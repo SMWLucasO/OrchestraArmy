@@ -88,8 +88,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 currentRoom.RoomIsCleared = true;
                 EventManager.Invoke(new RoomClearedOfEnemiesEvent());
             }
-            
-            EventManager.Invoke(new LeaveCombatEvent() {EntityId = GetInstanceID()});
+
+            Behaviour.ClearState();
             
             Destroy(gameObject);
         }

@@ -4,15 +4,15 @@ using OrchestraArmy.Entity.Entities.Enemies;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Level;
+using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Event.Events.Rhythm;
 using OrchestraArmy.Utils;
 using UnityEngine;
 
 namespace OrchestraArmy
 {
-    public class CombatManager: IListener<OffBeatEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
+    public class CombatManager: IListener<OffBeatEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>, IListener<PlayerDeathEvent>
     {
-        private HashSet<int> _registeredEnemies = new HashSet<int>();
         private DoublyLoopedLinkedList<int> _enemies = new DoublyLoopedLinkedList<int>();
         private DoublyLinkedListNode<int> _current;
         private static CombatManager _instance;
@@ -28,6 +28,7 @@ namespace OrchestraArmy
             EventManager.Bind<OffBeatEvent>(this);
             EventManager.Bind<CombatInitiatedEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
+            EventManager.Bind<PlayerDeathEvent>(this);
         }
 
         /// <summary>
@@ -51,9 +52,9 @@ namespace OrchestraArmy
         /// </summary>
         public void OnEvent(CombatInitiatedEvent invokedEvent)
         {
-            if (_registeredEnemies.Contains(invokedEvent.EntityId)) return;
+            if (_enemies.Contains(invokedEvent.EntityId)) return;
             
-            _registeredEnemies.Add(invokedEvent.EntityId);
+            Debug.Log($"Added {invokedEvent.EntityId}");
             _enemies.AddToEnd(invokedEvent.EntityId);
 
             _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
@@ -64,26 +65,21 @@ namespace OrchestraArmy
         /// </summary>
         public void OnEvent(LeaveCombatEvent invokedEvent)
         {
-            if (_registeredEnemies.Contains(invokedEvent.EntityId))
+            if (_enemies.Contains(invokedEvent.EntityId))
             {
                 if (_current != null && invokedEvent.EntityId == _current.Data)
                     _current = _current.Next;
                 
-                _registeredEnemies.Remove(invokedEvent.EntityId);
                 _enemies.Remove(invokedEvent.EntityId);
 
                 _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
             }
         }
 
-        /// <summary>
-        /// Should not be needed, but better save than sorry
-        /// </summary>
-        public void OnEvent(EnteredNewLevelEvent invokedEvent)
+        public void OnEvent(PlayerDeathEvent invokedEvent)
         {
             _current = null;
             _enemies = new DoublyLoopedLinkedList<int>();
-            _registeredEnemies = new HashSet<int>();
         }
     }
 }

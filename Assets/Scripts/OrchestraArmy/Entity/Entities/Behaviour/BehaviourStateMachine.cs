@@ -45,5 +45,12 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// </summary>
         public void Update() 
             => CurrentState.Process(this);
+
+        public void ClearState()
+        {
+            CurrentState.Exit();
+            this.PreviousState = CurrentState;
+            this.CurrentState = null;
+        }
     }
 }
