@@ -4,101 +4,66 @@ using System.Threading;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Level;
 using System;
+using System.Diagnostics;
+
 
 namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
+
+        /// <summary>
+        /// Rhythm stopwatch
+        /// </summary>
+        private static Stopwatch _rhythmStopwatch;
+
         public RhythmController()
         {
             EventManager.Bind<EnteredNewLevelEvent>(this);
-            RhythmData.SetStopwatch();
+            SetStopwatch();
         }
 
         /// <summary>
-        /// Get stamina damage in negative int
+        /// Returns the damage to the stamina in negative int
         /// </summary>
-        public int GetStaminaDamage()
+        public int GetStaminaDamage(int BPM)
         {
-            return RhythmData.GetStaminaDamage();
-        }
+            int maxStamina = 100;
+            // Get elapsed time in seconds
+            TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
+            double sTime = timeSpan.TotalSeconds;
 
-        /// <summary>
-        /// Get the rhythm score between 0 and 100
-        /// </summary>
-        public int GetRhythmScore()
-        {
-            return RhythmData.GetRhythmScore();
-        }
-
-        // DOESN'T WORK, FIX LATER
-
-        /*/// <summary>
-        /// Gradually change bpm for a better flow
-        /// </summary>
-        private void GraduallyChangeBPM(object obj)
-        {
-            // cast object to newBPM
-            int newBPM;
-            try {
-                newBPM = (int) obj;
-            }
-            catch (InvalidCastException) { 
-                // do nothing
-                newBPM = RhythmData.BPM;
-            }
-
-            // start changing bpm
-            while(true)
-            {
-                if(RhythmData.BPM>newBPM)
-                {
-                    RhythmData.BPM--;
-                }
-                else if(RhythmData.BPM<newBPM)
-                {
-                    RhythmData.BPM++;
-                }
-                else
-                {
-                    break;
-                }
-                // sleep 1/50th of a second
-                Thread.Sleep(200); 
-            }
-        }
-        
-        /// <summary>
-        /// Public starting point for GraduallyChangeBPM
-        /// </summary>
-        public void ChangeBPMByPercentage(int changeInPercentage)
-        {
-            int newBPM = (int)(RhythmData.BPM / 100f * changeInPercentage + RhythmData.BPM);
+            // Calculate damage and return
+            return (int)(maxStamina * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)-1)/4));
             
-            // Start new thread for BPM change
-            Thread t = new Thread(GraduallyChangeBPM);
-            t.IsBackground = true;
-            t.Start(newBPM);
+        }
+
+        //// <summary>
+        /// Returns value from 1 to 100 indicating what the score is right now
+        /// </summary>
+        public int GetRhythmScore(int BPM)
+        {
+            // Get elapsed time in seconds
+            TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
+            double sTime = timeSpan.TotalSeconds;
+
+            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
         }
 
         /// <summary>
-        /// Public starting point for GraduallyChangeBPM
+        /// Set the rhythm stopwatch
         /// </summary>
-        public void ChangeBPMByBPM(int changeInBPM)
+        public void SetStopwatch()
         {
-            // Start new thread for BPM change
-            Thread t = new Thread(GraduallyChangeBPM);
-            t.IsBackground = true;
-            t.Start(changeInBPM);
+            // only set if not existing, or you reset the current stopwatch
+            if(_rhythmStopwatch == null) 
+            {
+                _rhythmStopwatch = new Stopwatch();
+                _rhythmStopwatch.Start();
+            }
+            
         }
-*/
-        /// <summary>
-        /// Change BPM Immediately
-        /// </summary>
-        public void ChangeBPMImmediately(int changeInBPM)
-        {
-            RhythmData.BPM = changeInBPM;
-        }
+
 
         public void OnEvent(EnteredNewLevelEvent invokedEvent)
         {

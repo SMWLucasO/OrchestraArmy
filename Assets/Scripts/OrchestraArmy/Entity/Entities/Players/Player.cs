@@ -37,7 +37,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// <summary>
         /// The controller for the rhythm.
         /// </summary>
-        public RhythmController RhythmController { get; set; }
+        public MusicGenerator MusicGenerator;
         
         /// <summary>
         /// The controller for selecting the player's weapon(instrument).
@@ -109,8 +109,6 @@ namespace OrchestraArmy.Entity.Entities.Players
             {
                 Player = this
             };
-
-            this.RhythmController = new RhythmController();
 
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
@@ -191,7 +189,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
             //Update stamina
-            EntityData.Stamina += RhythmController.GetStaminaDamage();
+            EntityData.Stamina += MusicGenerator.RhythmController.GetRhythmScore(MusicGenerator.BPM);
             
             // Update health if needed
             if(EntityData.Stamina < 0)

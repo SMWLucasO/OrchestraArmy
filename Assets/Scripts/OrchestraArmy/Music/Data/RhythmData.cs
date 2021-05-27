@@ -7,28 +7,16 @@ namespace OrchestraArmy.Music.Data
     public static class RhythmData
     {
         
-        [Min(0)]
-        [SerializeField]
-        private static int _BPM = 120;
-
         /// <summary>
         /// Rhythm stopwatch
         /// </summary>
         private static Stopwatch _rhythmStopwatch;
 
-        /// <summary>
-        /// BPM
-        /// </summary>
-        public static int BPM
-        {
-            get => _BPM;
-            set => _BPM = value;
-        }
 
         /// <summary>
         /// Returns the damage to the stamina
         /// </summary>
-        public static int GetStaminaDamage()
+        public static int GetStaminaDamage(int BPM)
         {
             int maxStamina = 100;
             // Get elapsed time in seconds
@@ -44,7 +32,7 @@ namespace OrchestraArmy.Music.Data
         /// <summary>
         /// Returns value from 1 to 100 indicating what the score is right now
         /// </summary>
-        public static int GetRhythmScore()
+        public static int GetRhythmScore(int BPM)
         {
             // Get elapsed time in seconds
             TimeSpan timeSpan = _rhythmStopwatch.Elapsed;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OrchestraArmy.Music.Controllers;
 
-namespace OrchestraArmy.Music.UI
+namespace OrchestraArmy.UI
 {
     public class RhythmSliderController : MonoBehaviour
     {
@@ -25,14 +25,14 @@ namespace OrchestraArmy.Music.UI
         void OnEnable()
         {
             // set max value to 100
-            RhythmSlider.maxValue = 100; 
+            RhythmSlider.maxValue = 100;
         }
 
         // Update is called once per frame
         void Update()
         {
             // update value of slider each frame
-            RhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore();
+            RhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore(MusicGenerator.BPM);
         }
     }
 }
