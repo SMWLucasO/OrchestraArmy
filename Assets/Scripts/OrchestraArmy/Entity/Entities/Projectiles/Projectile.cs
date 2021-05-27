@@ -31,7 +31,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         IEnumerator Move()
         {
             yield return new WaitForSeconds(0.01f);
-
+            
             var distance = 0f;
 
             do

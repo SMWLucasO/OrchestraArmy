@@ -14,8 +14,7 @@ using UnityEngine.AI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>,
-        IListener<PlayerWeaponChangedEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
     {
         
         public BehaviourStateMachine Behaviour { get; set; }
@@ -46,8 +45,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// The mesh renderer of the enemy.
         /// </summary>
         private MeshRenderer _meshRenderer;
-        
-        
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -90,6 +88,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
+            EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
         }
 
@@ -115,6 +114,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 currentRoom.RoomIsCleared = true;
                 EventManager.Invoke(new RoomClearedOfEnemiesEvent());
             }
+
+            Behaviour.ClearState();
             
             Destroy(gameObject);
         }
@@ -156,9 +157,13 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             EventManager.Unbind<EnemyDeathEvent>(this);
             EventManager.Unbind<PlayerAttackHitEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
+            
         }
 
+        public void OnEvent(PlayerDeathEvent invokedEvent) => Behaviour.ClearState();
+        
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);
 
