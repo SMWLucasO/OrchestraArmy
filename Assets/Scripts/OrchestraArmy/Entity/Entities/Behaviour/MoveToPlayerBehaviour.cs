@@ -13,15 +13,12 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
         public void Process(BehaviourStateMachine machine)
         {
-            Transform transform = StateData.Enemy.transform;
+            Transform enemyTransform = StateData.Enemy.transform;
             
-            Vector3 scale = transform.localScale;
+            Vector3 scale = enemyTransform.localScale;
             scale.y = 0;
-            
-            Vector3 playerPosition = StateData.Player.transform.position;
-            Vector3 enemyPosition = transform.position;
-            
-            float distance = (Vector3.Distance(enemyPosition, playerPosition) - scale.x);
+
+            float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
             // When the player is more than 5 units away from the enemy: wander.
             if (distance > 5)

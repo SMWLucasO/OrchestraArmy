@@ -40,13 +40,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Vector3 scale = enemyTransform.localScale;
             scale.y = 0;
 
-            Vector3 enemyPosition = enemyTransform.position;
-            enemyPosition.y = 0.5f;
-
-            // calculate vector from enemy to player
-            var playerPosition = playerTransform.position;
-            
-            float distance = (Vector3.Distance(enemyPosition, playerPosition) - scale.x);
+            float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
             
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
@@ -71,6 +65,11 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
 
             _timeSinceLastAttackInSeconds = 0;
+            
+            Vector3 playerPosition = playerTransform.position;
+            
+            Vector3 enemyPosition = enemyTransform.position;
+            enemyPosition.y = 0.5f;
             
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             

@@ -32,5 +32,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Utils
             return hitEntity.transform.CompareTag("Player");
         }
 
+        /// <summary>
+        /// Get the distance between the player and an enemy, taking into account the scale of the enemy.
+        /// Assumes that the scaling in X, Y and Z are the same value.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="enemy"></param>
+        /// <returns>The distance with scale taken into account.</returns>
+        public static float GetScaleInclusiveDistance(Player player, Enemy enemy) 
+            => Vector3.Distance(player.transform.position, enemy.transform.position) - enemy.transform.localScale.x;
     }
 }
