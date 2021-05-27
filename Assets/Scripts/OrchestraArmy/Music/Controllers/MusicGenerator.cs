@@ -12,26 +12,26 @@ namespace OrchestraArmy.Music.Controllers
         [Range(1,140)]
         public int BPM = 120;
 
-        public Scale Scale = Scale.Major;
+        public Scale Scale = Scale.NaturalMinor;
 
-        public Key Key = Key.C;
+        public Key Key = Key.A;
 
         public TimeSignature TimeSignature = TimeSignature.CommonTime;
 
-        public bool[] OnBeats;
+        public List<AudioSource> InstrumentsBass;
+        public List<AudioSource> InstrumentsLoop;
 
-        public List<IInstrument> InstrumentsRandom;
+        public List<AudioSource> InstrumentsFixedOnBeat;
 
-        public List<IInstrument> InstrumentsFixedOnBeat;
-
-        public List<IInstrument> InstrumentsFixedOffBeat;
-
+        public List<AudioSource> InstrumentsFixedOffBeat;
 
 
         [SerializeField]
         [Range(0,100)]
         public int MasterVolume = 50;
 
+        private int _prevRhythmScore = 0;
+        private bool _toOnBeat = false;
         
 
         public RhythmController RhythmController;
@@ -43,14 +43,72 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
-            RhythmController.ChangeBPMImmediately(BPM);
         }
 
         // Update is called once per frame
         void Update()
         {
-            // Keep BPM up to date
-            //RhythmController.ChangeBPMImmediately(BPM);
+
+            // Check if instrument should be played
+            int currentRhythmScore = RhythmController.GetRhythmScore(BPM);
+
+            if(_toOnBeat)
+            {
+                if(currentRhythmScore < _prevRhythmScore)
+                {
+                    PlayAudio(InstrumentsFixedOffBeat);
+                    _toOnBeat = false;
+                }
+                
+            }
+            else
+            {
+                if(currentRhythmScore > _prevRhythmScore)
+                {
+                    PlayBass();
+                    PlayAudio(InstrumentsFixedOnBeat);
+                    _toOnBeat = true;
+                }
+            }
+            _prevRhythmScore = currentRhythmScore;
+        }
+
+        /// <summary>
+        /// Play a note for each instrument in the list
+        /// </summary>
+        private void PlayAudio(List<AudioSource> instruments)
+        {
+            foreach(AudioSource instrument in instruments)
+            {
+                instrument.Play();
+            }
+        }
+
+        /// <summary>
+        /// Play a note for each instrument in the bass instruments list
+        /// </summary>
+        private void PlayBass()
+        {
+            
+            foreach(AudioSource instrument in InstrumentsBass)
+            {
+                
+                instrument.pitch = GetPitch(Tone.C);
+                instrument.Play();
+            }
+            foreach (AudioSource instrument in InstrumentsLoop)
+            {
+
+                instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
+                Debug.Log((int)instrument.GetComponent<InstrumentData>().BaseTone);
+                instrument.loop = true;
+                instrument.Play();
+            }
+        }
+
+        private float GetPitch(Tone tone, Tone offset = Tone.C)
+        {
+            return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
         }
     }
 }
