@@ -13,7 +13,6 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         
         protected override void OnEnable()
         {
-            print(4);
             MovementController = new ProjectileMovementController()
             {
                 Entity = this
@@ -32,8 +31,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         IEnumerator Move()
         {
             yield return new WaitForSeconds(0.01f);
-
-            print(5);
+            
             var distance = 0f;
 
             do

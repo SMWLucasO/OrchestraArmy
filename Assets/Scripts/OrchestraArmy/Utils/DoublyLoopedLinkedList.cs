@@ -95,13 +95,19 @@ namespace OrchestraArmy.Utils
             }
             else
             {
-                var current = Get(item);
-
-                if (current == null)
-                    return;
+                var current = Start.Next;
                 
-                current.Previous.Next = current.Next;
-                current.Next.Previous = current.Previous;
+                while (current != Start)
+                {
+                    if (current.Data.Equals(item))
+                    {
+                        current.Previous.Next = current.Next;
+                        current.Next.Previous = current.Previous;
+                        break;
+                    }
+
+                    current = current.Next;
+                }
             }
         }
 
