@@ -10,10 +10,12 @@ namespace OrchestraArmy.Event.Events.Enemy
         /// Enemy instrument
         /// </summary>
         public WeaponType Instrument;
+        
         /// <summary>
         /// Enemy current tone
         /// </summary>
         public Tone Tone;
+        
         /// <summary>
         /// Enemy position
         /// </summary>
