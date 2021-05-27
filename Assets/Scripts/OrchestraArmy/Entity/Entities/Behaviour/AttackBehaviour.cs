@@ -1,5 +1,8 @@
-﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using System;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
+using OrchestraArmy.Entity.Entities.Enemies;
+using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Enum;
@@ -82,7 +85,9 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             var attack = obj.GetComponent<EnemyNote>();
             // calculate the vector from the note prefab to the player
-            attack.transform.forward = (playerPosition - obj.transform.position).normalized;
+            //attack.transform.forward = (playerPosition - obj.transform.position).normalized;
+            attack.transform.forward = AimBot(100, StateData.Player, enemyPosition, attack.MovementData.WalkSpeed,
+                new Vector3());
             
             // set the attacking source.
             attack.Source = obj.transform.position;
@@ -100,6 +105,28 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 Instrument = StateData.Enemy.WeaponType
             });
             
+        }
+        
+        /// <summary>
+        ///  calculates the vector of the note with player movement
+        /// </summary>
+        /// <param name="depth">acuracy of the aiming</param>
+        /// <param name="player">player entity to shoot</param>
+        /// <param name="enemyPosition">location of the enemy</param>
+        /// <param name="bulletSpeed"></param>
+        /// <param name="dirGuess">guess location interception</param>
+        /// <param name="timeGuess">guess time interception</param>
+        /// <returns></returns>
+        private Vector3 AimBot(int depth, Player player, Vector3 enemyPosition, float bulletSpeed, Vector3 dirGuess,float timeGuess = -1.0f)
+        {
+            if (timeGuess == -1.0f)
+                timeGuess = (player.transform.position - enemyPosition).magnitude / bulletSpeed;
+            else
+                timeGuess = (dirGuess - enemyPosition).magnitude / bulletSpeed;
+            dirGuess = (player.transform.position - enemyPosition) + (player.transform.forward * player.RigidBody.velocity.magnitude * timeGuess);
+            if (depth > 0)
+                return(AimBot(depth-1, player, enemyPosition,bulletSpeed, dirGuess, timeGuess));
+            return(dirGuess.normalized);
         }
 
         /// <summary>
