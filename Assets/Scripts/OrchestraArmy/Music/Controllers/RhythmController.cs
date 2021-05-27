@@ -47,10 +47,7 @@ namespace OrchestraArmy.Music.Controllers
                     EventManager.Invoke(new OffBeatEvent());
                 else
                     EventManager.Invoke(new EvenBeatEvent());
-                
-                RhythmData.LastChangedBeat = Time.time;
             }
-            
         }
 
         /// <summary>

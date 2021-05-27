@@ -17,9 +17,10 @@ namespace OrchestraArmy.Music.Data
         /// </summary>
         private static Stopwatch _rhythmStopwatch;
 
-        public static float ElapsedSeconds => (float)_rhythmStopwatch.Elapsed.TotalSeconds;
+        /// <summary>
+        /// The current beat. (1,2,3,4)
+        /// </summary>
         public static int CurrentBeat = 0;
-        public static float LastChangedBeat = Time.time;
 
         /// <summary>
         /// BPM
@@ -53,7 +54,7 @@ namespace OrchestraArmy.Music.Data
         {
             // Get elapsed time in seconds
             TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
-            double sTime = Time.time;
+            double sTime = timeSpan.TotalSeconds;
 
             return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
         }
