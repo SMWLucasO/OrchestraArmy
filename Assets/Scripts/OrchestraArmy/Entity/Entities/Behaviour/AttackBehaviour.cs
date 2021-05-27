@@ -34,17 +34,25 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
+            Transform enemyTransform = StateData.Enemy.transform;
+            Transform playerTransform = StateData.Player.transform;
+         
+            Vector3 scale = enemyTransform.localScale;
+            scale.y = 0;
+
+            float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
+            
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
             {
-                if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 3)
+                if (distance > 3)
                 {
                     machine.SetState(new MoveToPlayerBehaviour());
                     return;
                 }
             }
 
-            if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 5)
+            if (distance > 5)
             {
                 machine.SetState(new WanderBehaviour());
                 return;
@@ -58,23 +66,17 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             _timeSinceLastAttackInSeconds = 0;
             
-            Transform enemyTransform = StateData.Enemy.transform;
-            Transform playerTransform = StateData.Player.transform;
-
-            Vector3 scale = enemyTransform.localScale;
-            scale.y = 0;
-
+            Vector3 playerPosition = playerTransform.position;
+            
             Vector3 enemyPosition = enemyTransform.position;
             enemyPosition.y = 0.5f;
-
-            // calculate vector from enemy to player
-            var playerPosition = playerTransform.position;
+            
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
             // generate the enemy note to be shot.
             var obj = (GameObject) Object.Instantiate(
                     Resources.Load("Prefabs/EnemyNoteProjectile"),
-                    enemyPosition + (enemyTransform.forward * scale.x),
+                    enemyPosition + (enemyTransform.forward * (scale.x * 1.1f)),
                     StateData.Enemy.transform.GetChild(0).transform.rotation
                 );
             
