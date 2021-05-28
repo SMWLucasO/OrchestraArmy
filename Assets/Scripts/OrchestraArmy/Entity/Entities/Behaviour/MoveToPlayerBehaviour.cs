@@ -34,9 +34,11 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
             }
 
+            // When the player can't be seen, but the player is in range: just stand still.
             if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
                 return;
             
+            // Move the enemy towards the player.
             Vector3 offset = (StateData.Enemy.transform.forward.normalized * (2.9f + scale.x));
             Vector3 enemyDestination = StateData.Player.transform.position - offset;
                 
