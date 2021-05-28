@@ -541,6 +541,12 @@ namespace OrchestraArmy.Room
             {
                 for (int j = -1; j <= 1; j++)
                 {
+                    Debug.Log(gridDoorPosition.x);
+                    Debug.Log(gridDoorPosition.y);
+
+                    if ((gridDoorPosition.x + i) < 0 || (gridDoorPosition.y + j) < 0)
+                        continue;
+                    
                     if (Grid[(int) (gridDoorPosition.x + i), (int) (gridDoorPosition.y + j)] == GridSpace.Floor)
                         return new Vector3(mapDoorPosition.x + i, 0.5f, mapDoorPosition.y + j);
                 }
