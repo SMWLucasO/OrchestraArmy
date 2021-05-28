@@ -4,11 +4,15 @@ using System.Threading;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Level;
 using System;
+using System.Collections;
+using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Rhythm;
 
 namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
+        private bool _started = false;
 
         /// <summary>
         /// Create with custom BPM
@@ -29,6 +33,21 @@ namespace OrchestraArmy.Music.Controllers
             RhythmData.BPM = 120;
             EventManager.Bind<EnteredNewLevelEvent>(this);
             RhythmData.SetStopwatch();
+        }
+
+        public void BeatCheck()
+        {
+            var score = RhythmData.GetRhythmScore();
+            
+            if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
+            {
+                RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
+                
+                if (RhythmData.CurrentBeat % 2 == 1)
+                    EventManager.Invoke(new OffBeatEvent());
+                else
+                    EventManager.Invoke(new EvenBeatEvent());
+            }
         }
 
         /// <summary>
