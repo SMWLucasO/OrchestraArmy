@@ -35,18 +35,23 @@ namespace OrchestraArmy.Music.Controllers
             RhythmData.SetStopwatch();
         }
 
-        public void BeatCheck()
+        public IEnumerator BeatCheck()
         {
-            var score = RhythmData.GetRhythmScore();
-            
-            if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
+            while (true)
             {
-                RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
-                
-                if (RhythmData.CurrentBeat % 2 == 1)
-                    EventManager.Invoke(new OffBeatEvent());
-                else
-                    EventManager.Invoke(new EvenBeatEvent());
+                var score = RhythmData.GetRhythmScore();
+                            
+                if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
+                {
+                    RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
+                    
+                    if (RhythmData.CurrentBeat % 2 == 1)
+                        EventManager.Invoke(new OffBeatEvent());
+                    else
+                        EventManager.Invoke(new EvenBeatEvent());
+                }
+
+                yield return new WaitForSeconds(0.05f);
             }
         }
 

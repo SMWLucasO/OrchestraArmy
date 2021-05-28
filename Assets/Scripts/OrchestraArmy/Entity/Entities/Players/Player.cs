@@ -66,7 +66,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         protected override void Update()
         {
             base.Update();
-            RhythmController.BeatCheck();
             DirectionController.HandleDirection();
             WeaponSelectionController.HandleWeaponSelection();
             SpriteManager.UpdateSprite();
@@ -120,6 +119,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                 Player = this
             };
 
+            StartCoroutine(RhythmController.BeatCheck());
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
