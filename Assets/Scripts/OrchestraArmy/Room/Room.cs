@@ -537,21 +537,22 @@ namespace OrchestraArmy.Room
         /// <returns></returns>
         private Vector3 GetFreePositionAroundPoint(Vector2 gridDoorPosition, Vector2 mapDoorPosition)
         {
-            for (int i = -1; i <= 1; i++)
+
+            // Positions to be checked in this specific order.
+            (int, int)[] positions =
             {
-                for (int j = -1; j <= 1; j++)
-                {
-                    Debug.Log(gridDoorPosition.x);
-                    Debug.Log(gridDoorPosition.y);
+                (1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1),
+            };
 
-                    if ((gridDoorPosition.x + i) < 0 || (gridDoorPosition.y + j) < 0)
-                        continue;
+            foreach (var position in positions)
+            {
+                if (gridDoorPosition.x + position.Item1 < 0 || gridDoorPosition.y + position.Item2 < 0)
+                    continue;
                     
-                    if (Grid[(int) (gridDoorPosition.x + i), (int) (gridDoorPosition.y + j)] == GridSpace.Floor)
-                        return new Vector3(mapDoorPosition.x + i, 0.5f, mapDoorPosition.y + j);
-                }
+                if (Grid[(int) (gridDoorPosition.x + position.Item1), (int) (gridDoorPosition.y + position.Item2)] == GridSpace.Floor)
+                    return new Vector3(mapDoorPosition.x + position.Item1, 0.5f, mapDoorPosition.y + position.Item2);
             }
-
+            
             // center of map.
             return new Vector3(RoomSizeWorldUnits.x / 2 - OffsetOfRoom.x, 0.5f,
                 RoomSizeWorldUnits.y / 2 - OffsetOfRoom.y);
