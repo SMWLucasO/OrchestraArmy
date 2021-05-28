@@ -67,7 +67,7 @@ namespace OrchestraArmy.Room
         /// Size of the room in Vector2
         /// </summary>
         public Vector2 RoomSizeWorldUnits { get; set; } 
-            = new Vector2(150, 150);
+            = new Vector2(75, 75);
 
         /// <summary>
         /// For getting the center of the room

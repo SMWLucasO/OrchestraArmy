@@ -13,7 +13,7 @@ namespace OrchestraArmy.Room.Rooms
             RoomGenerationData.WalkerSpawnChance = 0.8f;
             RoomGenerationData.WalkerDestructionChance = 0.8f;
             RoomGenerationData.MaxAliveWalkers = 20;
-            RoomGenerationData.PercentToFill = 0.1f;
+            RoomGenerationData.PercentToFill = 0.3f;
         }
 
         protected override void CreateDoors()

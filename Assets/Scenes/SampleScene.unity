@@ -1176,6 +1176,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3710422614201592498, guid: db2860bb68ddae54fb10bfc43c61a766, type: 3}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <CollectedInstrumentCount>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.DoorUpObj
       value: 
       objectReference: {fileID: 6235616627879709886, guid: bf4b80039ae363b47a5d812033ce45b9, type: 3}
