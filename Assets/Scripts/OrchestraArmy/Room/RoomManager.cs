@@ -351,7 +351,7 @@ namespace OrchestraArmy.Room
             if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)))
                 return RoomType.BossRoom;
             else
-                return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.BossRoom;
+                return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;
         }
 
         /// <summary>
