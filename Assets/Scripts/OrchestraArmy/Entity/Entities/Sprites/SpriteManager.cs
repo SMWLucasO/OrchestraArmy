@@ -32,6 +32,12 @@ namespace OrchestraArmy.Entity.Entities.Sprites
         /// </summary>
         private Coroutine _animation = null;
         
+
+        /// <summary>
+        /// Time between the frames
+        /// </summary>
+        public float TimeBetweenFrames;
+
         /// <summary>
         /// Property for _currentSpriteSet. Will restart the animation when replaced.
         /// </summary>
@@ -94,7 +100,7 @@ namespace OrchestraArmy.Entity.Entities.Sprites
                 
                 Entity.Renderer.sprite = CurrentSpriteSet[_currentSprite++];
                 
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(TimeBetweenFrames);
             }
         }
     }

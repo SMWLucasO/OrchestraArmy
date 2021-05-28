@@ -12,12 +12,13 @@ using OrchestraArmy.Room;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using OrchestraArmy.Entity.Entities.Enemies.Controllers;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
     public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
     {
-        
+
         public BehaviourStateMachine Behaviour { get; set; }
 
         /// <summary>
@@ -50,9 +51,22 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// </summary>
         public GameObject DamageParticles;
         
+        protected override void Update()
+        {
+            DirectionController.HandleDirection();
+            SpriteManager.UpdateSprite();
+        }
         protected override void OnEnable()
         {
             base.OnEnable();
+            InitializeSprites(0.2f);
+
+            DirectionController = new EnemyDirectionController()
+            {
+                Entity = this
+            };
+            
+
 
             Behaviour = new BehaviourStateMachine()
             {

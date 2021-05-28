@@ -49,11 +49,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 066357ec1c9f405dacf1a9b1c353d180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites: []
+  Sprites:
+  - Direction: 3
+    Sprites:
+    - {fileID: 21300000, guid: 88fd3fc0284950d488502fc446bc4918, type: 3}
+    - {fileID: 21300000, guid: 7db22ff8d43700a4e9393d36d2d5e648, type: 3}
+    - {fileID: 21300000, guid: 0a69bea9b9304004ba6e8c6aa906c7c4, type: 3}
+    - {fileID: 21300000, guid: fd115eb78d4a7554eb3bbf0d984dfba2, type: 3}
+    - {fileID: 21300000, guid: 10604c1957cb4f94290ea0d501199ad0, type: 3}
+    - {fileID: 21300000, guid: 0094d4f8058ee214d95b43ffbaafa565, type: 3}
+    - {fileID: 21300000, guid: 7bb6cb1a662b379498b52c70339bbb52, type: 3}
+    - {fileID: 21300000, guid: e3a9a0124f0ee914d96863528a0f095f, type: 3}
+  - Direction: 1
+    Sprites:
+    - {fileID: 21300000, guid: 88fd3fc0284950d488502fc446bc4918, type: 3}
+    - {fileID: 21300000, guid: 7db22ff8d43700a4e9393d36d2d5e648, type: 3}
+    - {fileID: 21300000, guid: 0a69bea9b9304004ba6e8c6aa906c7c4, type: 3}
+    - {fileID: 21300000, guid: fd115eb78d4a7554eb3bbf0d984dfba2, type: 3}
+    - {fileID: 21300000, guid: 10604c1957cb4f94290ea0d501199ad0, type: 3}
+    - {fileID: 21300000, guid: 0094d4f8058ee214d95b43ffbaafa565, type: 3}
+    - {fileID: 21300000, guid: 7bb6cb1a662b379498b52c70339bbb52, type: 3}
+    - {fileID: 21300000, guid: e3a9a0124f0ee914d96863528a0f095f, type: 3}
+  - Direction: 2
+    Sprites:
+    - {fileID: 21300000, guid: a74b842ced2ade64e95b40e205d0dd70, type: 3}
+    - {fileID: 21300000, guid: 7c298f5db2fb570499f5610d8cc85e13, type: 3}
+    - {fileID: 21300000, guid: d142011f15d790b4c81d6a5d1325d488, type: 3}
+    - {fileID: 21300000, guid: 030ff58a808a30742b98929ba159fbca, type: 3}
+    - {fileID: 21300000, guid: a8fb9d465919ccd47aaac4a039719513, type: 3}
+    - {fileID: 21300000, guid: 9d53d26fa56402b43865bead9e9b2d1d, type: 3}
+    - {fileID: 21300000, guid: 9e628ddeac474484bb06852f66c57ba3, type: 3}
+    - {fileID: 21300000, guid: 2286fdb07187f5a42b8b9350d132af71, type: 3}
+  - Direction: 0
+    Sprites:
+    - {fileID: 21300000, guid: a74b842ced2ade64e95b40e205d0dd70, type: 3}
+    - {fileID: 21300000, guid: 7c298f5db2fb570499f5610d8cc85e13, type: 3}
+    - {fileID: 21300000, guid: d142011f15d790b4c81d6a5d1325d488, type: 3}
+    - {fileID: 21300000, guid: 030ff58a808a30742b98929ba159fbca, type: 3}
+    - {fileID: 21300000, guid: a8fb9d465919ccd47aaac4a039719513, type: 3}
+    - {fileID: 21300000, guid: 9d53d26fa56402b43865bead9e9b2d1d, type: 3}
+    - {fileID: 21300000, guid: 9e628ddeac474484bb06852f66c57ba3, type: 3}
+    - {fileID: 21300000, guid: 2286fdb07187f5a42b8b9350d132af71, type: 3}
   <MovementData>k__BackingField:
     _walkSpeed: 200
   <EntityData>k__BackingField:
     _health: 100
+    _maxHealth: 100
     _stamina: 100
   DamageParticles: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
 --- !u!136 &-6651733425517939180
@@ -307,6 +348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 732472091864734975}
   - component: {fileID: 8778716093935670763}
+  - component: {fileID: 2153067943626987047}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -323,7 +365,7 @@ Transform:
   m_GameObject: {fileID: 3762066057186610187}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 630323051058264126}
   m_RootOrder: 0
@@ -368,17 +410,29 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a74b842ced2ade64e95b40e205d0dd70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 24.807957, y: 17.54}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2153067943626987047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3762066057186610187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25acaafbe200fcf4fa9d287a0c80ff74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5357860641242748660
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +556,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5693812284014140546}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
