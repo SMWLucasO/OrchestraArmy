@@ -17,6 +17,11 @@ namespace OrchestraArmy.Music.Data
         private static Stopwatch _rhythmStopwatch;
 
         /// <summary>
+        /// The current beat. (1,2,3,4)
+        /// </summary>
+        public static int CurrentBeat = 0;
+
+        /// <summary>
         /// BPM
         /// </summary>
         public static int BPM
@@ -36,7 +41,7 @@ namespace OrchestraArmy.Music.Data
             double sTime = timeSpan.TotalSeconds;
 
             // Calculate damage and return
-            return (int)(maxStamina * ((Math.Cos(sTime*Math.PI*(BPM/60)+Math.PI)-1)/4));
+            return (int)(maxStamina * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)-1)/4));
             
         }
 
@@ -50,7 +55,7 @@ namespace OrchestraArmy.Music.Data
             TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
             double sTime = timeSpan.TotalSeconds;
 
-            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60)+Math.PI)+1)/2));
+            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
         }
 
         /// <summary>

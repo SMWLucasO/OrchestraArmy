@@ -54,7 +54,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             if (KeybindingManager.Instance.Keybindings["Move right"].isPressed)
                 Yaw += CameraRotationIncrement * Time.deltaTime;
-
             // Get the offset for rotations around the player
             Vector3 offset = CameraOffset;
 
