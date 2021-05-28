@@ -140,7 +140,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             
             //update healthbar
             transform.Find("Canvas/BackgroundBar/FilledPart").GetComponent<Image>().fillAmount =
-                EntityData.Health / 100.0f;
+                EntityData.Health / (float)EntityData.MaxHealth;
 
             Vector3 particlePosition = transform.position;
             particlePosition.y = 0.5f;

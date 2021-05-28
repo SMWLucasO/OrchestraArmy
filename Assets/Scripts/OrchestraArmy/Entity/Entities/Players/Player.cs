@@ -167,7 +167,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                 EventManager.Invoke(new PlayerDeathEvent());
                 
                 //reset values to max
-                EntityData.Health = 100;
+                EntityData.Health = EntityData.MaxHealth;
             }
         }
 
@@ -201,7 +201,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {            
             // Refill player health/stamina.
-            EntityData.Health = 100;
+            EntityData.Health = EntityData.MaxHealth;
             EntityData.Stamina = 100;
         }
 

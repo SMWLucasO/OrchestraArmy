@@ -12,6 +12,10 @@ namespace OrchestraArmy.Entity.Data
         
         [Min(0)]
         [SerializeField]
+        private int _maxHealth = 100;
+        
+        [Min(0)]
+        [SerializeField]
         private int _stamina = 100;
 
         public int Health
@@ -24,6 +28,12 @@ namespace OrchestraArmy.Entity.Data
         {
             get => _stamina;
             set => _stamina = value;
+        }
+
+        public int MaxHealth
+        {
+            get => _maxHealth;
+            set => _maxHealth = value;
         }
     }
 }
