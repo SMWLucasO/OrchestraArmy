@@ -50,10 +50,10 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
             // calculate the x-rotation
             if (KeybindingManager.Instance.Keybindings["Move left"].isPressed)
-                Yaw += CameraRotationIncrement * Time.deltaTime;
+                Yaw -= CameraRotationIncrement * Time.deltaTime;
             
             if (KeybindingManager.Instance.Keybindings["Move right"].isPressed)
-                Yaw -= CameraRotationIncrement * Time.deltaTime;
+                Yaw += CameraRotationIncrement * Time.deltaTime;
 
             // Get the offset for rotations around the player
             Vector3 offset = CameraOffset;
