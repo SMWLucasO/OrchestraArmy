@@ -51,7 +51,7 @@ namespace OrchestraArmy.Music.Controllers
                         EventManager.Invoke(new EvenBeatEvent());
                 }
 
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.01f);
             }
         }
 
