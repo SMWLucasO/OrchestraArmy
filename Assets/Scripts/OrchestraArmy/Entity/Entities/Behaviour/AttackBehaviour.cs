@@ -45,7 +45,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            
+            // If the player can be seen, but the distance is too great: go to the MoveToPlayer behaviour.
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
             {
                 if (distance > 3)
@@ -55,6 +55,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 }
             }
 
+            // If the distance is too great, then start wandering again.
             if (distance > 5)
             {
                 machine.SetState(new WanderBehaviour());
