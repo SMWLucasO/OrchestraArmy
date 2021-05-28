@@ -25,6 +25,7 @@ namespace OrchestraArmy.Room
         /// The count of currently collected instruments, starting at 0.
         /// The count ends at 3.
         /// </summary>
+        [field: SerializeField]
         public int CollectedInstrumentCount { get; set; } = 0;
 
         /// <summary>
