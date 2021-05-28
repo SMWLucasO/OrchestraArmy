@@ -50,6 +50,11 @@ namespace OrchestraArmy.Room
         /// </summary>
         public int RoomsCleared { get; set; } = 0;
 
+        /// <summary>
+        /// A boolean forcing the next room to be a boss room.
+        /// </summary>
+        public bool ForceNextRoomIsBoss = false;
+        
         private Player _player;
         
         /// <summary>
@@ -349,7 +354,7 @@ namespace OrchestraArmy.Room
         private RoomType DecideNextRoom()
         {
             // calculation for chance boss room (after 5 rooms +20% per room)
-            if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)))
+            if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)) || ForceNextRoomIsBoss)
                 return RoomType.BossRoom;
             else
                 return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;
