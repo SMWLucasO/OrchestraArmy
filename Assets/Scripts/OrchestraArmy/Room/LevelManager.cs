@@ -55,6 +55,11 @@ namespace OrchestraArmy.Room
             // set to one such that we can get to other rooms.
             RoomManager.RoomsCleared = 1;
 
+            // Position the player properly.
+            Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            if (player != null)
+                player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
+
         }
 
         /// <summary>
@@ -81,6 +86,11 @@ namespace OrchestraArmy.Room
 
             // set to one such that we can get to other rooms.
             RoomManager.RoomsCleared = 1;
+            
+            // Position the player properly.
+            Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            if (player != null)
+                player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
         }
 
         private void Update()
