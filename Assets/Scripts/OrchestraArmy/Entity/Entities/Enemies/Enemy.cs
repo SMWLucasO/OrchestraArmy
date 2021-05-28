@@ -171,7 +171,17 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Color color = material.color;
             
             // set the transparency 
-            color.a = selectedWeapon == HittableBy ? 1f : 0.3f;
+            if (selectedWeapon == HittableBy)
+            {
+                color.a = 1f;
+                transform.Find("Canvas").GetComponent<Canvas>().enabled = true;
+            }
+            else
+            {
+                color.a = 0.3f;
+                transform.Find("Canvas").GetComponent<Canvas>().enabled = false;
+            }
+
             material.color = color;
         }
     }
