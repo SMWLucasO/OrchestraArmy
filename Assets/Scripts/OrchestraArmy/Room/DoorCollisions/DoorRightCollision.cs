@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Room.DoorCollisions
 {
-    public class DoorRightCollision : DoorColision
+    public class DoorRightCollision : DoorCollision
     {
         void OnTriggerEnter(Collider other)
         {

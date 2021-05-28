@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Room.DoorCollisions
 {
-    public abstract class DoorColision : MonoBehaviour,IListener<RoomClearedOfEnemiesEvent>
+    public abstract class DoorCollision : MonoBehaviour,IListener<RoomClearedOfEnemiesEvent>
     {
         private void Awake()
         {
@@ -20,6 +20,7 @@ namespace OrchestraArmy.Room.DoorCollisions
 
         public void OnEvent(RoomClearedOfEnemiesEvent invokedEvent)
         {
+            //show the arrow on top of doors
             transform.Find("Closed").gameObject.SetActive(false);
         }
     }

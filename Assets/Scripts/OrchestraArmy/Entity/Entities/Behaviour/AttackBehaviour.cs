@@ -11,6 +11,7 @@ using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Entity.Entities.Behaviour
 {
@@ -93,10 +94,12 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             var attack = obj.GetComponent<EnemyNote>();
             
-            // calculate the vector from the note prefab to the player
-            //attack.transform.forward = (playerPosition - obj.transform.position).normalized;
-            attack.transform.forward = AimBot(100, StateData.Player, enemyPosition, attack.MovementData.WalkSpeed,
-                new Vector3());
+            // calculate the vector from the note prefab to the player (50% chance on direct shot, 50% chance on predicted shot)
+            if (Random.value > 0.5f)
+                attack.transform.forward = AimBot(100, StateData.Player, enemyPosition, attack.MovementData.WalkSpeed,
+                    new Vector3());
+            else
+                attack.transform.forward = (playerPosition - obj.transform.position).normalized;
             
             // set the attacking source.
             attack.Source = obj.transform.position;
