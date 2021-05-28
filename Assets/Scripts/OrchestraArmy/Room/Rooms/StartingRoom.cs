@@ -36,5 +36,7 @@ namespace OrchestraArmy.Room.Rooms
             }
         }
         
+        public override Vector3 GetPlayerSpawnPosition(DoorDirection doorDirection) 
+            => new Vector3(0, 0.5f, 0);
     }
 }

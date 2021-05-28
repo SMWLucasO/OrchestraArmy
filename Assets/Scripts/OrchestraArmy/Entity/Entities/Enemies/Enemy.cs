@@ -11,6 +11,7 @@ using OrchestraArmy.Event.Events.Room;
 using OrchestraArmy.Room;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
@@ -19,8 +20,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         
         public BehaviourStateMachine Behaviour { get; set; }
 
-        public float LastCollisionTime { get; set; }
-        
         /// <summary>
         /// The type of instrument which the enemy can be damaged with.
         /// </summary>
@@ -45,12 +44,15 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// The mesh renderer of the enemy.
         /// </summary>
         private MeshRenderer _meshRenderer;
-
+        
+        /// <summary>
+        /// particles that spawn if enemy is damaged
+        /// </summary>
+        public GameObject DamageParticles;
+        
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            LastCollisionTime = Time.time;
 
             Behaviour = new BehaviourStateMachine()
             {
@@ -120,22 +122,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Destroy(gameObject);
         }
 
-        /// <summary>
-        /// Temporary player attacking event.
-        /// </summary>
-        /// <param name="other"></param>
-        public void OnCollisionStay(Collision other)
-        {
-            if (!other.gameObject.TryGetComponent<Player>(out Player player))
-                return;
-
-            if (!((Time.time - LastCollisionTime) > 1))
-                return;
-
-            LastCollisionTime = Time.time;
-            EventManager.Invoke(new PlayerDamageEvent() { HealthLost = 10 });
-        }
-
         public void OnEvent(PlayerAttackHitEvent invokedEvent)
         {
             if (gameObject.GetInstanceID() != invokedEvent.TargetId)
@@ -151,6 +137,16 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 EventManager.Invoke(new EnemyDeathEvent() { KilledEnemy = this });
             }
+            
+            //update healthbar
+            transform.Find("Canvas/BackgroundBar/FilledPart").GetComponent<Image>().fillAmount =
+                EntityData.Health / 100.0f;
+
+            Vector3 particlePosition = transform.position;
+            particlePosition.y = 0.5f;
+            
+            //spawn damage particles
+            Instantiate(DamageParticles, particlePosition, Quaternion.identity);
         }
 
         public void OnDestroy()

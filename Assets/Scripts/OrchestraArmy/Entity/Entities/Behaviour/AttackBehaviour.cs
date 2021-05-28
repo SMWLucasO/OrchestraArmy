@@ -1,5 +1,8 @@
-﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
+﻿using System;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
+using OrchestraArmy.Entity.Entities.Enemies;
+using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Enum;
@@ -8,6 +11,7 @@ using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace OrchestraArmy.Entity.Entities.Behaviour
 {
@@ -32,17 +36,26 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
+            Transform enemyTransform = StateData.Enemy.transform;
+            Transform playerTransform = StateData.Player.transform;
+         
+            Vector3 scale = enemyTransform.localScale;
+            scale.y = 0;
+
+            float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy))
+            // If the player can be seen, but the distance is too great: go to the MoveToPlayer behaviour.
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
             {
-                if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 3)
+                if (distance > 3)
                 {
                     machine.SetState(new MoveToPlayerBehaviour());
                     return;
                 }
             }
 
-            if (Vector3.Distance(StateData.Player.transform.position, StateData.Enemy.transform.position) > 5)
+            // If the distance is too great, then start wandering again.
+            if (distance > 5)
             {
                 machine.SetState(new WanderBehaviour());
                 return;
@@ -62,27 +75,31 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         {
             Transform enemyTransform = StateData.Enemy.transform;
             Transform playerTransform = StateData.Player.transform;
+            Vector3 playerPosition = playerTransform.position;
 
             Vector3 scale = enemyTransform.localScale;
             scale.y = 0;
 
             Vector3 enemyPosition = enemyTransform.position;
             enemyPosition.y = 0.5f;
-
-            // calculate vector from enemy to player
-            var playerPosition = playerTransform.position;
+            
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
             // generate the enemy note to be shot.
             var obj = (GameObject) Object.Instantiate(
                 Resources.Load("Prefabs/EnemyNoteProjectile"),
-                enemyPosition + (enemyTransform.forward * scale.x),
+                enemyPosition + (enemyTransform.forward * (scale.x * 1.1f)),
                 StateData.Enemy.transform.GetChild(0).transform.rotation
             );
             
             var attack = obj.GetComponent<EnemyNote>();
-            // calculate the vector from the note prefab to the player
-            attack.transform.forward = (playerPosition - obj.transform.position).normalized;
+            
+            // calculate the vector from the note prefab to the player (50% chance on direct shot, 50% chance on predicted shot)
+            if (Random.value > 0.5f)
+                attack.transform.forward = AimBot(100, StateData.Player, enemyPosition, attack.MovementData.WalkSpeed,
+                    new Vector3());
+            else
+                attack.transform.forward = (playerPosition - obj.transform.position).normalized;
             
             // set the attacking source.
             attack.Source = obj.transform.position;
@@ -104,6 +121,28 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 Instrument = StateData.Enemy.WeaponType,
                 Position = StateData.Enemy.transform.position
             });
+        }
+        
+        /// <summary>
+        ///  calculates the vector of the note with player movement
+        /// </summary>
+        /// <param name="depth">acuracy of the aiming</param>
+        /// <param name="player">player entity to shoot</param>
+        /// <param name="enemyPosition">location of the enemy</param>
+        /// <param name="bulletSpeed"></param>
+        /// <param name="dirGuess">guess location interception</param>
+        /// <param name="timeGuess">guess time interception</param>
+        /// <returns></returns>
+        private Vector3 AimBot(int depth, Player player, Vector3 enemyPosition, float bulletSpeed, Vector3 dirGuess,float timeGuess = -1.0f)
+        {
+            if (timeGuess == -1.0f)
+                timeGuess = (player.transform.position - enemyPosition).magnitude / bulletSpeed;
+            else
+                timeGuess = (dirGuess - enemyPosition).magnitude / bulletSpeed;
+            dirGuess = (player.transform.position - enemyPosition) + (player.transform.forward * (player.RigidBody.velocity.magnitude * timeGuess));
+            if (depth > 0)
+                return(AimBot(depth-1, player, enemyPosition,bulletSpeed, dirGuess, timeGuess));
+            return(dirGuess.normalized);
         }
     }
 }

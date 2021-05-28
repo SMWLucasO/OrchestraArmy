@@ -58,6 +58,11 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public WeaponWheel WeaponWheel { get; set; }
 
+        /// <summary>
+        /// particles that spawn if player is damaged
+        /// </summary>
+        public GameObject DamageParticles;
+            
         protected override void Update()
         {
             base.Update();
@@ -147,7 +152,15 @@ namespace OrchestraArmy.Entity.Entities.Players
             int healthAfterAttack = EntityData.Health - playerDamageEvent.HealthLost;
 
             if (healthAfterAttack > 0)
+            {
                 EntityData.Health = healthAfterAttack;
+                
+                Vector3 particlePosition = transform.position;
+                particlePosition.y = 0.5f;
+                
+                //spawn damage particles
+                Instantiate(DamageParticles, particlePosition, Quaternion.identity);
+            }
             else
             {
                 // in this case, the player is dead.

@@ -27,6 +27,27 @@ namespace OrchestraArmy.Room
         public List<Vector2> EnemySpawnLocations { get; set; }
             = new List<Vector2>();
 
+
+        /// <summary>
+        /// The coordinates of the portals on the map.
+        /// 0 = up
+        /// 1 = down
+        /// 2 = left
+        /// 3 = right
+        /// </summary>
+        public Vector2[] DoorPositions { get; set; }
+            = new Vector2[4];
+
+        /// <summary>
+        /// The coordinates of the portals on the grid.
+        /// 0 = up
+        /// 1 = down
+        /// 2 = left
+        /// 3 = right
+        /// </summary>
+        private Vector2[] _gridDoorPositions 
+            = new Vector2[4];
+        
         /// <summary>
         /// The width of the room.
         /// </summary>
@@ -325,6 +346,7 @@ namespace OrchestraArmy.Room
                 if (Grid[centerX, i] == GridSpace.Wall)
                 {
                     Grid[centerX, i] = GridSpace.DoorD;
+                    _gridDoorPositions[1] = new Vector2(centerX, i);
                     break;
                 }
             }
@@ -335,6 +357,7 @@ namespace OrchestraArmy.Room
                 if (Grid[centerX, i] == GridSpace.Wall)
                 {
                     Grid[centerX, i] = GridSpace.DoorU;
+                    _gridDoorPositions[0] = new Vector2(centerX, i);
                     break;
                 }
             }
@@ -345,6 +368,7 @@ namespace OrchestraArmy.Room
                 if (Grid[i, centerY] == GridSpace.Wall)
                 {
                     Grid[i, centerY] = GridSpace.DoorL;
+                    _gridDoorPositions[2] = new Vector2(i, centerY);
                     break;
                 }
             }
@@ -355,6 +379,7 @@ namespace OrchestraArmy.Room
                 if (Grid[i, centerY] == GridSpace.Wall)
                 {
                     Grid[i, centerY] = GridSpace.DoorR;
+                    _gridDoorPositions[3] = new Vector2(i, centerY);
                     break;
                 }
             }
@@ -474,7 +499,57 @@ namespace OrchestraArmy.Room
         /// Set the settings for the room generation.
         /// </summary>
         public abstract void SetupSettings();
+
+
+        /// <summary>
+        /// Get the player spawn location for the specified door.
+        /// </summary>
+        /// <param name="doorDirection"></param>
+        /// <returns></returns>
+        public virtual Vector3 GetPlayerSpawnPosition(DoorDirection doorDirection)
+        {
+            Vector2 gridDoorPosition = GetOppositeDoorPosition(doorDirection, _gridDoorPositions);
+            Vector2 mapDoorPosition = GetOppositeDoorPosition(doorDirection, DoorPositions);
+
+            return GetFreePositionAroundPoint(gridDoorPosition, mapDoorPosition);
+        }
+
+        /// <summary>
+        /// Get the opposite door of the given input.
+        /// </summary>
+        /// <param name="doorDirection"></param>
+        /// <param name="doorPositions"></param>
+        /// <returns></returns>
+        private Vector2 GetOppositeDoorPosition(DoorDirection doorDirection, Vector2[] doorPositions) =>
+            doorDirection switch
+            {
+                DoorDirection.Down => doorPositions[0],
+                DoorDirection.Up => doorPositions[1],
+                DoorDirection.Right => doorPositions[2],
+                _ => doorPositions[3]
+            };
         
+        /// <summary>
+        /// Get a position to be placed at at a given point.
+        /// </summary>
+        /// <param name="gridDoorPosition"></param>
+        /// <param name="mapDoorPosition"></param>
+        /// <returns></returns>
+        private Vector3 GetFreePositionAroundPoint(Vector2 gridDoorPosition, Vector2 mapDoorPosition)
+        {
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (Grid[(int) (gridDoorPosition.x + i), (int) (gridDoorPosition.y + j)] == GridSpace.Floor)
+                        return new Vector3(mapDoorPosition.x + i, 0.5f, mapDoorPosition.y + j);
+                }
+            }
+
+            // center of map.
+            return new Vector3(RoomSizeWorldUnits.x / 2 - OffsetOfRoom.x, 0.5f,
+                RoomSizeWorldUnits.y / 2 - OffsetOfRoom.y);
+        }
         
     }
     
