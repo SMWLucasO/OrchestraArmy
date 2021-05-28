@@ -124,7 +124,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 timeGuess = (player.transform.position - enemyPosition).magnitude / bulletSpeed;
             else
                 timeGuess = (dirGuess - enemyPosition).magnitude / bulletSpeed;
-            dirGuess = (player.transform.position - enemyPosition) + (player.transform.forward * player.RigidBody.velocity.magnitude * timeGuess);
+            dirGuess = (player.transform.position - enemyPosition) + (player.transform.forward * (player.RigidBody.velocity.magnitude * timeGuess));
             if (depth > 0)
                 return(AimBot(depth-1, player, enemyPosition,bulletSpeed, dirGuess, timeGuess));
             return(dirGuess.normalized);
