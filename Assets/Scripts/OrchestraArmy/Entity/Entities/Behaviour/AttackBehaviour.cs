@@ -73,8 +73,22 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
         public void OnEvent(EnemyTurnEvent invokedEvent)
         {
-            Transform enemyTransform = StateData.Enemy.transform;
-            Transform playerTransform = StateData.Player.transform;
+            Transform enemyTransform;
+            Transform playerTransform;
+            
+            //check if enemy and player are still allive
+            try
+            {
+                enemyTransform = StateData.Enemy.transform;
+                playerTransform = StateData.Player.transform;
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+
+            enemyTransform = StateData.Enemy.transform;
+            playerTransform = StateData.Player.transform;
             Vector3 playerPosition = playerTransform.position;
 
             Vector3 scale = enemyTransform.localScale;
