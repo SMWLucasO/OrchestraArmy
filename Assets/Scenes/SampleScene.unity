@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -938,11 +938,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6774437165678734097, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6774437165757693220, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6774437167009963769, guid: 2a549beaa31eeb044ae27f043fe26598, type: 3}
       propertyPath: <WeaponWheelPlaceholderData>k__BackingField._unlocked
@@ -1284,6 +1284,54 @@ PrefabInstance:
       propertyPath: <EntityData>k__BackingField._health
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[0].Sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[1].Sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[2].Sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[3].Sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[0].Sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fa4126abc4482843b2976d60b10e472, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[0].Sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 06dbd32a703eadc479aebb4dcaa990a3, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[1].Sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ea1ee6db75afb944956949f9d179632, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[1].Sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: fa7feb5166bc89340bf3c98cd669a4c4, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[2].Sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb5a9423205ba6c4d9d4bf6e7c43f54c, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[2].Sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: ced4df21eb864174089a167eb38ea1ed, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[3].Sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0451327026a77414da7d7bb62502de3f, type: 3}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[3].Sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 94818e779451b414ab84533e86245836, type: 3}
     - target: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: m_Name
       value: Player
