@@ -713,7 +713,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6652699658697360157}
+  - component: {fileID: 7699964729539121113}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -721,8 +721,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6652699658697360157
-Transform:
+--- !u!224 &7699964729539121113
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -736,6 +736,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 225, y: 152}
+  m_SizeDelta: {x: 450, y: 304}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7468577041588630680
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +771,7 @@ Transform:
   m_Children:
   - {fileID: 2723071561448711081}
   - {fileID: 2068071816184583499}
-  m_Father: {fileID: 6652699658697360157}
+  m_Father: {fileID: 7699964729539121113}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &578044409860867781
@@ -782,3 +787,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentlySelected>k__BackingField: {fileID: 8810940145319913015}
+  <LatestSelected>k__BackingField: {fileID: 8810940145319913015}

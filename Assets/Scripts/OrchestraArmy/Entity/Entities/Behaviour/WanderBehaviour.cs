@@ -1,20 +1,22 @@
 ﻿using System;
-using OrchestraArmy.Entity.Entities.Enemies.Data;
-using UnityEditor;
+using OrchestraArmy.Entity.Entities.Behaviour.Data;
+using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-namespace OrchestraArmy.Entity.Entities.Enemies
+namespace OrchestraArmy.Entity.Entities.Behaviour
 {
     public class WanderBehaviour : IBehaviourState
     {
-        /// <summary>
-        /// variables needed for wander behaviour
-        /// </summary>
 
-        private float _displacementLength = Random.value * 25;           //distance from center
-        private float _displacementAngle = Random.value * (2*Mathf.PI);  //angle of displacement
-        private float _displacementAltStrength = 5f;
+
+        private float _timePerWanderInSecondsMin = 1.5f, 
+            _timePerWanderInSecondsMax = 4f;
+
+        private float _timeElapsedSinceLastWanderCheckInSeconds = 0;
+        
+        private float _timeElapsedSinceWanderInSeconds = 0;
         
         /// <summary>
         /// Data used by the state.
@@ -24,17 +26,67 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         /// <summary>
         /// Enter this state.
         /// </summary>
-        public void Enter()
-        {
-            
-        }
+        public void Enter() { }
 
         /// <summary>
         /// Process this state.
         /// </summary>
         public void Process(BehaviourStateMachine machine)
         {
-            _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
+
+            Vector3 scale = StateData.Enemy.transform.localScale;
+            
+            // When the enemy is within 3 units of the player & it can detect the player: attack.
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3 + scale.x))
+            {
+                machine.SetState(new AttackBehaviour());
+                return;
+            }
+
+
+            // When the player is within 5 units of the enemy: move towards player.
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
+            {
+                machine.SetState(new MoveToPlayerBehaviour());
+                return;
+            }
+            
+            // if the entity has not arrived, and the end can be reached: wait till the entity has arrived.
+            NavMeshPathStatus pathStatus = StateData.Enemy.NavMeshAgent.pathStatus;
+            if (!StateData.Enemy.transform.position.Equals(StateData.Enemy.NavMeshAgent.destination) &&
+                pathStatus != NavMeshPathStatus.PathInvalid && pathStatus != NavMeshPathStatus.PathPartial)
+                return;
+
+            _timeElapsedSinceWanderInSeconds += Time.deltaTime;
+            _timeElapsedSinceLastWanderCheckInSeconds += Time.deltaTime;
+
+            // only change directions at most once per second.
+            if (Math.Floor(_timeElapsedSinceLastWanderCheckInSeconds) < 1)
+                return;
+
+            _timeElapsedSinceLastWanderCheckInSeconds = 0;
+            
+            // Chance of movement, depending on [min, max]
+            if (_timeElapsedSinceWanderInSeconds < Random.Range(_timePerWanderInSecondsMin, _timePerWanderInSecondsMax))
+                return;
+
+            _timeElapsedSinceWanderInSeconds = 0;
+            
+            // vv generate a position to move towards. vv
+            
+            Vector3 randomDirectionUnitCircle = Random.insideUnitSphere;
+            randomDirectionUnitCircle.y = 0;
+            
+            Vector3 randomDirection = StateData.Enemy.transform.forward + randomDirectionUnitCircle;
+            Vector3 newPosition = StateData.Enemy.SpawnLocation + (randomDirection * 3);
+            
+            StateData.Enemy.NavMeshAgent.SetDestination(newPosition);
+        }
+
+        /*
+        TODO: OLD (kept just in case. Bram van der Leest may remove this.):
+        
+        _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
             _displacementLength = Mathf.Abs(_displacementLength);                           //calculate the new displacementLength
             
             _displacementAngle += (Random.value * 2 - 1) * _displacementAltStrength;
@@ -58,26 +110,15 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Physics.Raycast(r,out RaycastHit hitEntity, detectionRange);
             if (hitEntity.transform.CompareTag("Player"))
             {
-                machine.SetState(new WanderBehaviour());    //TODO:connect to aggroBehaviour
+                machine.SetState(new AggroBehaviour());    //TODO:connect to aggroBehaviour
             }
-            
-        }
+        
+        */
 
         /// <summary>
         /// Exit this state.
         /// </summary>
-        public void Exit()
-        {
-            
-        }
-        
-        /// <summary>
-        /// calculate the x and y force of a given angle and velocity
-        /// </summary>
-        public Vector3 setAngle(Vector3 vec, float angleChange) {
-            float len = vec.magnitude;
-            return new Vector3(Mathf.Cos(angleChange),0,Mathf.Sin(angleChange));
-        }
+        public void Exit() { }
 
     }
 }

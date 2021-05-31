@@ -42,14 +42,12 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
             var directionVector = new Vector3(-Mathf.Cos(compensatedRadians), 0, -Mathf.Sin(compensatedRadians));
 
-            Entity.transform.forward = directionVector;
-            
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            Entity.transform.forward = Camera.transform.forward;
+
+            if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
             {
                 AimDirection = CalculateAimDirection(mousePosition, entityPosition) ?? directionVector;
             }
-            
-            AdjustSprite(angle);
         }
 
         private Vector3? CalculateAimDirection(Vector2 mousePosition, Vector3 entityPosition)
@@ -60,13 +58,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
                 return null;
             
             return hit.point - entityPosition;
-        }
-
-        private void AdjustSprite(float angle)
-        {
-            var child = Entity.transform.GetChild(0);
-            child.rotation = new Quaternion();
-            child.Rotate(new Vector3(0, angle + 90 % 360, 0), Space.Self);
         }
     }
 }

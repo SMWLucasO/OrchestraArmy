@@ -1,6 +1,8 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
@@ -11,6 +13,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
     {
         public IWeapon Instrument { get; set; }
         public Player Attacker { get; set; }
+        public Tone Tone { get; set; }
 
         public void OnTriggerEnter(Collider collider)
         {
@@ -28,7 +31,8 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                     {
                         Attacker = Attacker,
                         TargetId = collider.gameObject.GetInstanceID(),
-                        Weapon = Instrument
+                        Weapon = Instrument,
+                        Tone = Tone
                     });
                     break;
             }
