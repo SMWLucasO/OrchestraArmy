@@ -62,14 +62,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 76ebb0d08852be845bd9f45f9fe36fcc, type: 3}
   - Direction: 1
     Sprites:
-    - {fileID: 21300000, guid: 88fd3fc0284950d488502fc446bc4918, type: 3}
-    - {fileID: 21300000, guid: 7db22ff8d43700a4e9393d36d2d5e648, type: 3}
-    - {fileID: 21300000, guid: 0a69bea9b9304004ba6e8c6aa906c7c4, type: 3}
-    - {fileID: 21300000, guid: e774d3327a5abe143b7aa7b0f8e7902e, type: 3}
-    - {fileID: 21300000, guid: 6ec01a8a5705a0445ab6423e8a83af5f, type: 3}
-    - {fileID: 21300000, guid: 68c3048ea29b0ab4d9a4181a267cec56, type: 3}
-    - {fileID: 21300000, guid: d31f1ee8b4ac4e34c9272ccb8fbf633e, type: 3}
-    - {fileID: 21300000, guid: 76ebb0d08852be845bd9f45f9fe36fcc, type: 3}
+    - {fileID: 21300000, guid: 5c0c0804b35c37e43b0da8ee92dedab6, type: 3}
+    - {fileID: 21300000, guid: 7cfe15beabc8dca47bb54beeaf2cecbb, type: 3}
+    - {fileID: 21300000, guid: ffd710e8708c11e49aaa4d6ddec25a7e, type: 3}
+    - {fileID: 21300000, guid: 7cab0cb36e851304e8fcfd0ce5a5f72b, type: 3}
+    - {fileID: 21300000, guid: c102a032076de624c9ab0371ef276081, type: 3}
+    - {fileID: 21300000, guid: 718b44f319abd3349ab91fd2232ab9ab, type: 3}
+    - {fileID: 21300000, guid: 7a4983b8beda4d84a9d22a7c02a73406, type: 3}
+    - {fileID: 21300000, guid: 1f4fb80463d47f84986f145efbe6eb88, type: 3}
   - Direction: 2
     Sprites:
     - {fileID: 21300000, guid: a74b842ced2ade64e95b40e205d0dd70, type: 3}
@@ -96,6 +96,7 @@ MonoBehaviour:
     _health: 100
     _maxHealth: 100
     _stamina: 100
+    _maxStamina: 100
   DamageParticles: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
 --- !u!136 &-6651733425517939180
 CapsuleCollider:
