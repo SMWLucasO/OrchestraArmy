@@ -42,9 +42,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public Vector3 SpawnLocation { get; set; }
 
         /// <summary>
-        /// The mesh renderer of the enemy.
+        /// The sprite renderer of the enemy.
         /// </summary>
-        private MeshRenderer _meshRenderer;
+        private SpriteRenderer _spriteRenderer;
         
         /// <summary>
         /// particles that spawn if enemy is damaged
@@ -84,23 +84,17 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();
 
+            _spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
+            /*
             _meshRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
             Material material = _meshRenderer.material;
+            */
 
             ApplyVisibilityChangesForWeapon(
                     GameObject.FindWithTag("Player").GetComponent<Player>().WeaponWheel
                     .CurrentlySelected.WeaponWheelPlaceholderData.WeaponType
                 );
-            
-            material.SetFloat("_Mode", 2);
-            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_ZWrite", 0);
-            material.DisableKeyword("_ALPHATEST_ON");
-            material.EnableKeyword("_ALPHABLEND_ON");
-            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            material.renderQueue = 3000;
-            
+
             // Register enemy events.
             EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
@@ -181,8 +175,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         {
             if (this is Boss) return;
             
-            var material = _meshRenderer.material;
-            Color color = material.color;
+            Color color = _spriteRenderer.color;
             
             // set the transparency 
             if (selectedWeapon == HittableBy)
@@ -196,7 +189,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 transform.Find("Canvas").GetComponent<Canvas>().enabled = false;
             }
 
-            material.color = color;
+            _spriteRenderer.color = color;
         }
     }
 }
