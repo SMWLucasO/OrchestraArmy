@@ -21,8 +21,6 @@ public class StaminaSliderController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(StaminaSlider);
-        Debug.Log(_player);
         StaminaSlider.value = _player.EntityData.Stamina;
 
     }
