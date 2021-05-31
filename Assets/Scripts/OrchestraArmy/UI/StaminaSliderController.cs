@@ -15,7 +15,7 @@ public class StaminaSliderController : MonoBehaviour
     void OnEnable()
     {
         _player = (Player)Player.GetComponent("Player");
-        StaminaSlider.maxValue = _player.EntityData.Stamina;
+        StaminaSlider.maxValue = _player.EntityData.MaxStamina;
     }
 
     // Update is called once per frame
