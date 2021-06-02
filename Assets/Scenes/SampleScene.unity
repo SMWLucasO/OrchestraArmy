@@ -1491,16 +1491,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsBass.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsLoop.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsBass.Array.data[0]
       value: 
-      objectReference: {fileID: 1438746542}
+      objectReference: {fileID: 0}
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsBass.Array.data[1]
       value: 
@@ -1508,7 +1508,7 @@ PrefabInstance:
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsLoop.Array.data[0]
       value: 
-      objectReference: {fileID: 1614893281}
+      objectReference: {fileID: 0}
     - target: {fileID: 6348633389917050239, guid: 0e3a57bd86f346b44b6e402580d2f794, type: 3}
       propertyPath: InstrumentsFixedOnBeat.Array.size
       value: 1
