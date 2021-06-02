@@ -38,13 +38,13 @@ namespace OrchestraArmy.Entity.Data
         public int MaxHealth
         {
             get => _maxHealth;
-            private set => _health = value;
+            private set => _maxHealth = value;
         }
 
         public int MaxStamina
         {
             get => _maxStamina;
-            private set => _stamina = value;
+            private set => _maxStamina = value;
         }
     }
 }

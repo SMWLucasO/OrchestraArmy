@@ -6,7 +6,7 @@ using OrchestraArmy.Entity.Entities.Players;
 
 public class StaminaSliderController : MonoBehaviour
 {
-    public Slider StaminaSlider;
+    private Slider _staminaSlider;
     public GameObject Player;
     private Player _player;
     /// <summary>
@@ -14,14 +14,15 @@ public class StaminaSliderController : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
+        _staminaSlider = (Slider)this.GetComponent("Slider");
         _player = (Player)Player.GetComponent("Player");
-        StaminaSlider.maxValue = _player.EntityData.Stamina;
+        _staminaSlider.maxValue = _player.EntityData.Stamina;
     }
 
     // Update is called once per frame
     void Update()
     {
-        StaminaSlider.value = _player.EntityData.Stamina;
+        _staminaSlider.value = _player.EntityData.Stamina;
 
     }
 }

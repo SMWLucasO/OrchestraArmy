@@ -7,7 +7,8 @@ using OrchestraArmy.Entity.Entities.Players;
 
 public class HealthSliderController : MonoBehaviour
 {
-    public Slider HealthSlider;
+    private Slider _healthSlider;
+
     public GameObject Player;
     private Player _player;
     /// <summary>
@@ -15,13 +16,14 @@ public class HealthSliderController : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
+        _healthSlider = (Slider)this.GetComponent("Slider");
         _player = (Player)Player.GetComponent("Player");
-        HealthSlider.maxValue = _player.EntityData.MaxHealth;
+        _healthSlider.maxValue = _player.EntityData.MaxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        HealthSlider.value = _player.EntityData.Health;
+        _healthSlider.value = _player.EntityData.Health;
     }
 }

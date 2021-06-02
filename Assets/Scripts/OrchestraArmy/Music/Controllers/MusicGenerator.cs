@@ -43,6 +43,7 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
+            
         }
 
         // Update is called once per frame

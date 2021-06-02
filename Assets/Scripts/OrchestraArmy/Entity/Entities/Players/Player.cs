@@ -189,8 +189,8 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
             //Update stamina
-            EntityData.Stamina += MusicGenerator.RhythmController.GetRhythmScore(MusicGenerator.BPM);
-            
+            EntityData.Stamina += (int)(EntityData.MaxStamina * MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM));
+            Debug.Log(EntityData.Stamina);            
             // Update health if needed
             if(EntityData.Stamina < 0)
             {
