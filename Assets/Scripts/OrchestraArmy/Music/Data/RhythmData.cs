@@ -12,6 +12,19 @@ namespace OrchestraArmy.Music.Data
         /// </summary>
         private static Stopwatch _rhythmStopwatch;
 
+        /// <summary>
+        /// The current beat. (1,2,3,4)
+        /// </summary>
+        public static int CurrentBeat = 0;
+
+        /// <summary>
+        /// BPM
+        /// </summary>
+        public static int BPM
+        {
+            get => _BPM;
+            set => _BPM = value;
+        }
 
         /// <summary>
         /// Returns the damage to the stamina

@@ -1,6 +1,6 @@
-﻿using OrchestraArmy.Entity.Entities.Enemies.Data;
+﻿using OrchestraArmy.Entity.Entities.Behaviour.Data;
 
-namespace OrchestraArmy.Entity.Entities.Enemies
+namespace OrchestraArmy.Entity.Entities.Behaviour
 {
     public interface IBehaviourState
     {

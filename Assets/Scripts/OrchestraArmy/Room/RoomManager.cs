@@ -3,12 +3,10 @@ using System.Collections;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.DoorAccess;
-using OrchestraArmy.Event.Events.GenerateRoom;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Room.Data;
 using OrchestraArmy.Room.Factories;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
@@ -27,6 +25,7 @@ namespace OrchestraArmy.Room
         /// The count of currently collected instruments, starting at 0.
         /// The count ends at 3.
         /// </summary>
+        [field: SerializeField]
         public int CollectedInstrumentCount { get; set; } = 0;
 
         /// <summary>
@@ -51,6 +50,11 @@ namespace OrchestraArmy.Room
         /// </summary>
         public int RoomsCleared { get; set; } = 0;
 
+        /// <summary>
+        /// A boolean forcing the next room to be a boss room.
+        /// </summary>
+        public bool ForceNextRoomIsBoss = false;
+        
         private Player _player;
         
         /// <summary>
@@ -72,7 +76,7 @@ namespace OrchestraArmy.Room
         [field: SerializeField]
         public RoomPrefabData RoomPrefabData { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
             _player = GameObject.Find("Player").GetComponent<Player>();
@@ -198,6 +202,11 @@ namespace OrchestraArmy.Room
 
             // generate the room.
             GenerateRoom(CurrentRoomIndex, roomType);
+            
+            if (_player != null)
+            {
+                _player.transform.position = CurrentRoom.GetPlayerSpawnPosition(direction);
+            }
         }
         
         // room object generation //
@@ -235,18 +244,22 @@ namespace OrchestraArmy.Room
 
                         case GridSpace.DoorU:
                             Spawn(x, y, RoomPrefabData.DoorUpObj);
+                            CurrentRoom.DoorPositions[0] = new Vector2(x, y) - CurrentRoom.OffsetOfRoom;
                             break;
 
                         case GridSpace.DoorD:
                             Spawn(x, y, RoomPrefabData.DoorDownObj);
+                            CurrentRoom.DoorPositions[1] = new Vector2(x, y) - CurrentRoom.OffsetOfRoom;
                             break;
 
                         case GridSpace.DoorL:
                             Spawn(x, y, RoomPrefabData.DoorLeftObj);
+                            CurrentRoom.DoorPositions[2] = new Vector2(x, y) - CurrentRoom.OffsetOfRoom;
                             break;
 
                         case GridSpace.DoorR:
                             Spawn(x, y, RoomPrefabData.DoorRightObj);
+                            CurrentRoom.DoorPositions[3] = new Vector2(x, y) - CurrentRoom.OffsetOfRoom;
                             break;
                     }
                 }
@@ -287,13 +300,7 @@ namespace OrchestraArmy.Room
                     Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[Random.Range(0, newestEnemy)].gameObject);
                 }
             }
-
-            if (_player != null)
-            {
-                _player.transform.position = new Vector3(75 - CurrentRoom.OffsetOfRoom.x, _player.transform.position.y,
-                    75 - CurrentRoom.OffsetOfRoom.y);
-            }
-                
+            
         }
 
         /// <summary>
@@ -347,7 +354,7 @@ namespace OrchestraArmy.Room
         private RoomType DecideNextRoom()
         {
             // calculation for chance boss room (after 5 rooms +20% per room)
-            if ((Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5))))
+            if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)) || ForceNextRoomIsBoss)
                 return RoomType.BossRoom;
             else
                 return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;

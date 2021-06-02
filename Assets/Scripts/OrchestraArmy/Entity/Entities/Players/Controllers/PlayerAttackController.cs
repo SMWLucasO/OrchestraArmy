@@ -1,11 +1,8 @@
-﻿using System;
-using OrchestraArmy.Entity.Controllers;
-using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons;
+﻿using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
 
 namespace OrchestraArmy.Entity.Entities.Players.Controllers

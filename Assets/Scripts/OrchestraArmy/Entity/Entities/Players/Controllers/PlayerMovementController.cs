@@ -23,12 +23,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             if (KeybindingManager.Instance.Keybindings["Move backward"].isPressed)
                 movementVector -= currentlyFacing;
 
-            if (KeybindingManager.Instance.Keybindings["Move left"].isPressed) 
-                movementVector += MoveLeftForce(currentlyFacing);
-
-            if (KeybindingManager.Instance.Keybindings["Move right"].isPressed) 
-                movementVector += MoveRightForce(currentlyFacing);
-
             // Only add to the position when a change is actually detected.
             Entity.RigidBody.velocity = (movementVector.normalized * (Entity.MovementData.WalkSpeed * Time.deltaTime));
         }

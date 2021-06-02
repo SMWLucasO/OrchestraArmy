@@ -1,16 +1,6 @@
 using System;
 using System.Collections.Generic;
-using OrchestraArmy.Entity.Entities.Enemies;
-using OrchestraArmy.Event;
-using OrchestraArmy.Event.Events.DoorAccess;
-using OrchestraArmy.Event.Events.Enemy;
-using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using UnityEngine.Experimental.Rendering;
-using Random = UnityEngine.Random;
-using UnityEditor.AI;
-using UnityEngine.AI;
 
 namespace OrchestraArmy.Room
 {

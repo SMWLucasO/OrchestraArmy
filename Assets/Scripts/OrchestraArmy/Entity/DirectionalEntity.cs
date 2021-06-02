@@ -34,11 +34,12 @@ namespace OrchestraArmy.Entity
         
         public SpriteManager SpriteManager { get; set; }
         
-        protected void InitializeSprites()
+        protected void InitializeSprites(float timeBetweenFrames = 1.5f)
         {
             Renderer = GetComponentInChildren<SpriteRenderer>();
             SpriteManager = new SpriteManager()
             {
+                TimeBetweenFrames = timeBetweenFrames,
                 Entity = this
             };
             SpriteManager.StartAnimation();

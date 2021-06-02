@@ -54,7 +54,7 @@ namespace OrchestraArmy.Room.Data
         /// <summary>
         /// The percentage of the map that should be filled with content.
         /// </summary>
-        public float PercentToFill { get; set; } = 0.05f;
+        public float PercentToFill { get; set; } = 0.15f;
 
 
     }
