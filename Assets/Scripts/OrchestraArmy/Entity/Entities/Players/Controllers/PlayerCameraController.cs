@@ -1,6 +1,8 @@
 using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Keybindings;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace OrchestraArmy.Entity.Entities.Players.Controllers
 {
@@ -12,7 +14,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         /// The increment in degrees which the camera will get.
         /// Increment is in seconds.
         /// </summary>
-        public const float CameraRotationIncrement = 75f;
+        public const float CameraRotationIncrement = 0.25f;
 
         /// <summary>
         /// The offset at which the camera rotates around the player.
@@ -33,6 +35,8 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         /// The rotation along the y-axis (left/right)
         /// </summary>
         public float Yaw { get; set; }
+
+        private Vector2 _dragOrigin;
         
         public void HandleCameraMovement()
         {
@@ -48,12 +52,34 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             Vector3 playerForward = playerTransform.forward.normalized;
             playerForward.y = 0;
 
-            // calculate the x-rotation
-            if (KeybindingManager.Instance.Keybindings["Move left"].isPressed)
-                Yaw -= CameraRotationIncrement * Time.deltaTime;
+            if (Mouse.current.rightButton.wasPressedThisFrame)
+            {
+                _dragOrigin = Mouse.current.position.ReadValue();
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+            var mouseDelta = Mouse.current.delta.x.ReadValue();
             
-            if (KeybindingManager.Instance.Keybindings["Move right"].isPressed)
-                Yaw += CameraRotationIncrement * Time.deltaTime;
+            if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0))
+            {
+                Yaw += mouseDelta * CameraRotationIncrement;
+            }
+
+            if (Mouse.current.rightButton.wasReleasedThisFrame)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                
+                //lets wrap the cursor to above the player, resetting the aim to forward in the progress. Done because the sudden swap from facing forward to the aimdirection can feel disorientating
+                var position = _dragOrigin != Mouse.current.position.ReadValue()
+                    ? new Vector2(Screen.width / 2f, Screen.height / 1.2f)
+                    : _dragOrigin;
+                
+                Mouse.current.WarpCursorPosition(position);
+                
+                //work around, WarpCursorPosition only updates in the next input update cycle. This can be to slow, so we'll just set the state manually
+                InputState.Change(Mouse.current.position, position);
+            }
+            
             // Get the offset for rotations around the player
             Vector3 offset = CameraOffset;
 
@@ -63,7 +89,8 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             // place the camera around the player, whilst also pointing it towards the player.
             cameraTransform.position = cameraPosition - (Quaternion.Euler(0, Yaw, 0) * offset);
             
-            cameraTransform.LookAt(playerTransform); 
+            cameraTransform.LookAt(playerTransform);
+            Player.transform.forward = Camera.transform.forward;
         }
     }
 }
