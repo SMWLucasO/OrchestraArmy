@@ -9,7 +9,6 @@ using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Pickup;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Music.Controllers;
-using OrchestraArmy.Music.Data;
 using OrchestraArmy.Room;
 using UnityEngine;
 
@@ -88,9 +87,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         protected override void OnEnable()
         {
             InitializeSprites();
-
-            RhythmController = new RhythmController();
-            
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
@@ -119,7 +115,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                 Player = this
             };
 
-            StartCoroutine(RhythmController.BeatCheck());
+            StartCoroutine(MusicGenerator.BeatCheck());
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
@@ -209,8 +205,8 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
             //Update stamina
-            EntityData.Stamina += (int)(EntityData.MaxStamina * MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM));
-            Debug.Log(EntityData.Stamina);            
+            RhythmController rhythm = MusicGenerator.RhythmController;
+            EntityData.Stamina += (int)(EntityData.MaxStamina * rhythm.GetStaminaDamage(MusicGenerator.BPM));
             // Update health if needed
             if(EntityData.Stamina < 0)
             {

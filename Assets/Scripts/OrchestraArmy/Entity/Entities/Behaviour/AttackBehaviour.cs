@@ -82,7 +82,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 enemyTransform = StateData.Enemy.transform;
                 playerTransform = StateData.Player.transform;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return;
             }

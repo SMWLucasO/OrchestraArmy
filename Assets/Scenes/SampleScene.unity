@@ -155,7 +155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672396223980183144, guid: 01008663f35e22f4e88c782685da1f9f, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6672396223980183144, guid: 01008663f35e22f4e88c782685da1f9f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -409,7 +409,7 @@ Transform:
   - {fileID: 535568470}
   - {fileID: 1904488704}
   - {fileID: 1614893280}
-  - {fileID: 1438746541}
+  - {fileID: 1046799604}
   m_Father: {fileID: 2667710910940744273}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -663,9 +663,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1438746541}
+  - component: {fileID: 1046799604}
   - component: {fileID: 1438746542}
   - component: {fileID: 1438746543}
+  - component: {fileID: 1046799602}
   m_Layer: 0
   m_Name: Audio Source Bass
   m_TagString: Untagged
@@ -718,14 +719,14 @@ MonoBehaviour:
     G: {fileID: 8300000, guid: 89a2f4020e8d5b94f98bd5311797414b, type: 3}
     A: {fileID: 8300000, guid: 7f587a04d3a32414681825a66e820f67, type: 3}
     B: {fileID: 8300000, guid: 6593118cdada5f74a97de889a1218472, type: 3}
---- !u!4 &1046799603
+--- !u!4 &1046799604
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438746540}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1046799601}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -738,7 +739,7 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438746540}
+  m_GameObject: {fileID: 1046799601}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -834,7 +835,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438746540}
+  m_GameObject: {fileID: 1046799601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cda1d012c3e2de459da08b1d2846681, type: 3}
@@ -2045,6 +2046,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: MusicGenerator
+      value: 
+      objectReference: {fileID: 2667710910940744272}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: DamageParticles
       value: 
       objectReference: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
@@ -2106,11 +2111,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
---- !u!1 &7519919699390143344 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
-  m_PrefabInstance: {fileID: 7519919699390143343}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7592114830609792747
 PrefabInstance:
   m_ObjectHideFlags: 0

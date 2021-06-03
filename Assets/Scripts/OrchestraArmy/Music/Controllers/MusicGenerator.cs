@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Music.Instruments;
+using OrchestraArmy.Event;
+using OrchestraArmy.Event.Events.Rhythm;
+using System.Threading;
+
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -25,6 +29,12 @@ namespace OrchestraArmy.Music.Controllers
 
         public List<AudioSource> InstrumentsFixedOffBeat;
 
+        /// <summary>
+        /// The current beat. (1,2,3,4)
+        /// </summary>
+        public static int CurrentBeat = 0;
+
+
 
         [SerializeField]
         [Range(0,100)]
@@ -43,7 +53,6 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
-            
         }
 
         // Update is called once per frame
@@ -110,6 +119,32 @@ namespace OrchestraArmy.Music.Controllers
         private float GetPitch(Tone tone, Tone offset = Tone.C)
         {
             return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
+        }
+
+        public IEnumerator BeatCheck()
+        {
+            // To prevent nullreference exception
+            if(RhythmController == null)
+            {
+                OnEnable();
+            }
+
+            while (true)
+            {
+                int score = RhythmController.GetRhythmScore(BPM);
+                            
+                if (score >= 99 && CurrentBeat % 2 == 1 || score <= 1 && CurrentBeat % 2 == 0)
+                {
+                    CurrentBeat = CurrentBeat % 4 + 1;
+                    
+                    if (CurrentBeat % 2 == 1)
+                        EventManager.Invoke(new OffBeatEvent());
+                    else
+                        EventManager.Invoke(new EvenBeatEvent());
+                }
+
+                yield return new WaitForSeconds(0.01f);
+            }
         }
     }
 }
