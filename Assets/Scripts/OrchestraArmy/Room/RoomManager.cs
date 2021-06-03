@@ -31,7 +31,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The generator of our rooms.
         /// </summary>
-        public IRoomFactory RoomFactory  { get; set; }
+        public IRoomFactory RoomFactory { get; set; }
             = new DefaultRoomFactory();
         
         /// <summary>
