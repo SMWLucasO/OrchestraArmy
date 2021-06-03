@@ -31,7 +31,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The generator of our rooms.
         /// </summary>
-        public IRoomFactory RoomFactory { get; set; }
+        public IRoomFactory RoomFactory  { get; set; }
             = new DefaultRoomFactory();
         
         /// <summary>
@@ -132,7 +132,9 @@ namespace OrchestraArmy.Room
             if (CurrentRoom != null)
             {
                 CurrentRoom.RoomController.Room = CurrentRoom;
-                CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
+                if (!CurrentRoom.RoomIsCleared)
+                    CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
+                
                 CurrentRoom.Generate();
                 
                 CurrentRoom.RoomController.RegisterEvents();
