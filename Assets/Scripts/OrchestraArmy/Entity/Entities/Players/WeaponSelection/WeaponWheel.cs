@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 {
-    public class WeaponWheel : MonoBehaviour, IListener<LockLatestInstrumentEvent>
+    public class WeaponWheel : MonoBehaviour, IListener<PlayerDeathEvent>
     {
 
         /// <summary>
@@ -145,17 +145,22 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
             // set initial UI images.
             UpdateWeaponWheelImages();    
             
-            // Register weapon changed event.
-            EventManager.Bind<LockLatestInstrumentEvent>(this);
+            // Register player death event
+            EventManager.Bind<PlayerDeathEvent>(this);
         }
 
         private void OnDisable()
         {
-            EventManager.Unbind<LockLatestInstrumentEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
         }
 
-        public void OnEvent(LockLatestInstrumentEvent invokedEvent)
+        public void OnEvent(PlayerDeathEvent invokedEvent)
         {
+            // If our latest unlock is a guitar, it means we are on level 1.
+            // Therefore, don't lock anything.
+            if (LatestUnlock.WeaponWheelPlaceholderData.WeaponType == WeaponType.Guitar)
+                return;
+            
             LockLatestInstrument();
             
             // If the player is currently holding the latest instrument, move it back by one.

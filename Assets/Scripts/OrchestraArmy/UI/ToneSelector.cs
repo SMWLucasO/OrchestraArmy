@@ -26,7 +26,7 @@ namespace OrchestraArmy.UI
     /// <summary>
     /// Used to display the current tone on the UI
     /// </summary>
-    public class ToneSelector: MonoBehaviour, IListener<ToneChangedEvent>
+    public class ToneSelector : MonoBehaviour, IListener<ToneChangedEvent>
     {
         /// <summary>
         /// The Note object in the UI that will be moved up/down
