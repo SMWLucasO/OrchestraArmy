@@ -15,38 +15,41 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         public void HandleDirection()
         {
             var entityPosition = Entity.transform.position;
-            var entityScreenPosition = Camera.WorldToScreenPoint(entityPosition);
+            var centerPosition = new Vector2(Screen.width / 2f, Screen.height / 2f);
             var mousePosition = Mouse.current.position.ReadValue();
             var cameraRotation = Camera.transform.rotation.eulerAngles;
 
-            if (Mathf.Abs(Vector3.Distance(mousePosition, entityScreenPosition)) < 40)
-            {
-                return;
-            }
-
-            var angleRadians = Mathf.Atan2(entityScreenPosition.y - mousePosition.y,
-                entityScreenPosition.x - mousePosition.x);
+            var angleRadians = Mathf.Atan2(centerPosition.y - mousePosition.y,
+                centerPosition.x - mousePosition.x);
             var angle = angleRadians * (180 / Mathf.PI);
 
             var compensatedAngle = angle - cameraRotation.y;
             var compensatedRadians = compensatedAngle * (Mathf.PI / 180);
 
-            if (angle <= -45 && angle >= -135)
+            if (Cursor.lockState != CursorLockMode.Locked)
+            {
+                if (angle <= -45 && angle >= -135)
+                    CurrentDirection = EntityDirection.Top;
+                else if (angle <= -135 || angle >= 135)
+                    CurrentDirection = EntityDirection.Right;
+                else if (angle >= 45 && angle <= 135)
+                    CurrentDirection = EntityDirection.Down;
+                else if (angle >= -45 && angle <= 135)
+                    CurrentDirection = EntityDirection.Left;
+            }
+            else
+            {
                 CurrentDirection = EntityDirection.Top;
-            else if (angle <= -135 || angle >= 135)
-                CurrentDirection = EntityDirection.Right;
-            else if (angle >= 45 && angle <= 135)
-                CurrentDirection = EntityDirection.Down;
-            else if (angle >= -45 && angle <= 135)
-                CurrentDirection = EntityDirection.Left;
+            }
 
             var directionVector = new Vector3(-Mathf.Cos(compensatedRadians), 0, -Mathf.Sin(compensatedRadians));
 
-            Entity.transform.forward = Camera.transform.forward;
-
             if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
             {
-                AimDirection = CalculateAimDirection(mousePosition, entityPosition) ?? directionVector;
+                if (Cursor.lockState != CursorLockMode.Locked)
+                    AimDirection = CalculateAimDirection(mousePosition, entityPosition) ?? directionVector;
+                else
+                    AimDirection = Entity.transform.forward;
             }
         }
 
