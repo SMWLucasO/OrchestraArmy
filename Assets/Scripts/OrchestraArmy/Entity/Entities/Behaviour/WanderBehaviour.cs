@@ -83,38 +83,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             StateData.Enemy.NavMeshAgent.SetDestination(newPosition);
         }
 
-        /*
-        TODO: OLD (kept just in case. Bram van der Leest may remove this.):
-        
-        _displacementLength += (Random.value * 2 - 1) * _displacementAltStrength;
-            _displacementLength = Mathf.Abs(_displacementLength);                           //calculate the new displacementLength
-            
-            _displacementAngle += (Random.value * 2 - 1) * _displacementAltStrength;
-            _displacementAngle = Mathf.Abs(_displacementAngle) >= (2 * Mathf.PI)            //calculate the new displacementAngle
-                ? Mathf.Abs(_displacementAngle) - (2 * Mathf.PI)
-                : Mathf.Abs(_displacementAngle);
-            
-            Vector3 currentVector = StateData.Enemy.RigidBody.velocity;                     //the current heading
-            currentVector = currentVector.normalized * 75;                                  //the current heading at 75 speed (50<=velocity<=100)
-            currentVector = currentVector + (new Vector3(Mathf.Sin(_displacementAngle),
-                                                         0,
-                                                         Mathf.Cos(_displacementAngle)) * _displacementLength);   //calculate the new heading
-            
-            StateData.Enemy.RigidBody.velocity = currentVector;                             //overwrite the old velocity
-            
-            //try to see the player
-            Vector3 direction = (StateData.Player.RigidBody.position-StateData.Enemy.RigidBody.position).normalized;    //angle to the player
-            Ray r = new Ray(StateData.Enemy.RigidBody.position, direction);
-            float detectionRange = 20f;                                                     //20 units detection range
-            
-            Physics.Raycast(r,out RaycastHit hitEntity, detectionRange);
-            if (hitEntity.transform.CompareTag("Player"))
-            {
-                machine.SetState(new AggroBehaviour());    //TODO:connect to aggroBehaviour
-            }
-        
-        */
-
         /// <summary>
         /// Exit this state.
         /// </summary>
