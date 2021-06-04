@@ -24,7 +24,7 @@ namespace OrchestraArmy.Entity.Entities.Players
     
 
     public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
-        IListener<InstrumentPickupEvent>, IListener<PlayerFiredAttackEvent>, IListener<EnemyAttackHitEvent>
+        IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -130,7 +130,6 @@ namespace OrchestraArmy.Entity.Entities.Players
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
             
             // register player events.
-            EventManager.Bind<PlayerFiredAttackEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<EnemyAttackHitEvent>(this);
@@ -171,10 +170,6 @@ namespace OrchestraArmy.Entity.Entities.Players
             Sprites = InstrumentSprites.First(s => s.Instrument == invokedEvent.NewlySelectedWeapon).SpriteEntries;
         }
 
-        public void OnEvent(PlayerFiredAttackEvent invokedEvent)
-        {
-        }
-        
         /// <summary>
         /// Event for when the player takes damage from enemy hit.
         /// </summary>
