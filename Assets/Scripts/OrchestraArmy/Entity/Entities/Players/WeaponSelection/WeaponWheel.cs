@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
 {
-    public class WeaponWheel : MonoBehaviour, IListener<PlayerWeaponChangedEvent>, IListener<PlayerDeathEvent>
+    public class WeaponWheel : MonoBehaviour, IListener<PlayerDeathEvent>
     {
 
         /// <summary>
@@ -110,11 +110,14 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         /// <param name="previousWeapon"></param>
         /// <param name="newlySelectedWeapon"></param>
         private void ExecuteWeaponSwitchedEvent(WeaponType previousWeapon, WeaponType newlySelectedWeapon)
-            => EventManager.Invoke(new PlayerWeaponChangedEvent()
-            {
+        {
+            EventManager.Invoke(new PlayerWeaponChangedEvent() {
                 PreviousWeapon = previousWeapon,
                 NewlySelectedWeapon = newlySelectedWeapon
             });
+            // Update the weapon wheel
+            UpdateWeaponWheelImages();
+        }
 
         /// <summary>
         /// Update the images on the weapon wheel UI.
@@ -142,23 +145,14 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
             // set initial UI images.
             UpdateWeaponWheelImages();    
             
-            // Register weapon changed event.
-            EventManager.Bind<PlayerWeaponChangedEvent>(this);
+            // Register player death event
             EventManager.Bind<PlayerDeathEvent>(this);
         }
 
         private void OnDisable()
         {
-            EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
         }
-
-        /// <summary>
-        /// Update the weapon wheel when the player switches instruments.
-        /// </summary>
-        /// <param name="invokedEvent"></param>
-        public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
-            => UpdateWeaponWheelImages();
 
         public void OnEvent(PlayerDeathEvent invokedEvent)
         {
