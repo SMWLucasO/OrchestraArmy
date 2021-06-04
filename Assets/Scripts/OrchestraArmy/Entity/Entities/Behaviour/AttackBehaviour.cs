@@ -48,7 +48,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             // If the player can't be seen: go to the MoveToPlayer behaviour.
             if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 8 + scale.x))
             {
-                Debug.Log("OUT OF SIGHT or TO FAR : " +distance);
+                Debug.Log("OUT OF SIGHT or TO FAR (> 8 units) : " +distance);
                 machine.SetState(new MoveToPlayerBehaviour());
                 return;
             }
@@ -69,7 +69,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 navAgent.ResetPath();
             }   //prevent destination outside attack range
             
-            if (distance < 2)   //avoid to close combat SHOULD NEVER HAPPEN
+            if (distance < 2)   //avoid to close combat SHOULD NEVER HAPPEN if player is slower than enemy
             {
                 Debug.Log("ERROR TO CLOSE");
                 //set destination in opposite direction of player to optimal attack range (4 units) 
@@ -77,22 +77,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
             }
 
-            if (distance > 8)  //avoid to far from combat range SHOULD NEVER HAPPEN
-            {
-                Debug.Log("ERROR TO FAR");
-                //set destination in direction of player to optimal attack range (4 units) 
-                navAgent.SetDestination((playerRelativePosition.normalized * (distance - 5)) + enemyTransform.position);
-                return;
-            }
-
-            if ((navAgent.destination - enemyTransform.position).magnitude <0.1f)
+            if ((navAgent.destination - enemyTransform.position).magnitude <0.1f) //prevent jittering movement
             {
                 //do random movement but keep player inside attack area
                 Vector3 movement = Random.insideUnitSphere * 1.249f; // <2.5 units diameter circle
                 movement.y = 0;
     
                 movement += (playerRelativePosition - playerRelativePosition.normalized * 5.0f); //shift so player always in attack area
-                navAgent.SetDestination(movement + enemyTransform.position);  //move to point  (movement is position relative to enemy)
+                navAgent.SetDestination(movement + enemyTransform.position);  //move to point movement  (movement is position relative to enemy)
             }
             
             
