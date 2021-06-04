@@ -11,10 +11,10 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         public MovingEntity Entity { get; set; }
         public void HandleMovement()
         {
-            
             var forward = Entity.transform.forward;
 
             Vector3 currentlyFacing = GetHeightlessFacingDirection(forward);
+            Vector3 right = GetHeightlessFacingDirection(Entity.transform.right);
             Vector3 movementVector = Vector3.zero;
             
             if (KeybindingManager.Instance.Keybindings["Move forward"].isPressed)
@@ -22,6 +22,12 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
 
             if (KeybindingManager.Instance.Keybindings["Move backward"].isPressed)
                 movementVector -= currentlyFacing;
+
+            if (KeybindingManager.Instance.Keybindings["Move right"].isPressed)
+                movementVector += right;
+
+            if (KeybindingManager.Instance.Keybindings["Move left"].isPressed)
+                movementVector -= right;
 
             // Only add to the position when a change is actually detected.
             Entity.RigidBody.velocity = (movementVector.normalized * (Entity.MovementData.WalkSpeed * Time.deltaTime));
