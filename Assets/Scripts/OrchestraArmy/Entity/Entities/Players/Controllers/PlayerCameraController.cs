@@ -36,7 +36,9 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         /// </summary>
         public float Yaw { get; set; }
 
-        private Vector2 _dragOrigin;
+        private bool _moved = false;
+
+        private bool _dragging = false;
         
         public void HandleCameraMovement()
         {
@@ -51,33 +53,39 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             // we do not need the y-axis, so we set it to 0 for the forward.
             Vector3 playerForward = playerTransform.forward.normalized;
             playerForward.y = 0;
+            
+            var setThisFrame = false;
 
-            if (Mouse.current.rightButton.wasPressedThisFrame)
+            if (Mouse.current.rightButton.wasPressedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
             {
-                _dragOrigin = Mouse.current.position.ReadValue();
                 Cursor.lockState = CursorLockMode.Locked;
+                _dragging = true;
+                _moved = false;
+                setThisFrame = true;
             }
 
             var mouseDelta = Mouse.current.delta.x.ReadValue();
             
-            if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0))
+            if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0) || !Mouse.current.rightButton.isPressed && _dragging)
             {
+                _moved = true;
                 Yaw += mouseDelta * CameraRotationIncrement;
             }
 
-            if (Mouse.current.rightButton.wasReleasedThisFrame)
+            if (Mouse.current.rightButton.wasReleasedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging && !setThisFrame))
             {
+                _dragging = false;
                 Cursor.lockState = CursorLockMode.None;
                 
                 //lets wrap the cursor to above the player, resetting the aim to forward in the progress. Done because the sudden swap from facing forward to the aimdirection can feel disorientating
-                var position = _dragOrigin != Mouse.current.position.ReadValue()
-                    ? new Vector2(Screen.width / 2f, Screen.height / 1.2f)
-                    : _dragOrigin;
+                var position = new Vector2(Screen.width / 2f,
+                    Application.isEditor ? Screen.height * 0.8f : Screen.height * 0.2f); //for some reason the editor uses (0,0) for bottom left, but a build uses (0,0) for top left
                 
                 Mouse.current.WarpCursorPosition(position);
                 
-                //work around, WarpCursorPosition only updates in the next input update cycle. This can be to slow, so we'll just set the state manually
-                InputState.Change(Mouse.current.position, position);
+                //for an even stranger reason, the (0,0) left top is used for the mouse position but the internal unity engine expects (0,0) to still be the bottom left.
+                //So just set it manually to the 'normal coordinate system'.
+                InputState.Change(Mouse.current.position,  new Vector2(Screen.width / 2f, Screen.height * 0.8f));
             }
             
             // Get the offset for rotations around the player
