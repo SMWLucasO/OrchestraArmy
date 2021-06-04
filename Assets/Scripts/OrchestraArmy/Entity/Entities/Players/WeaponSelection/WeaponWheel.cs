@@ -158,7 +158,8 @@ namespace OrchestraArmy.Entity.Entities.Players.WeaponSelection
         {
             // If our latest unlock is a guitar, it means we are on level 1.
             // Therefore, don't lock anything.
-            if (LatestUnlock.WeaponWheelPlaceholderData.WeaponType == WeaponType.Guitar)
+            if (LatestUnlock == null || 
+                LatestUnlock.WeaponWheelPlaceholderData.WeaponType == WeaponType.Guitar)
                 return;
             
             LockLatestInstrument();

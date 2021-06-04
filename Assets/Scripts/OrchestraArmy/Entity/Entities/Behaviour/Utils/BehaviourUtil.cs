@@ -18,7 +18,9 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Utils
         {
             // try to see the player
             // angle to the player
-            Vector3 enemyPosition = enemy.transform.position;
+            Transform ET = enemy.transform;
+            Vector3 scale = ET.localScale;
+            Vector3 enemyPosition = ET.position + ((player.transform.position - ET.position).normalized * (scale.x * 1.1f));
             
             Vector3 directionTowardsPlayer = (player.transform.position - enemyPosition).normalized;
             
@@ -28,7 +30,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Utils
 
             if (hitEntity.transform == null)
                 return false;
-            
+
             return hitEntity.transform.CompareTag("Player");
         }
 

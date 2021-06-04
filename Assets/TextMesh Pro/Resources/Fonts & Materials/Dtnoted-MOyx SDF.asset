@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Dtnoted-MOyx SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -995430949
   material: {fileID: 889155865617122286}
-  materialHashCode: 0
+  materialHashCode: 318289947
   m_Version: 1.1.0
   m_SourceFontFileGUID: 440d3471228abd647a5615d607854e6f
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 440d3471228abd647a5615d607854e6f, type: 3}
@@ -1427,9 +1427,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
