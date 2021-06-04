@@ -42,6 +42,8 @@ namespace OrchestraArmy.UI
         /// Note texture
         /// </summary>
         public Texture NoteTexture;
+
+        private float _currentHeight = 0;
         
         /// <summary>
         /// Note location and type for tone. (y coord, NoteType) 
@@ -74,9 +76,12 @@ namespace OrchestraArmy.UI
             else
                 Note.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-            Note.transform.localPosition = new Vector3(0, noteInfo.Item1, 0);
+            var position = Note.transform.localPosition;
+            Note.transform.localPosition = new Vector3(position.x, position.y - _currentHeight + noteInfo.Item1, position.z);
             var texture = noteInfo.Item2 == NoteType.Base ? BaseNoteTexture : NoteTexture;
             Note.GetComponent<RawImage>().texture = texture;
+
+            _currentHeight = noteInfo.Item1;
         }
     }
 }

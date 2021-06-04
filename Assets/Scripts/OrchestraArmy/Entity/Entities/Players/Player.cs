@@ -62,6 +62,11 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// particles that spawn if player is damaged
         /// </summary>
         public GameObject DamageParticles;
+        
+        /// <summary>
+        /// The controller for the entity's movement.
+        /// </summary>
+        public IMovementController MovementController { get; set; }
             
         protected override void Update()
         {
