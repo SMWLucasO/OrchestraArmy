@@ -24,7 +24,6 @@ namespace Tests.PlayTests
             var originalPosition = _game.Player.transform.position;
 
             //get it's position
-            _game.SetMousePositionRelativeToPlayer(0, 100);
             _game.Press(Keyboard.current.wKey);
 
             yield return new WaitForSeconds(1f);
@@ -40,12 +39,10 @@ namespace Tests.PlayTests
         [UnityTest]
         public IEnumerator TestSKeyMovesPlayerInMouseDirection()
         {
-            
             var originalPosition = _game.Player.transform.position;
 
             //get it's position
-            _game.SetMousePositionRelativeToPlayer(0, -100);
-            _game.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.sKey);
 
             yield return new WaitForSeconds(1f);
 
@@ -58,41 +55,39 @@ namespace Tests.PlayTests
         }
 
         [UnityTest]
-        public IEnumerator TestAKeyMovesPlayerInMouseDirection()
+        public IEnumerator TestAKeyTurnsCameraLeft()
         {
-            var originalPosition = _game.Player.transform.position;
+            var original = _game.Camera.transform.forward;
 
             //get it's position
-            _game.SetMousePositionRelativeToPlayer(-100, 0);
-            _game.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.aKey);
 
             yield return new WaitForSeconds(1f);
 
             //assert that the position no longer equals the original one
-            var newPosition = _game.Player.transform.position;
+            var newPosition = _game.Camera.transform.forward;
 
-            Assert.AreEqual(originalPosition.y, newPosition.y, 0.1);
-            Assert.IsTrue(originalPosition.x > newPosition.x);
-            Assert.AreEqual(originalPosition.z, newPosition.z, 0.1);
+            Assert.AreEqual(original.y, newPosition.y, 0.1);
+            Assert.IsTrue(original.z > newPosition.z);
+            Assert.IsTrue(original.x > newPosition.x);
         }
 
         [UnityTest]
-        public IEnumerator TestDKeyMovesPlayerInMouseDirection()
+        public IEnumerator TestDKeyTurnsCameraLeft()
         {
-            var originalPosition = _game.Player.transform.position;
+            var original = _game.Camera.transform.forward;
 
             //get it's position
-            _game.SetMousePositionRelativeToPlayer(100, 0);
-            _game.Press(Keyboard.current.wKey);
+            _game.Press(Keyboard.current.dKey);
 
             yield return new WaitForSeconds(1f);
 
             //assert that the position no longer equals the original one
-            var newPosition = _game.Player.transform.position;
+            var newPosition = _game.Camera.transform.forward;
 
-            Assert.AreEqual(originalPosition.y, newPosition.y, 0.1);
-            Assert.IsTrue(originalPosition.x < newPosition.x);
-            Assert.AreEqual(originalPosition.z, newPosition.z, 0.1);
+            Assert.AreEqual(original.y, newPosition.y, 0.1);
+            Assert.IsTrue(original.z > newPosition.z);
+            Assert.IsTrue(original.x < newPosition.x);
         }
 
         [UnityTearDown]
