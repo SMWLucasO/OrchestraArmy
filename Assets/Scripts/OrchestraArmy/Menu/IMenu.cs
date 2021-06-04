@@ -9,5 +9,5 @@ public interface IMenu
     
     public MenuButtons[] PosibleButtons { get; set; }
     
-    publ
+    
 }
