@@ -30,7 +30,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Utils
 
             if (hitEntity.transform == null)
                 return false;
-            Debug.Log(hitEntity.collider.name);
+
             return hitEntity.transform.CompareTag("Player");
         }
 

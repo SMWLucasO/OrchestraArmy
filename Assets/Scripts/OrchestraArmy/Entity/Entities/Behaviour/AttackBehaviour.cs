@@ -48,7 +48,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             // If the player can't be seen: go to the MoveToPlayer behaviour.
             if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 8 + scale.x))
             {
-                Debug.Log("OUT OF SIGHT or TO FAR (> 8 units) : " +distance);
                 machine.SetState(new MoveToPlayerBehaviour());
                 return;
             }
@@ -71,7 +70,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             if (distance < 2)   //avoid to close combat SHOULD NEVER HAPPEN if player is slower than enemy
             {
-                Debug.Log("ERROR TO CLOSE");
                 //set destination in opposite direction of player to optimal attack range (4 units) 
                 navAgent.SetDestination((-playerRelativePosition.normalized * (5 - distance)) + enemyTransform.position);
                 return;
