@@ -52,7 +52,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
             }
             
-            //movement for combat
+            // Movement for combat
             Vector3 playerPosition = playerTransform.position;
             Vector3 playerRelativePosition = enemyTransform.InverseTransformPoint(playerPosition);
             NavMeshAgent navAgent = StateData.Enemy.NavMeshAgent;
@@ -62,27 +62,33 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             {
                 destDist = (navAgent.destination - playerPosition).magnitude;
             } catch(Exception e){}
+            
+            // Prevent destination outside attack range
             if (destDist<2.5 || destDist>7.5)
             {
                 navAgent.isStopped = true;
                 navAgent.ResetPath();
-            }   //prevent destination outside attack range
+            }   
             
-            if (distance < 2)   //avoid to close combat SHOULD NEVER HAPPEN if player is slower than enemy
+            // Avoid to close combat SHOULD NEVER HAPPEN if player is slower than enemy
+            if (distance < 2)   
             {
-                //set destination in opposite direction of player to optimal attack range (4 units) 
+                // Set destination in opposite direction of player to optimal attack range (4 units) 
                 navAgent.SetDestination((-playerRelativePosition.normalized * (5 - distance)) + enemyTransform.position);
                 return;
             }
 
             if ((navAgent.destination - enemyTransform.position).magnitude <0.1f) //prevent jittering movement
             {
-                //do random movement but keep player inside attack area
+                // Do random movement but keep player inside attack area
                 Vector3 movement = Random.insideUnitSphere * 1.249f; // <2.5 units diameter circle
                 movement.y = 0;
     
-                movement += (playerRelativePosition - playerRelativePosition.normalized * 5.0f); //shift so player always in attack area
-                navAgent.SetDestination(movement + enemyTransform.position);  //move to point movement  (movement is position relative to enemy)
+                // Shift so player always in attack area
+                movement += (playerRelativePosition - playerRelativePosition.normalized * 5.0f); 
+                
+                // Move to point movement  (movement is position relative to enemy)
+                navAgent.SetDestination(movement + enemyTransform.position);  
             }
             
             
@@ -164,7 +170,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         }
         
         /// <summary>
-        ///  calculates the vector of the note with player movement
+        /// calculates the vector of the note with player movement
         /// </summary>
         /// <param name="depth">acuracy of the aiming</param>
         /// <param name="player">player entity to shoot</param>
