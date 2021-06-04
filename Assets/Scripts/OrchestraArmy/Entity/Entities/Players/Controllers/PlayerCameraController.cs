@@ -1,5 +1,4 @@
 using OrchestraArmy.Entity.Controllers;
-using OrchestraArmy.Keybindings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -9,7 +8,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
     public class PlayerCameraController : ICameraController
     {
         
-
         /// <summary>
         /// The increment in degrees which the camera will get.
         /// Increment is in seconds.
