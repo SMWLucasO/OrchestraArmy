@@ -10,6 +10,7 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
+using UnityEngine.AI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -44,22 +45,57 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            // If the player can be seen, but the distance is too great: go to the MoveToPlayer behaviour.
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
+            // If the player can't be seen: go to the MoveToPlayer behaviour.
+            if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 8 + scale.x))
             {
-                if (distance > 3)
-                {
-                    machine.SetState(new MoveToPlayerBehaviour());
-                    return;
-                }
-            }
-
-            // If the distance is too great, then start wandering again.
-            if (distance > 5)
-            {
-                machine.SetState(new WanderBehaviour());
+                Debug.Log("OUT OF SIGHT or TO FAR : " +distance);
+                machine.SetState(new MoveToPlayerBehaviour());
                 return;
             }
+            
+            //movement for combat
+            Vector3 playerPosition = playerTransform.position;
+            Vector3 playerRelativePosition = enemyTransform.InverseTransformPoint(playerPosition);
+            NavMeshAgent navAgent = StateData.Enemy.NavMeshAgent;
+
+            float destDist = 4.0f;
+            try
+            {
+                destDist = (navAgent.destination - playerPosition).magnitude;
+            } catch(Exception e){}
+            if (destDist<2.5 || destDist>7.5)
+            {
+                navAgent.isStopped = true;
+                navAgent.ResetPath();
+            }   //prevent destination outside attack range
+            
+            if (distance < 2)   //avoid to close combat SHOULD NEVER HAPPEN
+            {
+                Debug.Log("ERROR TO CLOSE");
+                //set destination in opposite direction of player to optimal attack range (4 units) 
+                navAgent.SetDestination((-playerRelativePosition.normalized * (5 - distance)) + enemyTransform.position);
+                return;
+            }
+
+            if (distance > 8)  //avoid to far from combat range SHOULD NEVER HAPPEN
+            {
+                Debug.Log("ERROR TO FAR");
+                //set destination in direction of player to optimal attack range (4 units) 
+                navAgent.SetDestination((playerRelativePosition.normalized * (distance - 5)) + enemyTransform.position);
+                return;
+            }
+
+            if ((navAgent.destination - enemyTransform.position).magnitude <0.1f)
+            {
+                //do random movement but keep player inside attack area
+                Vector3 movement = Random.insideUnitSphere * 1.249f; // <2.5 units diameter circle
+                movement.y = 0;
+    
+                movement += (playerRelativePosition - playerRelativePosition.normalized * 5.0f); //shift so player always in attack area
+                navAgent.SetDestination(movement + enemyTransform.position);  //move to point  (movement is position relative to enemy)
+            }
+            
+            
         }
 
         /// <summary>
@@ -119,7 +155,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             attack.Source = obj.transform.position;
             
             // max distance = 5 Unity units
-            attack.MaxDistance = 5;
+            attack.MaxDistance = 7.5f;
             
             attack.Instrument = WeaponFactory.Make(StateData.Enemy.WeaponType);
             attack.Attacker = StateData.Enemy;
