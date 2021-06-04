@@ -22,7 +22,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             attack.transform.forward = Player.DirectionController.AimDirection;
             attack.Source = Player.transform.position;
             attack.Attacker = Player;
-            attack.MaxDistance = 400;
+            attack.MaxDistance = 7.5f;
             attack.Instrument = Player.WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.Weapon;
             attack.Tone = Player.ToneController.CurrentTone;
             
