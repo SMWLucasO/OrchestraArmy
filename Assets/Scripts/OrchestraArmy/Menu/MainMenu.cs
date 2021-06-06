@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using OrchestraArmy.Enum;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MainMenu : IMenu
+namespace OrchestraArmy.Menu
 {
-    public MenuButtons Selected { get; set; }
-    public MenuButtons[] PosibleButtons { get; set; }
+    public class MainMenu : MonoBehaviour
+    {
+        public void PlayGame()
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+    }
 }
