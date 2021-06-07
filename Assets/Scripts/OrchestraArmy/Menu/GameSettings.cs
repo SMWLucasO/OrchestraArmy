@@ -24,27 +24,27 @@ namespace OrchestraArmy.Menu
         public void SetDifficulty()
         {
             float sliderValue = sliderDifficulty.GetComponent<Scrollbar>().value;
-            int state = (int) Mathf.Floor(sliderValue * 2.0f);
-            state = state == 3 ? 2 : state;
-            tempDifficulty = state;
             // set state name on screen
-            switch (state)
+            if (sliderValue < 0.5f)
             {
-                case 0:
-                    showDifficulty[0].SetActive(true);
-                    showDifficulty[1].SetActive(false);
-                    showDifficulty[2].SetActive(false);
-                    break;
-                case 1:
-                    showDifficulty[0].SetActive(false);
-                    showDifficulty[1].SetActive(true);
-                    showDifficulty[2].SetActive(false);
-                    break;
-                case 2:
-                    showDifficulty[0].SetActive(false);
-                    showDifficulty[1].SetActive(false);
-                    showDifficulty[2].SetActive(true);
-                    break;
+                showDifficulty[0].SetActive(true);
+                showDifficulty[1].SetActive(false);
+                showDifficulty[2].SetActive(false);
+                tempDifficulty = 0;
+            }
+            else if (sliderValue < 1.0f)
+            {
+                showDifficulty[0].SetActive(false);
+                showDifficulty[1].SetActive(true);
+                showDifficulty[2].SetActive(false);
+                tempDifficulty = 1;
+            }
+            else
+            {
+                showDifficulty[0].SetActive(false);
+                showDifficulty[1].SetActive(false);
+                showDifficulty[2].SetActive(true);
+                tempDifficulty = 2;
             }
         }
 
@@ -67,20 +67,38 @@ namespace OrchestraArmy.Menu
         public void SaveSettings()
         {
             savedCursor = tempCursor;
+            savedDifficulty = tempDifficulty;
             Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
             //todo: link to damage and speed of enemies
         }
 
         public void Undo()
         {
-            sliderDifficulty.GetComponent<Scrollbar>().value = savedDifficulty/2;
-            sliderDifficulty.GetComponent<Scrollbar>().value = savedCursor/4;
+            sliderDifficulty.GetComponent<Scrollbar>().value = savedDifficulty * 0.5f;
+            sliderMouse.GetComponent<Scrollbar>().value = savedCursor * (1.0f/3.0f);
+            Debug.Log("-------------");
+            Debug.Log(savedCursor);
             
-            showDifficulty[0].SetActive(false);
-            showDifficulty[1].SetActive(true);
-            showDifficulty[2].SetActive(false);
+            if (savedDifficulty==0)
+            {
+                showDifficulty[0].SetActive(true);
+                showDifficulty[1].SetActive(false);
+                showDifficulty[2].SetActive(false);
+            }
+            else if (savedDifficulty==1)
+            {
+                showDifficulty[0].SetActive(false);
+                showDifficulty[1].SetActive(true);
+                showDifficulty[2].SetActive(false);
+            }
+            else
+            {
+                showDifficulty[0].SetActive(false);
+                showDifficulty[1].SetActive(false);
+                showDifficulty[2].SetActive(true);
+            }
             
-            Cursor.SetCursor(cursorSprite[0],Vector2.zero,CursorMode.ForceSoftware);
+            Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
         } 
     }
 }
