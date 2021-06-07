@@ -20,5 +20,11 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Data
         /// The type of the projectile to be shot.
         /// </summary>
         public Type ProjectileType { get; set; }
+
+        /// <summary>
+        /// The amount of projectiles that get fired at once.
+        /// </summary>
+        public int ProjectileCount { get; set; } = 1;
+        
     }
 }

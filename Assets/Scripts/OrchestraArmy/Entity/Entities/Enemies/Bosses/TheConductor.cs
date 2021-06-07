@@ -16,6 +16,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            Behaviour.CurrentState.StateData.ProjectileCount = 3;
         }
         
         public override void OnEvent(EnemyDeathEvent enemyDeathEvent)

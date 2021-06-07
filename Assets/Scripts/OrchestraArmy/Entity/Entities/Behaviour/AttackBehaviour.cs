@@ -1,7 +1,6 @@
 ﻿using System;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
-using OrchestraArmy.Entity.Entities.Enemies;
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
