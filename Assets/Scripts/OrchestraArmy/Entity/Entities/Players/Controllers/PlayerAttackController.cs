@@ -16,7 +16,8 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             if (!Keybindings.KeybindingManager.Instance.Keybindings["Shoot"].wasPressedThisFrame)
                 return;
 
-            var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/NoteProjectile"), Player.transform.position, Player.transform.GetChild(0).transform.rotation);
+            var obj = (GameObject) Object.Instantiate(Resources.Load("Prefabs/Projectiles/NoteProjectile"),
+                Player.transform.position, Player.transform.GetChild(0).transform.rotation);
             var attack = obj.GetComponent<Note>();
             
             attack.transform.forward = Player.DirectionController.AimDirection;

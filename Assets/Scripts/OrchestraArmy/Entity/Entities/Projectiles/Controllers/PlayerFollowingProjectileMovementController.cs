@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
             Transform playerTransform = Player.transform;
             Vector3 direction = entityTransform.forward;
             
-            if (Vector3.Distance(playerTransform.position, entityTransform.position) < 1)
+            if (Vector3.Distance(playerTransform.position, entityTransform.position) < 0.75f)
                 WithinSeekCancellationRange = true;
             
             // Seek towards the player (target) as long as we aren't in the seek cancellation range.

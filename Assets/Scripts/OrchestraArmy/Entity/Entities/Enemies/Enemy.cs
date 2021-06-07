@@ -79,7 +79,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Behaviour.CurrentState.StateData = new StateData()
             {
                 Player = GameObject.FindWithTag("Player").GetComponent<Player>(),
-                Enemy = this
+                Enemy = this,
+                ProjectileType = typeof(EnemyNote)
             };
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();

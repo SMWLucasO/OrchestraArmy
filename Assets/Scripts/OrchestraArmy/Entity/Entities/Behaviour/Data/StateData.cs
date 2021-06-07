@@ -1,4 +1,5 @@
-﻿using OrchestraArmy.Entity.Entities.Enemies;
+﻿using System;
+using OrchestraArmy.Entity.Entities.Enemies;
 using OrchestraArmy.Entity.Entities.Players;
 
 namespace OrchestraArmy.Entity.Entities.Behaviour.Data
@@ -15,6 +16,9 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Data
         /// </summary>
         public Player Player { get; set; }
         
-        
+        /// <summary>
+        /// The type of the projectile to be shot.
+        /// </summary>
+        public Type ProjectileType { get; set; }
     }
 }

@@ -8,7 +8,6 @@ using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
-using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
@@ -23,6 +22,8 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         /// </summary>
         public StateData StateData { get; set; }
 
+        public Type ProjectileType { get; set; } = typeof(EnemyNote);
+        
         /// <summary>
         /// Enter this state.
         /// </summary>
@@ -30,6 +31,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         {
             EventManager.Bind<EnemyTurnEvent>(this);
             EventManager.Invoke(new CombatInitiatedEvent() {EntityId = StateData.Enemy.GetInstanceID()});
+            ProjectileType = StateData.ProjectileType;
         }
 
         /// <summary>
@@ -132,13 +134,14 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
             // Generate the enemy note to be shot.
+            Debug.Log(ProjectileType.Name);
             var obj = (GameObject) Object.Instantiate(
-                Resources.Load("Prefabs/EnemyNoteProjectile"),
+                Resources.Load($"Prefabs/Projectiles/{ProjectileType.Name}"),
                 enemyPosition + (enemyTransform.forward * (scale.x * 1.1f)),
                 StateData.Enemy.transform.GetChild(0).transform.rotation
             );
             
-            var attack = obj.GetComponent<EnemyNote>();
+            EnemyNote attack = (EnemyNote) obj.GetComponent(ProjectileType);
             
             // Calculate the vector from the note prefab to the player (50% chance on direct shot, 50% chance on predicted shot)
             if (Random.value > 0.5f)
