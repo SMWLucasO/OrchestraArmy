@@ -108,7 +108,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Transform enemyTransform;
             Transform playerTransform;
             
-            //check if enemy and player are still allive
+            // Check if enemy and player are still alive
             try
             {
                 enemyTransform = StateData.Enemy.transform;
@@ -131,7 +131,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
-            // generate the enemy note to be shot.
+            // Generate the enemy note to be shot.
             var obj = (GameObject) Object.Instantiate(
                 Resources.Load("Prefabs/EnemyNoteProjectile"),
                 enemyPosition + (enemyTransform.forward * (scale.x * 1.1f)),
@@ -140,7 +140,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             
             var attack = obj.GetComponent<EnemyNote>();
             
-            // calculate the vector from the note prefab to the player (50% chance on direct shot, 50% chance on predicted shot)
+            // Calculate the vector from the note prefab to the player (50% chance on direct shot, 50% chance on predicted shot)
             if (Random.value > 0.5f)
                 attack.transform.forward = AimBot(100, StateData.Player, enemyPosition, attack.MovementData.WalkSpeed,
                     new Vector3());
