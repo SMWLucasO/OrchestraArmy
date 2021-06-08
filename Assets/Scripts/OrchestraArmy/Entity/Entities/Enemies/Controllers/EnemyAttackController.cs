@@ -15,9 +15,19 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Controllers
 {
     public class EnemyAttackController: IEnemyAttackController
     {
+        /// <summary>
+        /// The Player
+        /// </summary>
         public Player Player { get; set; }
-        public Enemy Enemy { get; set; }
         
+        /// <summary>
+        /// The attacking enemy
+        /// </summary>
+        public Enemy Enemy { get; set; }
+
+        /// <summary>
+        /// Handle the attack.
+        /// </summary>
         public void HandleAttack()
         {
             Transform enemyTransform;

@@ -11,7 +11,7 @@ namespace OrchestraArmy.Entity.Controllers
        public Player Player { get; set; }
         
         /// <summary>
-        /// Handle the player's attack.
+        /// Handle the attack.
         /// </summary>
         public void HandleAttack();
     }

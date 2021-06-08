@@ -24,7 +24,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour.Data
         public Type ProjectileType { get; set; }
         
         /// <summary>
-        /// The type of the projectile to be shot.
+        /// The tone of the projectile to be shot.
         /// </summary>
         public Tone ProjectileTone { get; set; }
 
