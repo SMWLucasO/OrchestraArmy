@@ -10,6 +10,7 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using UnityEngine;
+using UnityEngine.AI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -44,22 +45,53 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            // If the player can be seen, but the distance is too great: go to the MoveToPlayer behaviour.
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 5 + scale.x))
+            // If the player can't be seen: go to the MoveToPlayer behaviour.
+            if (!BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 8 + scale.x))
             {
-                if (distance > 3)
-                {
-                    machine.SetState(new MoveToPlayerBehaviour());
-                    return;
-                }
-            }
-
-            // If the distance is too great, then start wandering again.
-            if (distance > 5)
-            {
-                machine.SetState(new WanderBehaviour());
+                machine.SetState(new MoveToPlayerBehaviour());
                 return;
             }
+            
+            // Movement for combat
+            Vector3 playerPosition = playerTransform.position;
+            Vector3 playerRelativePosition = enemyTransform.InverseTransformPoint(playerPosition);
+            NavMeshAgent navAgent = StateData.Enemy.NavMeshAgent;
+
+            float destDist = 4.0f;
+            try
+            {
+                destDist = (navAgent.destination - playerPosition).magnitude;
+            } catch(Exception e){}
+            
+            // Prevent destination outside attack range
+            if (destDist<2.5 || destDist>7.5)
+            {
+                navAgent.isStopped = true;
+                navAgent.ResetPath();
+            }   
+            
+            // Avoid to close combat SHOULD NEVER HAPPEN if player is slower than enemy
+            if (distance < 2)   
+            {
+                // Set destination in opposite direction of player to optimal attack range (4 units) 
+                navAgent.SetDestination((-playerRelativePosition.normalized * (5 - distance)) + enemyTransform.position);
+                return;
+            }
+
+            if ((navAgent.destination - enemyTransform.position).magnitude <0.1f) //prevent jittering movement
+            {
+                // Do random movement but keep player inside attack area
+                Vector3 movement = Random.insideUnitSphere * 1.249f; // <2.5 units diameter circle
+                movement.y = 0;
+    
+                // Shift so player always in attack area
+                movement += (playerRelativePosition - playerRelativePosition.normalized * 5.0f); 
+                
+                // Move to point movement  (movement is position relative to enemy)
+                navAgent.SetDestination(movement + enemyTransform.position);  
+            }
+            
+            
         }
 
         /// <summary>
@@ -76,7 +108,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Transform enemyTransform;
             Transform playerTransform;
             
-            //check if enemy and player are still allive
+            // check if enemy and player are still alive
             try
             {
                 enemyTransform = StateData.Enemy.transform;
@@ -118,8 +150,8 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             // set the attacking source.
             attack.Source = obj.transform.position;
             
-            // max distance = 5 Unity units
-            attack.MaxDistance = 5;
+            // max distance = 7.5 Unity units
+            attack.MaxDistance = 7.5f;
             
             attack.Instrument = WeaponFactory.Make(StateData.Enemy.WeaponType);
             attack.Attacker = StateData.Enemy;
@@ -138,7 +170,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         }
         
         /// <summary>
-        ///  calculates the vector of the note with player movement
+        /// calculates the vector of the note with player movement
         /// </summary>
         /// <param name="depth">acuracy of the aiming</param>
         /// <param name="player">player entity to shoot</param>

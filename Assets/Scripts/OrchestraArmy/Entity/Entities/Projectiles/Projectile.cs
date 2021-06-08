@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using OrchestraArmy.Entity.Controllers;
 using OrchestraArmy.Entity.Entities.Projectiles.Controllers;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
         
         public float MaxDistance { get; set; }
         protected bool Hit { get; set; } = false;
+        public IMovementController MovementController { get; set; }
         
         protected override void OnEnable()
         {

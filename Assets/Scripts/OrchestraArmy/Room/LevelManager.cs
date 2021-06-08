@@ -74,7 +74,6 @@ namespace OrchestraArmy.Room
             if (this.Level > 1)
             {
                 this.Level -= 1;
-                EventManager.Invoke(new LockLatestInstrumentEvent());
                 RoomManager.CollectedInstrumentCount -= 1;
 
             }
