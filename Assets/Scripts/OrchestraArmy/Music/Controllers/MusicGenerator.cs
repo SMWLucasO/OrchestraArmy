@@ -12,8 +12,7 @@ using OrchestraArmy.Event.Events.Enemy;
 
 namespace OrchestraArmy.Music.Controllers
 {
-
-
+    
     public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
         /// <summary>
@@ -42,7 +41,7 @@ namespace OrchestraArmy.Music.Controllers
         /// 
         /// </summary>
         public List<AudioSource> Instruments;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -62,7 +61,7 @@ namespace OrchestraArmy.Music.Controllers
         /// The current beat. (1,2,3,4)
         /// </summary>
         public static int CurrentBeat = 0;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,12 +73,11 @@ namespace OrchestraArmy.Music.Controllers
         ///
         /// </summary>
         public float BeatVolume = .9f;
-        
+
         /// <summary>
         /// 
         /// </summary>
         public RhythmController RhythmController;
-
 
         /// <summary>
         /// This function is called when the object becomes enabled and active.
@@ -94,7 +92,6 @@ namespace OrchestraArmy.Music.Controllers
             StartCoroutine(BeatCheck());
         }
 
-
         /// <summary>
         /// Play a note for each instrument in the given beat list
         /// </summary>
@@ -106,12 +103,9 @@ namespace OrchestraArmy.Music.Controllers
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
                     instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume;
-                    
                     instrument.Play();
                 }
-                    
             }
-            
         }
 
         /// <summary>
@@ -183,8 +177,7 @@ namespace OrchestraArmy.Music.Controllers
             // Make sure the end value is not larger than 11
             return (Tone)((int)(Key + random) % 12);
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>

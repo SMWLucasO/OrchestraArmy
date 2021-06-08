@@ -21,7 +21,7 @@ namespace OrchestraArmy.Music.Controllers
         }
 
         /// <summary>
-        /// Returns the damage to the stamina in negative float
+        /// Returns the damage to the stamina in negative double
         /// </summary>
         /// <param name="BPM"></param>
         public double GetStaminaDamage(int BPM)
