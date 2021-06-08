@@ -16,44 +16,44 @@ namespace OrchestraArmy.Music.Controllers
     public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
         /// <summary>
-        /// 
+        /// The BPM for the game.
         /// </summary>
         [SerializeField]
         [Range(1,140)]
         public int BPM = 120;
 
         /// <summary>
-        /// 
+        /// The scale for the music harmony.
         /// </summary>
         public Scale Scale = Scale.NaturalMinor;
 
         /// <summary>
-        /// 
+        /// The key for the music; the base tone.
         /// </summary>
         public Tone Key = Tone.A;
 
         /// <summary>
-        /// 
+        /// If there is currently a battle going on.
         /// </summary>
         public bool InBattle = false;
 
         /// <summary>
-        /// 
+        /// Instruments that should play.
         /// </summary>
         public List<AudioSource> Instruments;
 
         /// <summary>
-        /// 
+        /// Instruments that should play in battle.
         /// </summary>
         public List<AudioSource> InstrumentsBattleOnly;
 
         /// <summary>
-        /// 
+        /// Instruments that should play on beat.
         /// </summary>
         public List<AudioSource> InstrumentsFixedOnBeat;
 
         /// <summary>
-        /// 
+        /// Instruments that should play off beat.
         /// </summary>
         public List<AudioSource> InstrumentsFixedOffBeat;
 
@@ -63,19 +63,19 @@ namespace OrchestraArmy.Music.Controllers
         public static int CurrentBeat = 0;
 
         /// <summary>
-        /// 
+        /// The volume for the instruments.
         /// </summary>
         [SerializeField]
         [Range(0,100)]
         public float InstrumentsVolume = .8f;
 
         /// <summary>
-        ///
+        /// The volume for the beat instruments.
         /// </summary>
         public float BeatVolume = .9f;
 
         /// <summary>
-        /// 
+        /// The RhythmController
         /// </summary>
         public RhythmController RhythmController;
 
@@ -145,7 +145,7 @@ namespace OrchestraArmy.Music.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Calculate the needed pitch for the tone.
         /// </summary>
         /// <param name="tone"></param>
         /// <param name="offset"></param>
@@ -154,7 +154,7 @@ namespace OrchestraArmy.Music.Controllers
             => Mathf.Pow(2, ((int)tone - (int)offset)/12f);
 
         /// <summary>
-        /// 
+        /// Get a random tone that fits in the current scale.
         /// </summary>
         /// <returns></returns>
         private Tone GetRandomCompanyTone()
@@ -179,7 +179,7 @@ namespace OrchestraArmy.Music.Controllers
         }
         
         /// <summary>
-        /// 
+        /// Check the beat and performs all actions that match this beat.
         /// </summary>
         /// <returns></returns>
         public IEnumerator BeatCheck()

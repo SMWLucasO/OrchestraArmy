@@ -34,8 +34,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         /// </summary>
         public float Yaw { get; set; }
 
-        private bool _moved = false;
-
         private bool _dragging = false;
         
         public void HandleCameraMovement()
@@ -58,7 +56,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 _dragging = true;
-                _moved = false;
                 setThisFrame = true;
             }
 
@@ -66,7 +63,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0) || !Mouse.current.rightButton.isPressed && _dragging)
             {
-                _moved = true;
                 Yaw += mouseDelta * CameraRotationIncrement;
             }
 
