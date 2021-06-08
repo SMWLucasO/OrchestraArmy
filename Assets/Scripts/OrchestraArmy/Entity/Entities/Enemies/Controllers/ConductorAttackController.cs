@@ -41,7 +41,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Controllers
                 //the size of one step. Set to 45 if there is only 1
                 var step = steps == 1 ? 45 : 90 / steps;
     
-                //set the angles while i <= 90 and index < steps
+                //set the angles while the total degrees (i) <= 90 and index < steps
                 for (int i = step, index = 0; i <= 90 && index < steps; i += step, index++)
                 {
                     angles.Add(i * (Mathf.PI / 180));
