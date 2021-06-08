@@ -5,18 +5,8 @@ using OrchestraArmy.Enum;
 
 namespace OrchestraArmy.Music.Instruments
 {
-
-    [System.Serializable]
-    public enum Interval
-    {
-        Wholes,
-        Halves,
-        Quarters
-    }
-
     public class InstrumentData : MonoBehaviour
     {
-
         public Tone BaseTone = Tone.C;
 
         public Interval Interval = Interval.Quarters;
@@ -25,6 +15,7 @@ namespace OrchestraArmy.Music.Instruments
         //The chance a note will play on its interval
         [Range(0,100)]
         public int Chance = 100;
-        
+
+        public float SpecificVolume = 1f;
     }
 }

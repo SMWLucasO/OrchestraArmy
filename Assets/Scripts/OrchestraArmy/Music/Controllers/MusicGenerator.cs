@@ -6,13 +6,15 @@ using OrchestraArmy.Music.Instruments;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Rhythm;
 using System.Threading;
+using OrchestraArmy.Event.Events.Enemy;
+
 
 
 namespace OrchestraArmy.Music.Controllers
 {
 
 
-    public class MusicGenerator : MonoBehaviour
+    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
         [SerializeField]
         [Range(1,140)]
@@ -22,7 +24,10 @@ namespace OrchestraArmy.Music.Controllers
 
         public Tone Key = Tone.A;
 
+        public bool InBattle = false;
+
         public List<AudioSource> Instruments;
+        public List<AudioSource> InstrumentsBattleOnly;
 
         public List<AudioSource> InstrumentsFixedOnBeat;
 
@@ -37,7 +42,9 @@ namespace OrchestraArmy.Music.Controllers
 
         [SerializeField]
         [Range(0,100)]
-        public int MasterVolume = 50;
+        public float InstrumentsVolume = .8f;
+
+        public float BeatVolume = .9f;
 
 
         public RhythmController RhythmController;
@@ -49,12 +56,16 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
+            BPM = 110;
+            InstrumentsVolume = .8f;
+            BeatVolume = .9f;
+            InBattle = false;
             StartCoroutine(BeatCheck());
         }
 
 
         /// <summary>
-        /// Play a note for each instrument in the given list
+        /// Play a note for each instrument in the given beat list
         /// </summary>
         private void PlayAudio(List<AudioSource> instruments)
         {
@@ -63,10 +74,13 @@ namespace OrchestraArmy.Music.Controllers
                 if(instrument != null)
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
+                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume;
+                    
                     instrument.Play();
                 }
                     
             }
+            
         }
 
         /// <summary>
@@ -82,9 +96,25 @@ namespace OrchestraArmy.Music.Controllers
                     if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                     {
                         instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
+                        instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume;
                         instrument.Play();
                     }
-                    
+                }
+            }
+
+            if(InBattle)
+            {
+                foreach(AudioSource instrument in Instruments)
+                {
+                    if(instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
+                    {
+                        int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
+                        if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
+                        {
+                            instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
+                            instrument.Play();
+                        }
+                    }
                 }
             }
         }
@@ -161,6 +191,28 @@ namespace OrchestraArmy.Music.Controllers
 
                 yield return new WaitForSeconds(0.01f);
             }
+        }
+
+        /// <summary>
+        /// Event for when combat is started
+        /// </summary>
+        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        {
+            InBattle = true;
+            BPM = 120;
+            InstrumentsVolume = .9f;
+            BeatVolume = 1f;
+        }
+
+        /// <summary>
+        /// Event for when combat is left
+        /// </summary>
+        public void OnEvent(LeaveCombatEvent invokedEvent)
+        {
+            InBattle = false;
+            BPM = 110;
+            InstrumentsVolume = .8f;
+            BeatVolume = .9f;
         }
     }
 }

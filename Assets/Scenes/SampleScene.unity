@@ -170,6 +170,7 @@ MonoBehaviour:
   BaseTone: 7
   Interval: 2
   Chance: 100
+  SpecificVolume: 0.6
 --- !u!82 &204702747
 AudioSource:
   m_ObjectHideFlags: 0
@@ -723,6 +724,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 0
   Chance: 0
+  SpecificVolume: 1
 --- !u!1 &700016035
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,6 +772,7 @@ MonoBehaviour:
   BaseTone: 1
   Interval: 1
   Chance: 100
+  SpecificVolume: 0.5
 --- !u!82 &700016038
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1089,6 +1092,7 @@ MonoBehaviour:
   BaseTone: 9
   Interval: 2
   Chance: 100
+  SpecificVolume: 1
 --- !u!82 &1061687252
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1232,6 +1236,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 1
   Chance: 100
+  SpecificVolume: 1
 --- !u!82 &1171240631
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1439,6 +1444,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 0
   Chance: 0
+  SpecificVolume: 1
 --- !u!1001 &1521325392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1672,6 +1678,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 1
   Chance: 83
+  SpecificVolume: 0.7
 --- !u!82 &1729483661
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2025,6 +2032,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 0
   Chance: 81
+  SpecificVolume: 1
 --- !u!82 &1844265493
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2264,6 +2272,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 0
   Chance: 0
+  SpecificVolume: 1
 --- !u!1 &2048709905
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,6 +2402,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 0
   Chance: 0
+  SpecificVolume: 1
 --- !u!4 &2048709908
 Transform:
   m_ObjectHideFlags: 0
@@ -2454,6 +2464,7 @@ MonoBehaviour:
   BaseTone: 8
   Interval: 0
   Chance: 100
+  SpecificVolume: 1
 --- !u!82 &2106892381
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2597,6 +2608,7 @@ MonoBehaviour:
   BaseTone: 0
   Interval: 1
   Chance: 78
+  SpecificVolume: 0.7
 --- !u!82 &2124234205
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2740,6 +2752,7 @@ MonoBehaviour:
   BaseTone: 5
   Interval: 0
   Chance: 100
+  SpecificVolume: 1
 --- !u!82 &2140758188
 AudioSource:
   m_ObjectHideFlags: 0
