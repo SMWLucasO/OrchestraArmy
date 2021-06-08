@@ -366,7 +366,7 @@ namespace OrchestraArmy.Room
         private RoomType DecideNextRoom()
         {
             // Calculation for chance boss room (after 1 rooms +33% per room)
-            if (Random.value < 0.33f * (RoomsCleared - 1 + Math.Abs(RoomsCleared - 1)) || ForceNextRoomIsBoss)
+            if (RoomsCleared >= 1 && Random.value < 0.33f * (RoomsCleared - 1) || ForceNextRoomIsBoss)
                 return RoomType.BossRoom;
             else
                 return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;
