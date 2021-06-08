@@ -45,7 +45,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
                 _initialMovementInitiated = true;
                 MovementController = new ProjectileMovementController()
                 {
-                    Entity = Entity
+                    Entity = this.Entity
                 };
             }
             
@@ -54,8 +54,8 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
             {
                 MovementController = new PlayerFollowingProjectileMovementController()
                 {
-                    Entity = Entity,
-                    Player = Player
+                    Entity = this.Entity,
+                    Player = this.Player
                 };
             }
             
