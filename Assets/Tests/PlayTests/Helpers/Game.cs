@@ -33,6 +33,21 @@ namespace Tests.PlayTests.Helpers
             Set(Mouse.current.position, new Vector2(mouseScreenPosition.x + xMod, mouseScreenPosition.y + yMod));
         }
         
+        public IEnumerator ClickMoveReleaseRightMouse(float duration, float turnSpeed)
+        {
+            Press(Mouse.current.rightButton);
+
+            yield return null;
+            
+            Set(Mouse.current.delta, new Vector2(turnSpeed, 0));
+
+            yield return new WaitForSeconds(duration);
+            
+            Release(Mouse.current.rightButton);
+            
+            yield return null;
+        }
+        
         public IEnumerator TestSetup(string scene = null)
         {
             Setup();

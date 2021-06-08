@@ -8,6 +8,7 @@ TagManager:
   - UI:WeaponWheel:ImagePlaceholders
   - World
   - Enemy
+  - Projectile
   layers:
   - Default
   - TransparentFX

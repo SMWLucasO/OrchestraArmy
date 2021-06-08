@@ -132,7 +132,9 @@ namespace OrchestraArmy.Room
             if (CurrentRoom != null)
             {
                 CurrentRoom.RoomController.Room = CurrentRoom;
-                CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
+                if (!CurrentRoom.RoomIsCleared)
+                    CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
+                
                 CurrentRoom.Generate();
                 
                 CurrentRoom.RoomController.RegisterEvents();
@@ -203,6 +205,10 @@ namespace OrchestraArmy.Room
             // generate the room.
             GenerateRoom(CurrentRoomIndex, roomType);
             
+            // clear any projectiles currently in the room.
+            foreach (GameObject projectile in GameObject.FindGameObjectsWithTag("Projectile")) 
+                Destroy(projectile);
+
             if (_player != null)
             {
                 _player.transform.position = CurrentRoom.GetPlayerSpawnPosition(direction);

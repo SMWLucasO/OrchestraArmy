@@ -20,15 +20,15 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             float distance = BehaviourUtil.GetScaleInclusiveDistance(StateData.Player, StateData.Enemy);
             
-            // When the player is more than 5 units away from the enemy: wander.
-            if (distance > 5)
+            // When the player is more than 12 units away from the enemy: wander.
+            if (distance >= 12)
             {
                 machine.SetState(new WanderBehaviour());
                 return;
             }
             
-            // When the enemy is within 3 units of the player & it can detect the player: attack.
-            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 3 + scale.x))
+            // When the enemy is within 7 units of the player & it can detect the player: attack.
+            if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 7f + scale.x))
             {
                 machine.SetState(new AttackBehaviour());
                 return;

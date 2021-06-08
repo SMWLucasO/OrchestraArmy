@@ -22,8 +22,8 @@ namespace OrchestraArmy.Entity.Entities.Players
     }
     
 
-    public class Player : LivingDirectionalEntity, IListener<PlayerDamageEvent>, IListener<PlayerWeaponChangedEvent>,
-        IListener<InstrumentPickupEvent>, IListener<PlayerDeathEvent>, IListener<PlayerAttackEvent>, IListener<EnemyAttackHitEvent>
+    public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
+        IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -61,6 +61,11 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// particles that spawn if player is damaged
         /// </summary>
         public GameObject DamageParticles;
+        
+        /// <summary>
+        /// The controller for the entity's movement.
+        /// </summary>
+        public IMovementController MovementController { get; set; }
             
         protected override void Update()
         {
@@ -120,51 +125,17 @@ namespace OrchestraArmy.Entity.Entities.Players
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
             
             // register player events.
-            EventManager.Bind<PlayerDamageEvent>(this);
-            EventManager.Bind<PlayerAttackEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
-            EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnemyAttackHitEvent>(this);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            EventManager.Unbind<PlayerDamageEvent>(this);
-            EventManager.Unbind<PlayerAttackEvent>(this);
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             EventManager.Unbind<InstrumentPickupEvent>(this);
-            EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<EnemyAttackHitEvent>(this);
-        }
-
-        /// <summary>
-        /// Event for when the player takes damage.
-        /// </summary>
-        /// <param name="playerDamageEvent"></param>
-        public void OnEvent(PlayerDamageEvent playerDamageEvent)
-        {
-            int healthAfterAttack = EntityData.Health - playerDamageEvent.HealthLost;
-
-            if (healthAfterAttack > 0)
-            {
-                EntityData.Health = healthAfterAttack;
-                
-                Vector3 particlePosition = transform.position;
-                particlePosition.y = 0.5f;
-                
-                //spawn damage particles
-                Instantiate(DamageParticles, particlePosition, Quaternion.identity);
-            }
-            else
-            {
-                // in this case, the player is dead.
-                EventManager.Invoke(new PlayerDeathEvent());
-                
-                //reset values to max
-                EntityData.Health = EntityData.MaxHealth;
-            }
         }
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
@@ -194,36 +165,35 @@ namespace OrchestraArmy.Entity.Entities.Players
             Sprites = InstrumentSprites.First(s => s.Instrument == invokedEvent.NewlySelectedWeapon).SpriteEntries;
         }
 
-        public void OnEvent(PlayerDeathEvent invokedEvent)
-        {            
-            // Refill player health/stamina.
-            EntityData.Health = EntityData.MaxHealth;
-            EntityData.Stamina = 100;
-        }
-
-        public void OnEvent(PlayerAttackEvent invokedEvent)
-        {
-            //Update stamina
-            RhythmController rhythm = MusicGenerator.RhythmController;
-            EntityData.Stamina += (int)(EntityData.MaxStamina * rhythm.GetStaminaDamage(MusicGenerator.BPM));
-            // Update health if needed
-            if(EntityData.Stamina < 0)
-            {
-                EntityData.Health += EntityData.Stamina;
-
-                EntityData.Stamina = 0;
-
-                PlayerDamageEvent playerDamageEvent = new PlayerDamageEvent();
-                playerDamageEvent.HealthLost = Math.Abs(EntityData.Stamina);
-                EventManager.Invoke(playerDamageEvent);
-
-            }            
-        }
-
+        /// <summary>
+        /// Event for when the player takes damage from enemy hit.
+        /// </summary>
         public void OnEvent(EnemyAttackHitEvent invokedEvent)
         {
-            //do some fancy damage calc here later
-            EventManager.Invoke(new PlayerDamageEvent() {HealthLost = 10});
+            //do some fancy damage calc here
+            int damagePoints = 10;
+            int healthAfterAttack = EntityData.Health - damagePoints;
+
+            if (healthAfterAttack > 0)
+            {
+                EntityData.Health = healthAfterAttack;
+                
+                Vector3 particlePosition = transform.position;
+                particlePosition.y = 0.5f;
+                
+                //spawn damage particles
+                Instantiate(DamageParticles, particlePosition, Quaternion.identity);
+            }
+            else
+            {
+                // in this case, the player is dead.
+                EventManager.Invoke(new PlayerDeathEvent());
+                
+                //reset values to max
+                // Refill player health/stamina.
+                EntityData.Health = EntityData.MaxHealth;
+                EntityData.Stamina = 100;
+            }
         }
     }
 }
