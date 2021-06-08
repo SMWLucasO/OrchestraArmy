@@ -32,7 +32,7 @@ namespace OrchestraArmy.Keybindings
                 {"Select next instrument", Keyboard.current.eKey},
                 {"Select previous instrument", Keyboard.current.qKey},
                 {"Shoot", Mouse.current.leftButton},
-                {"bake", Keyboard.current.mKey},
+                {"pause button", Keyboard.current.escapeKey}
             };
     }
 }
