@@ -13,7 +13,7 @@ namespace OrchestraArmy.Room.Controllers
         
         public override void UnregisterEvents()
         {
-            base.RegisterEvents();
+            base.UnregisterEvents();
             EventManager.Unbind<RoomClearedOfEnemiesEvent>(this);
         }
 
