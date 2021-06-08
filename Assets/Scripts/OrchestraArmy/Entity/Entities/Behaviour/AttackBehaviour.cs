@@ -109,10 +109,11 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             StateData.AttackController.Player = StateData.Player;
             StateData.AttackController.HandleAttack();
 
+
             if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
                 return;
             
-            //only fire the attack event when it is the relevant enemies turn
+            // only fire the attack event when it is the relevant enemies turn
             EventManager.Invoke(new EnemyAttackEvent()
             {
                 Tone = StateData.ProjectileTone,
