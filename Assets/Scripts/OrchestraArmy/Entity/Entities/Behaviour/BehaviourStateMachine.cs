@@ -48,7 +48,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
         public void ClearState()
         {
-            CurrentState.Exit();
+            CurrentState?.Exit();
             this.PreviousState = CurrentState;
             this.CurrentState = null;
         }
