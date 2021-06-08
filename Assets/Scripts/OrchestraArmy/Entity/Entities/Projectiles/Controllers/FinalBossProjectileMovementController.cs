@@ -48,7 +48,18 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
                     Entity = Entity
                 };
             }
-
+            
+            // If the distance is far enough, we can move on to the homing projectiles.
+            if (Vector3.Distance(StartingPosition, Entity.transform.position) >= DistanceBeforeSeek)
+            {
+                MovementController = new PlayerFollowingProjectileMovementController()
+                {
+                    Entity = Entity,
+                    Player = Player
+                };
+            }
+            
+            
             MovementController.HandleMovement();
         }
     }
