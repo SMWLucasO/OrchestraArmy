@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace OrchestraArmy.Entity.Entities.Projectiles
 {
-    public class FinalBossNote : Projectile
+    public class FinalBossNote : EnemyNote
     {
 
         protected override void OnEnable()
         {
+            base.OnEnable();
+            
             MovementController = new FinalBossProjectileMovementController()
             {
                 Entity = this,
@@ -16,7 +18,5 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
                 Player = GameObject.FindWithTag("Player").GetComponent<Player>()
             };
         }
-        
-        
     }
 }

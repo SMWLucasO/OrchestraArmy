@@ -4,6 +4,7 @@ using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
 {
@@ -35,6 +36,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
         protected override void Update()
         {
             base.Update();
+            
+            //temporary to test 
+            if (Keyboard.current.numpadPlusKey.wasPressedThisFrame)
+                Behaviour.CurrentState.StateData.ProjectileCount++;
+            if (Keyboard.current.numpadMinusKey.wasPressedThisFrame && Behaviour.CurrentState.StateData.ProjectileCount > 1)
+                Behaviour.CurrentState.StateData.ProjectileCount--;
 
             _timeElapsedSinceLastInstrumentSwapInSeconds += Time.deltaTime;
             if (_timeElapsedSinceLastInstrumentSwapInSeconds >= _timeBetweenInstrumentSwapsInSeconds)
