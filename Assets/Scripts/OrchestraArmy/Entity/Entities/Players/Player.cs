@@ -201,12 +201,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
             //Update stamina
-            EntityData.Stamina += (int)MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM);
+            EntityData.Stamina += (int)(EntityData.MaxStamina * MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM));
+            Debug.Log(EntityData.Stamina);            
 
             // Update health if needed
             if(EntityData.Stamina < 0)
             {
-
                 int healthAfterAttack = EntityData.Health + EntityData.Stamina;
                 EntityData.Stamina = 0;
 
@@ -224,7 +224,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                     EntityData.Health = EntityData.MaxHealth;
                     EntityData.Stamina = 100;
                 }
-            }    
+            } 
         }
     }
 }
