@@ -8,12 +8,8 @@ using OrchestraArmy.Event.Events.Rhythm;
 using System.Threading;
 using OrchestraArmy.Event.Events.Enemy;
 
-
-
 namespace OrchestraArmy.Music.Controllers
 {
-
-
     public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
         [SerializeField]
@@ -57,8 +53,20 @@ namespace OrchestraArmy.Music.Controllers
             InstrumentsVolume = .8f;
             BeatVolume = .9f;
             InBattle = false;
+            EventManager.Bind<CombatInitiatedEvent>(this);
+            EventManager.Bind<LeaveCombatEvent>(this);
             StartCoroutine(BeatCheck());
         }
+
+        /// <summary>
+        /// This function is called when the behaviour becomes disabled or inactive.
+        /// </summary>
+        void OnDisable()
+        {
+            EventManager.Unbind<CombatInitiatedEvent>(this);
+            EventManager.Unbind<LeaveCombatEvent>(this);
+        }
+
 
         /// <summary>
         /// Play a note for each instrument in the given beat list
@@ -116,7 +124,7 @@ namespace OrchestraArmy.Music.Controllers
         {
             return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
         }
-
+        
         private Tone GetRandomCompanyTone()
         {
             int[] intervals = new int[3];
