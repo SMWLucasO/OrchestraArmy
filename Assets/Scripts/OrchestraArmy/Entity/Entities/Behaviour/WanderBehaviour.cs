@@ -36,7 +36,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
 
             Vector3 scale = StateData.Enemy.transform.localScale;
             
-            // When the enemy is within 6 units of the player & it can detect the player: attack.
+            // When the enemy is within 7 units of the player & it can detect the player: attack.
             if (BehaviourUtil.EnemyCanDetectPlayer(StateData.Player, StateData.Enemy, 7 + scale.x))
             {
                 machine.SetState(new AttackBehaviour());

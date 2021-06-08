@@ -150,7 +150,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             // set the attacking source.
             attack.Source = obj.transform.position;
             
-            // max distance = 5 Unity units
+            // max distance = 7.5 Unity units
             attack.MaxDistance = 7.5f;
             
             attack.Instrument = WeaponFactory.Make(StateData.Enemy.WeaponType);
