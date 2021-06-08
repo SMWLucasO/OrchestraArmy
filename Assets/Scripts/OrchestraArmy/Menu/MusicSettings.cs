@@ -48,7 +48,10 @@ namespace OrchestraArmy.Menu
         {
             //todo: link to music volume
         }
-
+        
+        /// <summary>
+        /// reset all volumes to max
+        /// </summary>
         public void Undo()
         {
             savedSound = 1.0f;

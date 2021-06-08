@@ -234,6 +234,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &434403980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 804927538623678376, guid: 5f7ad414a31b04b46b0be68ae2665a4f, type: 3}
+  m_PrefabInstance: {fileID: 6895589350819048320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseScreen: {fileID: 2071885239}
+  MusicTimer: {fileID: 434403980}
 --- !u!114 &1113540441
 MonoBehaviour:
   m_ObjectHideFlags: 0

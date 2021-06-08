@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using OrchestraArmy.Enum;
 using OrchestraArmy.Keybindings;
+using OrchestraArmy.Music.Data;
+using OrchestraArmy.Music.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,8 +13,10 @@ namespace OrchestraArmy.Menu
     public class PauseMenu : MonoBehaviour
     {
         public GameObject PauseScreen;
+        public GameObject MusicTimer;
         public void Continue()
         {
+            MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
             Time.timeScale = 1;
         }
 
@@ -33,16 +37,14 @@ namespace OrchestraArmy.Menu
             //press esc key to pause and unpause game
             if (KeybindingManager.Instance.Keybindings["pause button"].wasPressedThisFrame)
             {
-                Debug.Log("1");
                 if (Time.timeScale != 0)
                 {
-                    Debug.Log("pause");
+                    MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
                     Time.timeScale = 0;
                     PauseScreen.SetActive(true);
                 }
                 else
                 {
-                    Debug.Log("unpause");
                     PauseScreen.SetActive(false);
                     Continue();
                 }

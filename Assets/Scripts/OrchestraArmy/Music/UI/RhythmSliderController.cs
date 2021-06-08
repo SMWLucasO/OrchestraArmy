@@ -40,5 +40,10 @@ namespace OrchestraArmy.Music.UI
             _rhythmSlider.value = _rhythmController.RhythmScore();
             _rhythmController.ChangeBPMImmediately(BPM); 
         }
+
+        public RhythmController GetRhythmController()
+        {
+            return _rhythmController;
+        }
     }
 }

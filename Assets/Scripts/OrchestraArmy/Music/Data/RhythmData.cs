@@ -71,6 +71,23 @@ namespace OrchestraArmy.Music.Data
             }
             
         }
+        
+        /// <summary>
+        /// Pause/unpause the rhythm stopwatch
+        /// </summary>
+        public static void PauseStopwatch()
+        {
+            // only set if not existing, or you reset the current stopwatch
+            if (Time.timeScale == 0)
+            {
+                _rhythmStopwatch.Start();
+            }
+            else
+            {
+                _rhythmStopwatch.Stop();
+            }
+            
+        }
 
 
     }

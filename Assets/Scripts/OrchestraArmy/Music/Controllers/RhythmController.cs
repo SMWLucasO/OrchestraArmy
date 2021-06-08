@@ -35,6 +35,11 @@ namespace OrchestraArmy.Music.Controllers
             RhythmData.SetStopwatch();
         }
 
+        public void PauseTimer()
+        {
+            RhythmData.PauseStopwatch();
+        }
+
         public IEnumerator BeatCheck()
         {
             while (true)
