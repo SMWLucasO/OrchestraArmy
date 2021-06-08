@@ -78,5 +78,10 @@ namespace OrchestraArmy.UI
             var texture = noteInfo.Item2 == NoteType.Base ? BaseNoteTexture : NoteTexture;
             Note.GetComponent<RawImage>().texture = texture;
         }
+
+        public void OnDisable()
+        {
+            EventManager.Unbind<ToneChangedEvent>( this);
+        }
     }
 }

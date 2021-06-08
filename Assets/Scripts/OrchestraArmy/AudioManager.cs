@@ -25,7 +25,7 @@ namespace OrchestraArmy
         public AudioClip A;
         public AudioClip B;
     }
-    
+
     /// <summary>
     /// Class that plays instrument audio
     /// </summary>
@@ -35,7 +35,7 @@ namespace OrchestraArmy
         /// InstrumentAudio collection
         /// </summary>
         public InstrumentAudio[] AttackSounds;
-        
+
         /// <summary>
         /// AudioSource to play audio
         /// </summary>
@@ -47,7 +47,7 @@ namespace OrchestraArmy
             EventManager.Bind<EnemyAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
         }
-        
+
         /// <summary>
         /// Event to handle player attack sounds
         /// </summary>
@@ -69,7 +69,7 @@ namespace OrchestraArmy
                 Tone.B => instrumentAudio.B,
                 _ => throw new InvalidEnumArgumentException()
             };
-            
+
             _audioSource.Play();
         }
 
@@ -91,8 +91,14 @@ namespace OrchestraArmy
                 Tone.B => instrumentAudio.B,
                 _ => throw new InvalidEnumArgumentException()
             };
-            
+
             AudioSource.PlayClipAtPoint(clip, invokedEvent.Position);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unbind<PlayerAttackEvent>(this);
+            EventManager.Unbind<EnemyAttackEvent>(this);
         }
     }
 }

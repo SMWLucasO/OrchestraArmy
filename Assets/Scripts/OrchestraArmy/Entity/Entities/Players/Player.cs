@@ -65,12 +65,14 @@ namespace OrchestraArmy.Entity.Entities.Players
             
         protected override void Update()
         {
-            base.Update();
-            DirectionController.HandleDirection();
-            WeaponSelectionController.HandleWeaponSelection();
-            SpriteManager.UpdateSprite();
-            AttackController.HandleAttack();
-            ToneController.HandleTone();
+            if (Time.timeScale != 0){
+                base.Update();
+                DirectionController.HandleDirection();
+                WeaponSelectionController.HandleWeaponSelection();
+                SpriteManager.UpdateSprite();
+                AttackController.HandleAttack();
+                ToneController.HandleTone();
+            }
         }
 
         protected override void FixedUpdate()
