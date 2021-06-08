@@ -16,6 +16,7 @@ namespace OrchestraArmy.Room.Controllers
         {
             base.RegisterEvents();
             EventManager.Bind<RoomClearedOfEnemiesEvent>(this);
+            EventManager.Bind<FinalBossDeathEvent>(this);
             EventManager.Bind<BossDeathEvent>(this);
             EventManager.Bind<RoomDoorNextLevelEvent>(this);
         }
@@ -25,6 +26,7 @@ namespace OrchestraArmy.Room.Controllers
             base.UnregisterEvents();
             EventManager.Unbind<RoomClearedOfEnemiesEvent>(this);
             EventManager.Unbind<BossDeathEvent>(this);
+            EventManager.Unbind<FinalBossDeathEvent>(this);
             EventManager.Unbind<RoomDoorNextLevelEvent>(this);
         }
 

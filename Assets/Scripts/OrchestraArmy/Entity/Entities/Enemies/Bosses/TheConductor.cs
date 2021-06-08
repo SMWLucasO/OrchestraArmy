@@ -1,4 +1,4 @@
-﻿using OrchestraArmy.Entity.Entities.Enemies.Controllers;
+using OrchestraArmy.Entity.Entities.Enemies.Controllers;
 using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
 using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
