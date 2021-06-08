@@ -18,7 +18,7 @@ namespace OrchestraArmy.Room
         /// <summary>
         /// The Level on which the rooms are located.
         /// </summary>
-        public int Level { get; set; } = 1;
+        public int Level { get; set; } = 4;
 
         /// <summary>
         /// The room manager for the level.

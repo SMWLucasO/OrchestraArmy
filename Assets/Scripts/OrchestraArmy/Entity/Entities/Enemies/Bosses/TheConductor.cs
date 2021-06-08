@@ -1,4 +1,6 @@
-﻿using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+﻿using OrchestraArmy.Entity.Entities.Enemies.Controllers;
+using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 
@@ -18,6 +20,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             base.OnEnable();
 
             Behaviour.CurrentState.StateData.ProjectileCount = 3;
+            Behaviour.CurrentState.StateData.ProjectileType = typeof(FinalBossNote);
+            Behaviour.CurrentState.StateData.AttackController = new ConductorAttackController();
         }
         
         public override void OnEvent(EnemyDeathEvent enemyDeathEvent)

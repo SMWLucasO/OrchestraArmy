@@ -65,8 +65,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 Entity = this
             };
-            
-
 
             Behaviour = new BehaviourStateMachine()
             {
@@ -80,7 +78,8 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 Player = GameObject.FindWithTag("Player").GetComponent<Player>(),
                 Enemy = this,
-                ProjectileType = typeof(EnemyNote)
+                ProjectileType = typeof(EnemyNote),
+                AttackController = new EnemyAttackController()
             };
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();
@@ -126,8 +125,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 EventManager.Invoke(new RoomClearedOfEnemiesEvent());
             }
 
-            Behaviour.ClearState();
-            
             Destroy(gameObject);
         }
 
@@ -165,6 +162,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             
+            Behaviour.ClearState();
         }
 
         public void OnEvent(PlayerDeathEvent invokedEvent) => Behaviour.ClearState();
