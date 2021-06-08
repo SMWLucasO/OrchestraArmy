@@ -170,7 +170,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);
 
-        private void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
+        protected void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
         {
             if (this is Boss) return;
             
