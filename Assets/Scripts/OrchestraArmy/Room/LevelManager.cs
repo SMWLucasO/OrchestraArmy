@@ -2,6 +2,7 @@
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Level;
 using OrchestraArmy.Room.Rooms;
 using UnityEngine;
 
@@ -114,6 +115,7 @@ namespace OrchestraArmy.Room
                         MoveToPreviousLevel();
                         DeathScreen.SetActive(false); //deactivate death screen
                         _deathState = 0; //deactivate death 'loop'
+                        EventManager.Invoke(new EnteredNewLevelEvent());
                     }
                     break;
             }

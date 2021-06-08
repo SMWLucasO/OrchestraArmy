@@ -16,6 +16,6 @@ namespace OrchestraArmy.Music.Instruments
         [Range(0,100)]
         public int Chance = 100;
 
-        public float SpecificVolume = 1f;
+        public float SpecificVolume = .5f;
     }
 }

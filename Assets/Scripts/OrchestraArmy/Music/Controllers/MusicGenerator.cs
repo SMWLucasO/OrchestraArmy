@@ -7,10 +7,12 @@ using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Rhythm;
 using System.Threading;
 using OrchestraArmy.Event.Events.Enemy;
+using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Level;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
+    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
         [SerializeField]
         [Range(1,140)]
@@ -20,9 +22,12 @@ namespace OrchestraArmy.Music.Controllers
 
         public Tone Key = Tone.A;
 
-        public bool InBattle = false;
+        private bool _inBattle = false;
+        private bool _deathEvent = false;
 
         public List<AudioSource> Instruments;
+
+        public List<AudioSource> InstrumentsDeath;
         
         public List<AudioSource> InstrumentsBattleOnly;
 
@@ -49,12 +54,15 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
-            BPM = 110;
+            BPM = 100;
+            RhythmController.SetStopwatch();
             InstrumentsVolume = .8f;
             BeatVolume = .9f;
-            InBattle = false;
+            _inBattle = false;
             EventManager.Bind<CombatInitiatedEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
+            EventManager.Bind<PlayerDeathEvent>(this);
+            EventManager.Bind<EnteredNewLevelEvent>(this);
             StartCoroutine(BeatCheck());
         }
 
@@ -65,13 +73,15 @@ namespace OrchestraArmy.Music.Controllers
         {
             EventManager.Unbind<CombatInitiatedEvent>(this);
             EventManager.Unbind<LeaveCombatEvent>(this);
+            EventManager.Unbind<PlayerDeathEvent>(this);
+            EventManager.Unbind<EnteredNewLevelEvent>(this);
         }
 
 
         /// <summary>
         /// Play a note for each instrument in the given beat list
         /// </summary>
-        private void PlayAudio(List<AudioSource> instruments)
+        private void PlayBeatAudio(List<AudioSource> instruments)
         {
             foreach(AudioSource instrument in instruments)
             {
@@ -85,11 +95,11 @@ namespace OrchestraArmy.Music.Controllers
         }
 
         /// <summary>
-        /// Play a note for each instrument in the instruments list, if the interval matches
+        /// Play a note for each instrument in the given list
         /// </summary>
-        private void PlayAudio(Interval interval)
+        private void PlayAudio(List<AudioSource> instruments, Interval interval)
         {
-            foreach (AudioSource instrument in Instruments)
+            foreach(AudioSource instrument in instruments)
             {
                 if (instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
                 {
@@ -102,20 +112,25 @@ namespace OrchestraArmy.Music.Controllers
                     }
                 }
             }
+        }
 
-            if (InBattle)
+
+        /// <summary>
+        /// Play a note for each instrument in the instruments list, if the interval matches
+        /// </summary>
+        private void PlayAudio(Interval interval)
+        {
+            if (_deathEvent)
             {
-                foreach (AudioSource instrument in Instruments)
+                PlayAudio(InstrumentsDeath, interval);
+            }
+            else
+            {
+                PlayAudio(Instruments, interval);
+
+                if (_inBattle)
                 {
-                    if (instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
-                    {
-                        int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
-                        if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
-                        {
-                            instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
-                            instrument.Play();
-                        }
-                    }
+                    PlayAudio(InstrumentsBattleOnly, interval);
                 }
             }
         }
@@ -158,12 +173,12 @@ namespace OrchestraArmy.Music.Controllers
                     if (CurrentBeat % 2 == 1)
                     {
                         EventManager.Invoke(new OffBeatEvent());
-                        PlayAudio(InstrumentsFixedOffBeat);
+                        PlayBeatAudio(InstrumentsFixedOffBeat);
                     }
                     else
                     {
                         EventManager.Invoke(new EvenBeatEvent());
-                        PlayAudio(InstrumentsFixedOnBeat);
+                        PlayBeatAudio(InstrumentsFixedOnBeat);
                     }
 
                     switch (CurrentBeat)
@@ -198,8 +213,8 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public void OnEvent(CombatInitiatedEvent invokedEvent)
         {
-            InBattle = true;
-            BPM = 120;
+            _inBattle = true;
+            BPM = 110;
             InstrumentsVolume = .9f;
             BeatVolume = 1f;
         }
@@ -209,10 +224,29 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public void OnEvent(LeaveCombatEvent invokedEvent)
         {
-            InBattle = false;
-            BPM = 110;
+            ResetMusic();
+        }
+
+        public void ResetMusic()
+        {
+            _inBattle = false;
+            BPM = 100;
             InstrumentsVolume = .8f;
             BeatVolume = .9f;
+        }
+
+        /// <summary>
+        /// Event for when the player dies
+        /// </summary>
+        public void OnEvent(PlayerDeathEvent invokedEvent)
+        {
+            _deathEvent = true;
+            ResetMusic();
+        }
+
+        public void OnEvent(EnteredNewLevelEvent invokedEvent)
+        {
+            _deathEvent = false;
         }
     }
 }
