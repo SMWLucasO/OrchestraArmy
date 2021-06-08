@@ -10,6 +10,8 @@ using System.Threading;
 
 namespace OrchestraArmy.Music.Controllers
 {
+
+
     public class MusicGenerator : MonoBehaviour
     {
         [SerializeField]
@@ -18,12 +20,9 @@ namespace OrchestraArmy.Music.Controllers
 
         public Scale Scale = Scale.NaturalMinor;
 
-        public Key Key = Key.A;
+        public Tone Key = Tone.A;
 
-        public TimeSignature TimeSignature = TimeSignature.CommonTime;
-
-        public List<AudioSource> InstrumentsBass;
-        public List<AudioSource> InstrumentsLoop;
+        public List<AudioSource> Instruments;
 
         public List<AudioSource> InstrumentsFixedOnBeat;
 
@@ -40,9 +39,6 @@ namespace OrchestraArmy.Music.Controllers
         [Range(0,100)]
         public int MasterVolume = 50;
 
-        private int _prevRhythmScore = 0;
-        private bool _toOnBeat = false;
-        
 
         public RhythmController RhythmController;
 
@@ -53,66 +49,43 @@ namespace OrchestraArmy.Music.Controllers
         void OnEnable()
         {
             RhythmController = new RhythmController();
+            StartCoroutine(BeatCheck());
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-            // Check if instrument should be played
-            int currentRhythmScore = RhythmController.GetRhythmScore(BPM);
-
-            if(_toOnBeat)
-            {
-                if(currentRhythmScore < _prevRhythmScore)
-                {
-                    PlayAudio(InstrumentsFixedOffBeat);
-                    _toOnBeat = false;
-                }
-                
-            }
-            else
-            {
-                if(currentRhythmScore > _prevRhythmScore)
-                {
-                    PlayBass();
-                    PlayAudio(InstrumentsFixedOnBeat);
-                    _toOnBeat = true;
-                }
-            }
-            _prevRhythmScore = currentRhythmScore;
-        }
 
         /// <summary>
-        /// Play a note for each instrument in the list
+        /// Play a note for each instrument in the given list
         /// </summary>
         private void PlayAudio(List<AudioSource> instruments)
         {
             foreach(AudioSource instrument in instruments)
             {
-                instrument.Play();
+                if(instrument != null)
+                {
+                    instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
+                    instrument.Play();
+                }
+                    
             }
         }
 
         /// <summary>
-        /// Play a note for each instrument in the bass instruments list
+        /// Play a note for each instrument in the instruments list, if the interval matches
         /// </summary>
-        private void PlayBass()
+        private void PlayAudio(Interval interval)
         {
-            
-            foreach(AudioSource instrument in InstrumentsBass)
+            foreach(AudioSource instrument in Instruments)
             {
-                
-                instrument.pitch = GetPitch(Tone.C);
-                instrument.Play();
-            }
-            foreach (AudioSource instrument in InstrumentsLoop)
-            {
-
-                instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
-                Debug.Log((int)instrument.GetComponent<InstrumentData>().BaseTone);
-                instrument.loop = true;
-                instrument.Play();
+                if(instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
+                {
+                    int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
+                    if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
+                    {
+                        instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
+                        instrument.Play();
+                    }
+                    
+                }
             }
         }
 
@@ -121,14 +94,29 @@ namespace OrchestraArmy.Music.Controllers
             return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
         }
 
+        private Tone GetRandomCompanyTone()
+        {
+            int[] intervals = new int[3];
+            
+            if(Scale == Scale.NaturalMinor)
+            {
+                // Interval 0, 3, 7
+                intervals = new int[]{0,3,7};
+            }
+            else if (Scale == Scale.Major)
+            {
+                // Interval 0, 5, 9
+                intervals = new int[]{0,5,9};
+            }
+            
+            int random = intervals[(int)(Random.value*2.99)];
+            // Make sure the end value is not larger than 11
+            return (Tone)((int)(Key + random) % 12);
+        }
+
+
         public IEnumerator BeatCheck()
         {
-            // To prevent nullreference exception
-            if(RhythmController == null)
-            {
-                OnEnable();
-            }
-
             while (true)
             {
                 int score = RhythmController.GetRhythmScore(BPM);
@@ -138,9 +126,37 @@ namespace OrchestraArmy.Music.Controllers
                     CurrentBeat = CurrentBeat % 4 + 1;
                     
                     if (CurrentBeat % 2 == 1)
+                    {
                         EventManager.Invoke(new OffBeatEvent());
+                        PlayAudio(InstrumentsFixedOffBeat);
+                    }
                     else
+                    {
                         EventManager.Invoke(new EvenBeatEvent());
+                        PlayAudio(InstrumentsFixedOnBeat);
+                    }
+
+                    switch (CurrentBeat)
+                    {
+                        case 1:
+                            PlayAudio(Interval.Wholes);
+                            PlayAudio(Interval.Halves);
+                            PlayAudio(Interval.Quarters);
+                            break;
+                        case 2:
+                            PlayAudio(Interval.Quarters);
+                            break;
+                        case 3:
+                            PlayAudio(Interval.Halves);
+                            PlayAudio(Interval.Quarters);
+                            break;
+                        case 4:
+                            PlayAudio(Interval.Quarters);
+                            break;
+                        default:
+                            PlayAudio(Interval.Quarters);
+                            break;
+                    }
                 }
 
                 yield return new WaitForSeconds(0.01f);

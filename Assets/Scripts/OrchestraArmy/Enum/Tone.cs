@@ -31,6 +31,6 @@ namespace OrchestraArmy.Enum
         // same as C
         Bsharp = 0,
         //same as B
-        Cflat
+        Cflat = 11
     }
 }

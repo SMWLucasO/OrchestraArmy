@@ -7,20 +7,24 @@ namespace OrchestraArmy.Music.Instruments
 {
 
     [System.Serializable]
-    public struct Range
+    public enum Interval
     {
-        [Range(0,3)]
-        public int LowestOctave;
-        [Range(3,5)]
-        public int HighestOctave;
+        Wholes,
+        Halves,
+        Quarters
     }
 
     public class InstrumentData : MonoBehaviour
     {
 
-        public Range Range;
+        public Tone BaseTone = Tone.C;
 
-        public Tone BaseTone;
+        public Interval Interval = Interval.Quarters;
+
+
+        //The chance a note will play on its interval
+        [Range(0,100)]
+        public int Chance = 100;
         
     }
 }

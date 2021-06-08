@@ -115,7 +115,6 @@ namespace OrchestraArmy.Entity.Entities.Players
                 Player = this
             };
 
-            StartCoroutine(MusicGenerator.BeatCheck());
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
