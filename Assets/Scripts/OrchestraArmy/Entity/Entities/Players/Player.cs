@@ -9,7 +9,6 @@ using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Pickup;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Music.Controllers;
-using OrchestraArmy.Music.Data;
 using OrchestraArmy.Room;
 using UnityEngine;
 
@@ -22,9 +21,8 @@ namespace OrchestraArmy.Entity.Entities.Players
         public WeaponType Instrument;
     }
     
-
     public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
-        IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>
+        IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>, IListener<PlayerAttackEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -39,12 +37,16 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// <summary>
         /// The controller for the rhythm.
         /// </summary>
-        public RhythmController RhythmController { get; set; }
+        public MusicGenerator MusicGenerator;
         
         /// <summary>
         /// The controller for selecting the player's weapon(instrument).
         /// </summary>
         public IWeaponSelectionController WeaponSelectionController { get; set; }
+        
+        /// <summary>
+        /// The controller for the player's tone.
+        /// </summary>
         public IToneController ToneController { get; set; }
 
         /// <summary>
@@ -93,9 +95,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         protected override void OnEnable()
         {
             InitializeSprites();
-
-            RhythmController = new RhythmController();
-            
             DirectionController = new PlayerDirectionController()
             {
                 Entity = this
@@ -124,7 +123,6 @@ namespace OrchestraArmy.Entity.Entities.Players
                 Player = this
             };
 
-            StartCoroutine(RhythmController.BeatCheck());
             // Get the weapon wheel for the player.
             WeaponWheel = GameObject.FindWithTag("UI:WeaponWheel").GetComponent<WeaponWheel>();
             Sprites = InstrumentSprites.First(s => s.Instrument == WeaponWheel.CurrentlySelected.WeaponWheelPlaceholderData.WeaponType).SpriteEntries;
@@ -133,6 +131,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<EnemyAttackHitEvent>(this);
+            EventManager.Bind<PlayerAttackEvent>(this);
         }
 
         protected override void OnDisable()
@@ -141,6 +140,7 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<EnemyAttackHitEvent>(this);
+            EventManager.Unbind<PlayerAttackEvent>(this);
         }
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
@@ -175,7 +175,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public void OnEvent(EnemyAttackHitEvent invokedEvent)
         {
-            //do some fancy damage calc here
+            // do some fancy damage calc here
             int damagePoints = 10;
             int healthAfterAttack = EntityData.Health - damagePoints;
 
@@ -194,11 +194,40 @@ namespace OrchestraArmy.Entity.Entities.Players
                 // in this case, the player is dead.
                 EventManager.Invoke(new PlayerDeathEvent());
                 
-                //reset values to max
+                // reset values to max
                 // Refill player health/stamina.
                 EntityData.Health = EntityData.MaxHealth;
                 EntityData.Stamina = 100;
             }
+        }
+
+        public void OnEvent(PlayerAttackEvent invokedEvent)
+        {
+            // Update stamina
+            EntityData.Stamina += (int)(EntityData.MaxStamina * MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM));
+            Debug.Log(EntityData.Stamina);            
+
+            // Update health if needed
+            if(EntityData.Stamina < 0)
+            {
+                int healthAfterAttack = EntityData.Health + EntityData.Stamina;
+                EntityData.Stamina = 0;
+
+                if (healthAfterAttack > 0)
+                {
+                    EntityData.Health = healthAfterAttack;
+                }
+                else
+                {
+                    // in this case, the player is dead.
+                    EventManager.Invoke(new PlayerDeathEvent());
+                    
+                    // reset values to max
+                    // Refill player health/stamina.
+                    EntityData.Health = EntityData.MaxHealth;
+                    EntityData.Stamina = 100;
+                }
+            } 
         }
     }
 }

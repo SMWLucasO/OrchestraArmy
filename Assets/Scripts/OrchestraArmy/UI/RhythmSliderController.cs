@@ -4,41 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using OrchestraArmy.Music.Controllers;
 
-namespace OrchestraArmy.Music.UI
+namespace OrchestraArmy.UI
 {
     public class RhythmSliderController : MonoBehaviour
     {
         /// <summary>
-        /// The controller for the rhythm
+        /// The controller for the music
         /// </summary>
-        private RhythmController _rhythmController;
+        public MusicGenerator MusicGenerator;
 
         /// <summary>
         /// The UI slider
         /// </summary>
-        public Slider _rhythmSlider;
+        public Slider RhythmSlider;
+
 
         /// <summary>
-        /// BPM
+        /// This function is called when the object becomes enabled and active.
         /// </summary>
-        [SerializeField]
-        [Range(60, 140)]
-        public int BPM = 120;
-
-        // Start is called before the first frame update
         void OnEnable()
         {
-            _rhythmController = new RhythmController(BPM);
             // set max value to 100
-            _rhythmSlider.maxValue = 100; 
+            RhythmSlider.maxValue = 100;
         }
 
         // Update is called once per frame
         void Update()
         {
             // update value of slider each frame
-            _rhythmSlider.value = _rhythmController.RhythmScore();
-            _rhythmController.ChangeBPMImmediately(BPM); 
+            RhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore(MusicGenerator.BPM);
         }
     }
 }
