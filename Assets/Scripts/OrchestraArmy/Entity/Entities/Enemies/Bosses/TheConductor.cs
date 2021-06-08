@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Entity.Entities.Players.WeaponSelection.Weapon.Weapons.Factory;
+using OrchestraArmy.Entity.Entities.Projectiles;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             base.OnEnable();
 
             Behaviour.CurrentState.StateData.ProjectileCount = 3;
+            Behaviour.CurrentState.StateData.ProjectileType = typeof(FinalBossNote);
         }
 
         protected override void Update()
