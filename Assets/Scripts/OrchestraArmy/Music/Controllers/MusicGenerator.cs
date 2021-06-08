@@ -39,10 +39,10 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public static int CurrentBeat = 0;
 
-        [SerializeField]
-        [Range(0,100)]
+        [Range(0,1)]
         public float InstrumentsVolume = .8f;
 
+        [Range(0,1)]
         public float BeatVolume = .9f;
 
         public RhythmController RhythmController;
