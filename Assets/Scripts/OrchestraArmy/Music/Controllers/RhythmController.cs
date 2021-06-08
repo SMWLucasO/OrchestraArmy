@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using OrchestraArmy.Event.Events.Level;
+﻿using OrchestraArmy.Event.Events.Level;
 using System;
 using System.Diagnostics;
 using OrchestraArmy.Event;
@@ -10,7 +9,6 @@ namespace OrchestraArmy.Music.Controllers
     public class RhythmController
     {
 
-        
         /// <summary>
         /// Rhythm stopwatch
         /// </summary>
@@ -21,11 +19,10 @@ namespace OrchestraArmy.Music.Controllers
             SetStopwatch();
         }
 
-        
-
         /// <summary>
         /// Returns the damage to the stamina in negative double
         /// </summary>
+        /// <param name="BPM"></param>
         public double GetStaminaDamage(int BPM)
         {
             // Get elapsed time in seconds
@@ -34,12 +31,12 @@ namespace OrchestraArmy.Music.Controllers
 
             // Calculate damage and return
             return (Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)-1)/4;
-            
         }
 
-        //// <summary>
+        /// <summary>
         /// Returns value from 1 to 100 indicating what the score is right now, 100 is good, 1 is bad.
         /// </summary>
+        /// <param name="BPM"></param>
         public int GetRhythmScore(int BPM)
         {
             // Get elapsed time in seconds
@@ -56,7 +53,7 @@ namespace OrchestraArmy.Music.Controllers
         public void SetStopwatch()
         {
             // only set if not existing, or you reset the current stopwatch
-            if(_rhythmStopwatch == null) 
+            if (_rhythmStopwatch == null) 
             {
                 _rhythmStopwatch = new Stopwatch();
                 _rhythmStopwatch.Start();

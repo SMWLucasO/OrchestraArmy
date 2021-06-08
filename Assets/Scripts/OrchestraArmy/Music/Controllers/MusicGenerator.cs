@@ -14,25 +14,49 @@ namespace OrchestraArmy.Music.Controllers
 {
     public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
+        /// <summary>
+        /// The BPM for the game.
+        /// </summary>
         [SerializeField]
         [Range(1,140)]
         public int BPM = 120;
 
+        /// <summary>
+        /// The scale for the music harmony.
+        /// </summary>
         public Scale Scale = Scale.NaturalMinor;
 
+        /// <summary>
+        /// The key for the music; the base tone.
+        /// </summary>
         public Tone Key = Tone.A;
 
         private bool _inBattle = false;
         private bool _deathEvent = false;
 
+        /// <summary>
+        /// Instruments that should play.
+        /// </summary>
         public List<AudioSource> Instruments;
 
-        public List<AudioSource> InstrumentsDeath;
-        
+        /// <summary>
+        /// Instruments that should play in battle.
+        /// </summary>
         public List<AudioSource> InstrumentsBattleOnly;
+        
+        /// <summary>
+        /// Instruments that should play when death occurs.
+        /// </summary>
+        public List<AudioSource> InstrumentsDeath;
 
+        /// <summary>
+        /// Instruments that should play on beat.
+        /// </summary>
         public List<AudioSource> InstrumentsFixedOnBeat;
 
+        /// <summary>
+        /// Instruments that should play off beat.
+        /// </summary>
         public List<AudioSource> InstrumentsFixedOffBeat;
 
         /// <summary>
@@ -40,12 +64,21 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public static int CurrentBeat = 0;
 
+        /// <summary>
+        /// The volume for the instruments.
+        /// </summary>
         [Range(0,1)]
         public float InstrumentsVolume = .8f;
 
+        /// <summary>
+        /// The volume for the beat instruments.
+        /// </summary>
         [Range(0,1)]
         public float BeatVolume = .9f;
 
+        /// <summary>
+        /// The RhythmController
+        /// </summary>
         public RhythmController RhythmController;
 
         /// <summary>
@@ -83,7 +116,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         private void PlayBeatAudio(List<AudioSource> instruments)
         {
-            foreach(AudioSource instrument in instruments)
+            foreach (AudioSource instrument in instruments)
             {
                 if (instrument != null)
                 {
@@ -135,11 +168,19 @@ namespace OrchestraArmy.Music.Controllers
             }
         }
 
-        private float GetPitch(Tone tone, Tone offset = Tone.C)
-        {
-            return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
-        }
-        
+        /// <summary>
+        /// Calculate the needed pitch for the tone.
+        /// </summary>
+        /// <param name="tone"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        private float GetPitch(Tone tone, Tone offset = Tone.C) 
+            => Mathf.Pow(2, ((int)tone - (int)offset)/12f);
+
+        /// <summary>
+        /// Get a random tone that fits in the current scale.
+        /// </summary>
+        /// <returns></returns>
         private Tone GetRandomCompanyTone()
         {
             int[] intervals = new int[3];
@@ -156,10 +197,15 @@ namespace OrchestraArmy.Music.Controllers
             }
             
             int random = intervals[(int)(Random.value*2.99)];
+            
             // Make sure the end value is not larger than 11
             return (Tone)((int)(Key + random) % 12);
         }
-
+        
+        /// <summary>
+        /// Check the beat and performs all actions that match this beat.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator BeatCheck()
         {
             while (true)
