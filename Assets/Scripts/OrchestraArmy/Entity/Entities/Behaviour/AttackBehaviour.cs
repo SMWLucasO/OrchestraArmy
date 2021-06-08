@@ -133,7 +133,6 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             enemyTransform.forward = (playerPosition - enemyPosition).normalized;
             
             // Generate the enemy note to be shot.
-            Debug.Log(ProjectileType.Name);
             var obj = (GameObject) Object.Instantiate(
                 Resources.Load($"Prefabs/Projectiles/{ProjectileType.Name}"),
                 enemyPosition + (enemyTransform.forward * (scale.x * 1.1f)),
