@@ -1,4 +1,5 @@
 ﻿using System;
+using OrchestraArmy.SaveData;
 using UnityEngine;
 using Cursor = UnityEngine.Cursor;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ namespace OrchestraArmy.Menu
 {
     public class GameSettings : MonoBehaviour
     {
+        private SettingsData data = new SettingsData();
+        
         public Texture2D[] cursorSprite;
         public GameObject[] showCursor;
         public GameObject[] showDifficulty;
@@ -18,8 +21,17 @@ namespace OrchestraArmy.Menu
         private int savedCursor = 0;
         private int tempDifficulty = 1;
         private int tempCursor = 0;
-        
 
+        /// <summary>
+        /// load the saved data;
+        /// </summary>
+        private void OnEnable()
+        {
+            data = DataSaver.loadData<SettingsData>("settingsData");
+            
+            sliderMouse.GetComponent<Scrollbar>().value = data.mouse;
+            sliderDifficulty.GetComponent<Scrollbar>().value = data.gMusic;
+        }
 
         public void SetDifficulty()
         {
@@ -66,19 +78,25 @@ namespace OrchestraArmy.Menu
 
         public void SaveSettings()
         {
+            data = DataSaver.loadData<SettingsData>("settingsData");
+            
             savedCursor = tempCursor;
             savedDifficulty = tempDifficulty;
             Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
-            //todo: link to damage and speed of enemies
+
+            data.mouse = savedCursor;
+            data.dificulty = savedDifficulty;
+
+            DataSaver.saveData(data, "settingsData");
         }
 
         public void Undo()
         {
+            data = DataSaver.loadData<SettingsData>("settingsData");
+            
             sliderDifficulty.GetComponent<Scrollbar>().value = savedDifficulty * 0.5f;
             sliderMouse.GetComponent<Scrollbar>().value = savedCursor * (1.0f/3.0f);
-            Debug.Log("-------------");
-            Debug.Log(savedCursor);
-            
+
             if (savedDifficulty==0)
             {
                 showDifficulty[0].SetActive(true);
@@ -99,6 +117,11 @@ namespace OrchestraArmy.Menu
             }
             
             Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
+
+            data.mouse = savedCursor;
+            data.dificulty = savedDifficulty;
+            
+            DataSaver.saveData(data, "settingsData");
         } 
     }
 }
