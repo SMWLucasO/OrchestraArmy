@@ -3390,7 +3390,7 @@ PrefabInstance:
       objectReference: {fileID: 369489508883371697, guid: 9fc9441385c08b747ae324e1ea7a838c, type: 3}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[0]
@@ -3404,6 +3404,18 @@ PrefabInstance:
       propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[2]
       value: 
       objectReference: {fileID: 4575979035899005427, guid: 0c48f3ff79e94714c99792726ed340be, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.Bosses.Array.data[3]
+      value: 
+      objectReference: {fileID: 2341886867986049432, guid: a69d1597eb940e847b208321a662fe72, type: 3}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.InstrumentDrops.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: <RoomPrefabData>k__BackingField.InstrumentDrops.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6962567360145505131, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: m_Name
       value: TheRoom
@@ -3471,6 +3483,10 @@ PrefabInstance:
       objectReference: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
     - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: <EntityData>k__BackingField._health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: <EntityData>k__BackingField._maxHealth
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670168, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
