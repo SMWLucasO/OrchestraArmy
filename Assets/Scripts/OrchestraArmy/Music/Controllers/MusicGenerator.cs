@@ -12,7 +12,8 @@ using OrchestraArmy.Event.Events.Level;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
+    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, 
+    IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
         /// <summary>
         /// The BPM for the game.

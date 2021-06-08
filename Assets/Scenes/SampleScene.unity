@@ -1237,7 +1237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BaseTone: 0
-  Interval: 2
+  Interval: 1
   Chance: 100
   SpecificVolume: 0.5
 --- !u!82 &1075483721
