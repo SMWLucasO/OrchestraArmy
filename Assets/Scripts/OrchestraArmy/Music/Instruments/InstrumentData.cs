@@ -7,15 +7,25 @@ namespace OrchestraArmy.Music.Instruments
 {
     public class InstrumentData : MonoBehaviour
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Tone BaseTone = Tone.C;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Interval Interval = Interval.Quarters;
-
-
-        //The chance a note will play on its interval
+        
+        /// <summary>
+        /// The chance a note will play on its interval
+        /// </summary>
         [Range(0,100)]
         public int Chance = 100;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public float SpecificVolume = 1f;
     }
 }

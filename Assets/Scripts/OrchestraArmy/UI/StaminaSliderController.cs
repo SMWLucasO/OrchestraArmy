@@ -7,8 +7,11 @@ using OrchestraArmy.Entity.Entities.Players;
 public class StaminaSliderController : MonoBehaviour
 {
     private Slider _staminaSlider;
+    
     public GameObject Player;
+    
     private Player _player;
+    
     /// <summary>
     /// This function is called when the object becomes enabled and active.
     /// </summary>

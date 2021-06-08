@@ -21,7 +21,6 @@ namespace OrchestraArmy.Entity.Entities.Players
         public WeaponType Instrument;
     }
     
-
     public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
         IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>, IListener<PlayerAttackEvent>
     {
@@ -44,6 +43,10 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// The controller for selecting the player's weapon(instrument).
         /// </summary>
         public IWeaponSelectionController WeaponSelectionController { get; set; }
+        
+        /// <summary>
+        /// The controller for the player's tone.
+        /// </summary>
         public IToneController ToneController { get; set; }
 
         /// <summary>
@@ -172,7 +175,7 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public void OnEvent(EnemyAttackHitEvent invokedEvent)
         {
-            //do some fancy damage calc here
+            // do some fancy damage calc here
             int damagePoints = 10;
             int healthAfterAttack = EntityData.Health - damagePoints;
 
@@ -191,7 +194,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                 // in this case, the player is dead.
                 EventManager.Invoke(new PlayerDeathEvent());
                 
-                //reset values to max
+                // reset values to max
                 // Refill player health/stamina.
                 EntityData.Health = EntityData.MaxHealth;
                 EntityData.Stamina = 100;
@@ -200,7 +203,7 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         public void OnEvent(PlayerAttackEvent invokedEvent)
         {
-            //Update stamina
+            // Update stamina
             EntityData.Stamina += (int)(EntityData.MaxStamina * MusicGenerator.RhythmController.GetStaminaDamage(MusicGenerator.BPM));
             Debug.Log(EntityData.Stamina);            
 
@@ -219,7 +222,7 @@ namespace OrchestraArmy.Entity.Entities.Players
                     // in this case, the player is dead.
                     EventManager.Invoke(new PlayerDeathEvent());
                     
-                    //reset values to max
+                    // reset values to max
                     // Refill player health/stamina.
                     EntityData.Health = EntityData.MaxHealth;
                     EntityData.Stamina = 100;

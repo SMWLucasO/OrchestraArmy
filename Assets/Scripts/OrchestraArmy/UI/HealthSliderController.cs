@@ -7,10 +7,13 @@ using OrchestraArmy.Entity.Entities.Players;
 
 public class HealthSliderController : MonoBehaviour
 {
+    
     private Slider _healthSlider;
 
     public GameObject Player;
+    
     private Player _player;
+    
     /// <summary>
     /// This function is called when the object becomes enabled and active.
     /// </summary>

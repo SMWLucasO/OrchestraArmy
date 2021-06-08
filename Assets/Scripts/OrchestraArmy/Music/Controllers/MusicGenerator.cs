@@ -16,37 +16,68 @@ namespace OrchestraArmy.Music.Controllers
 
     public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [SerializeField]
         [Range(1,140)]
         public int BPM = 120;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Scale Scale = Scale.NaturalMinor;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Tone Key = Tone.A;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool InBattle = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<AudioSource> Instruments;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public List<AudioSource> InstrumentsBattleOnly;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<AudioSource> InstrumentsFixedOnBeat;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<AudioSource> InstrumentsFixedOffBeat;
 
         /// <summary>
         /// The current beat. (1,2,3,4)
         /// </summary>
         public static int CurrentBeat = 0;
-
-
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
         [SerializeField]
         [Range(0,100)]
         public float InstrumentsVolume = .8f;
 
+        /// <summary>
+        ///
+        /// </summary>
         public float BeatVolume = .9f;
-
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public RhythmController RhythmController;
 
 
@@ -69,9 +100,9 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         private void PlayAudio(List<AudioSource> instruments)
         {
-            foreach(AudioSource instrument in instruments)
+            foreach (AudioSource instrument in instruments)
             {
-                if(instrument != null)
+                if (instrument != null)
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
                     instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume;
@@ -88,12 +119,12 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         private void PlayAudio(Interval interval)
         {
-            foreach(AudioSource instrument in Instruments)
+            foreach (AudioSource instrument in Instruments)
             {
-                if(instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
+                if (instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
                 {
                     int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
-                    if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
+                    if (random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                     {
                         instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
                         instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume;
@@ -102,14 +133,14 @@ namespace OrchestraArmy.Music.Controllers
                 }
             }
 
-            if(InBattle)
+            if (InBattle)
             {
-                foreach(AudioSource instrument in Instruments)
+                foreach (AudioSource instrument in Instruments)
                 {
-                    if(instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
+                    if (instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
                     {
                         int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
-                        if(random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
+                        if (random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                         {
                             instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
                             instrument.Play();
@@ -119,11 +150,19 @@ namespace OrchestraArmy.Music.Controllers
             }
         }
 
-        private float GetPitch(Tone tone, Tone offset = Tone.C)
-        {
-            return Mathf.Pow(2, ((int)tone - (int)offset)/12f);
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tone"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        private float GetPitch(Tone tone, Tone offset = Tone.C) 
+            => Mathf.Pow(2, ((int)tone - (int)offset)/12f);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private Tone GetRandomCompanyTone()
         {
             int[] intervals = new int[3];
@@ -140,11 +179,16 @@ namespace OrchestraArmy.Music.Controllers
             }
             
             int random = intervals[(int)(Random.value*2.99)];
+            
             // Make sure the end value is not larger than 11
             return (Tone)((int)(Key + random) % 12);
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator BeatCheck()
         {
             while (true)
