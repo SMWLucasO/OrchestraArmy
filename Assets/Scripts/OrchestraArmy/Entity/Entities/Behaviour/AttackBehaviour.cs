@@ -59,7 +59,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             try
             {
                 destDist = (navAgent.destination - playerPosition).magnitude;
-            } catch(Exception e){}
+            } catch(Exception){}
             
             // Prevent destination outside attack range
             if (destDist<2.5 || destDist>7.5)
@@ -104,11 +104,10 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         public void OnEvent(EnemyTurnEvent invokedEvent)
         {
             StateData.ProjectileTone = Tone.A;
-            
             StateData.AttackController.Enemy = StateData.Enemy;
             StateData.AttackController.Player = StateData.Player;
+            
             StateData.AttackController.HandleAttack();
-
 
             if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
                 return;
