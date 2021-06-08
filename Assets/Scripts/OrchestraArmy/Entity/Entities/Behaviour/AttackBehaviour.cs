@@ -108,7 +108,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             Transform enemyTransform;
             Transform playerTransform;
             
-            //check if enemy and player are still allive
+            // check if enemy and player are still alive
             try
             {
                 enemyTransform = StateData.Enemy.transform;
