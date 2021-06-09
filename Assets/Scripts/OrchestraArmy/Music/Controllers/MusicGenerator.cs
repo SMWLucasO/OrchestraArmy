@@ -29,6 +29,17 @@ namespace OrchestraArmy.Music.Controllers
         }
 
         /// <summary>
+        /// Temporary store the changed BPM, will be used to change BPM at the first beat to prevent stuttering
+        /// </summary>
+        private int _newBPM = 120;
+        
+        /// <summary>
+        /// Value for BPM property
+        /// </summary>
+        [Range(1, 140)]
+        private int _BPM = 120;
+
+        /// <summary>
         /// The scale for the music harmony.
         /// </summary>
         public Scale Scale = Scale.NaturalMinor;
@@ -106,11 +117,6 @@ namespace OrchestraArmy.Music.Controllers
         /// The RhythmController
         /// </summary>
         public RhythmController RhythmController;
-
-        private int _newBPM = 120;
-        
-        [Range(1, 140)]
-        private int _BPM = 120;
 
         /// <summary>
         /// This function is called when the object becomes enabled and active.
@@ -254,6 +260,7 @@ namespace OrchestraArmy.Music.Controllers
             {
                 int score = RhythmController.GetRhythmScore(BPM);
 
+                //change BPM at first beat if needed
                 if (score < 1 && _newBPM != _BPM)
                 {
                     RhythmController.ResetStopWatch();
