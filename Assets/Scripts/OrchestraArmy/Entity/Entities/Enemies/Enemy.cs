@@ -1,4 +1,5 @@
-﻿using OrchestraArmy.Entity.Entities.Behaviour;
+﻿using System;
+using OrchestraArmy.Entity.Entities.Behaviour;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Enemies.Bosses;
 using OrchestraArmy.Entity.Entities.Players;
@@ -19,6 +20,10 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 {
     public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
     {
+        /// <summary>
+        /// used for dynamic difficulty
+        /// </summary>
+        private int _difficulty = 0;
 
         public BehaviourStateMachine Behaviour { get; set; }
 
@@ -192,10 +197,22 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             _spriteRenderer.color = color;
         }
 
-        public Enemy()
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void SetVariableHp()
         {
-            int difficulty = DataSaver.LoadData<SettingsData>("settingsData").Difficulty;
-            EntityData.MaxHealth = (int)(((LevelManager.Instance.Level-1)/2) * 10*(difficulty+1));
+            _difficulty = DataSaver.LoadData<SettingsData>("settingsData").Difficulty;
+            EntityData.MaxHealth += (int)(((LevelManager.Instance.Level-1)*0.5f) * 10*(_difficulty+1));
+            EntityData.Health = EntityData.MaxHealth;
+            Debug.Log((int)(((LevelManager.Instance.Level-1)*0.5f) * 10*(_difficulty+1)));
+            Debug.Log(EntityData.MaxHealth);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            SetVariableHp();
         }
     }
 }

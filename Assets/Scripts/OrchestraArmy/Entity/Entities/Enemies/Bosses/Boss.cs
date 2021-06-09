@@ -23,8 +23,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             Destroy(gameObject);
         }
 
-        protected Boss()
+        protected override void SetVariableHp()
         {
+            return;
         }
     }
 }
