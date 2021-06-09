@@ -21,10 +21,12 @@ namespace OrchestraArmy
         /// List of the current enemies that are registered
         /// </summary>
         private DoublyLoopedLinkedList<int> _enemies = new DoublyLoopedLinkedList<int>();
+        
         /// <summary>
         /// The current enemy
         /// </summary>
         private DoublyLinkedListNode<int> _current;
+        
         /// <summary>
         /// Variable to keep instance alive
         /// </summary>
@@ -55,18 +57,18 @@ namespace OrchestraArmy
         /// </summary>
         public void OnEvent(OffBeatEvent invokedEvent)
         {
-            //if there is no current enemy and the list is empty => return
+            // if there is no current enemy and the list is empty => return
             if (_current == null && _enemies.Start == null)
                 return;
 
-            //if there is no current enemy => assume start
+            // if there is no current enemy => assume start
             if (_current == null)
                 _current = _enemies.Start;
 
-            //fire the enemy turn event
+            // fire the enemy turn event
             EventManager.Invoke(new EnemyTurnEvent() {EnemyId = _current.Data});
             
-            //set current to the next
+            // set current to the next
             _current = _current.Next;
         }
 
@@ -82,7 +84,7 @@ namespace OrchestraArmy
             
             _enemies.AddToEnd(invokedEvent.EntityId);
 
-            //current is registered by value, so refetch. I miss pointers
+            // current is registered by value, so refetch. I miss pointers
             _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
         }
         
@@ -93,7 +95,7 @@ namespace OrchestraArmy
         {
             if (_enemies.Contains(invokedEvent.EntityId))
             {
-                //if the current is set and it is equal to what we delete => set to next
+                // if the current is set and it is equal to what we delete => set to next
                 if (_current != null && invokedEvent.EntityId == _current.Data)
                     _current = _current.Next;
                 
@@ -103,7 +105,7 @@ namespace OrchestraArmy
                 if (_enemies.Start == null)
                     EventManager.Invoke(new LeaveCombatEvent());
 
-                //current is registered by value, so refetch. I miss pointers
+                // current is registered by value, so refetch. I miss pointers
                 _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);
             }
         }
