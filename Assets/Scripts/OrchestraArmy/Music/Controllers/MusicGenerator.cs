@@ -251,11 +251,10 @@ namespace OrchestraArmy.Music.Controllers
         /// <returns></returns>
         public IEnumerator BeatCheck()
         {
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             while (true)
             {
 
-                SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
-            
                 if (data != null)
                 {
                     _userBeatVolume = data.Beats;
