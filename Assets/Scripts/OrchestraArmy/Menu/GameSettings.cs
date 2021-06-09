@@ -29,8 +29,8 @@ namespace OrchestraArmy.Menu
         {
             data = DataSaver.loadData<SettingsData>("settingsData");
             
-            sliderMouse.GetComponent<Scrollbar>().value = data.mouse;
-            sliderDifficulty.GetComponent<Scrollbar>().value = data.gMusic;
+            sliderMouse.GetComponent<Scrollbar>().value = data.mouse * (1.0f/3.0f);;
+            sliderDifficulty.GetComponent<Scrollbar>().value = data.dificulty * 0.5f;
         }
 
         public void SetDifficulty()
@@ -71,6 +71,7 @@ namespace OrchestraArmy.Menu
             {
                 v.SetActive(false);
             }
+            Debug.Log(state);
             showCursor[state].SetActive(true);
             
             Cursor.SetCursor(cursorSprite[state],Vector2.zero,CursorMode.ForceSoftware);

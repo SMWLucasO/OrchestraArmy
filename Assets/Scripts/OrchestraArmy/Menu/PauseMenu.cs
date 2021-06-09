@@ -23,6 +23,7 @@ namespace OrchestraArmy.Menu
 
         public void QuitToMenu()
         {
+            MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
             Time.timeScale = 1;
             SceneManager.LoadScene(0);
         }

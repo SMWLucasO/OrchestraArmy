@@ -1965,7 +1965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &450046823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4523,6 +4523,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db2bb3c207a56e408e93c3a234ac057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorSprite:
+  - {fileID: 2800000, guid: d893d0f9884c0a142bbb465303aee29b, type: 3}
+  - {fileID: 2800000, guid: 4d1a5435ac0b1d24484126888a252c11, type: 3}
+  - {fileID: 2800000, guid: 59191d183329fc6489a3ef408262886e, type: 3}
+  - {fileID: 2800000, guid: dae2678d6e97b4042b5dcdc729c415d8, type: 3}
 --- !u!1 &1054177939
 GameObject:
   m_ObjectHideFlags: 0
