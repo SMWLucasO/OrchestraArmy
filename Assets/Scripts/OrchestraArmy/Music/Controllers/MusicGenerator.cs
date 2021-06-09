@@ -32,7 +32,14 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         public Tone Key = Tone.A;
 
+        /// <summary>
+        /// Boolean determining whether we are currently in battle mode.
+        /// </summary>
         private bool _inBattle = false;
+        
+        /// <summary>
+        /// Boolean determining whether the death event is occuring at this point in time.
+        /// </summary>
         private bool _deathEvent = false;
 
         /// <summary>
@@ -133,7 +140,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         private void PlayAudio(List<AudioSource> instruments, Interval interval)
         {
-            foreach(AudioSource instrument in instruments)
+            foreach (AudioSource instrument in instruments)
             {
                 if (instrument != null && instrument.GetComponent<InstrumentData>().Interval == interval)
                 {

@@ -76,11 +76,16 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// </summary>
         public int StaminaBoostInterval = 10;
 
+        /// <summary>
+        /// The counter for when the stamina of the player gets increased.
+        /// </summary>
         public int StaminaBoostIntervalCounter = 0;
 
+        /// <summary>
+        /// A boolean determining whether the player is in battle mode.
+        /// </summary>
         private bool _inBattle;
 
-            
         protected override void Update()
         {
             base.Update();
