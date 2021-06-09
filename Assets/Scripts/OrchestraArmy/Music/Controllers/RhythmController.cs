@@ -1,5 +1,4 @@
-﻿using OrchestraArmy.Event.Events.Level;
-using System;
+﻿using System;
 using System.Diagnostics;
 using OrchestraArmy.Event;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class RhythmController : IListener<EnteredNewLevelEvent>
+    public class RhythmController
     {
 
         /// <summary>
@@ -17,7 +16,6 @@ namespace OrchestraArmy.Music.Controllers
 
         public RhythmController()
         {
-            EventManager.Bind<EnteredNewLevelEvent>(this);
             SetStopwatch();
         }
 
@@ -76,10 +74,5 @@ namespace OrchestraArmy.Music.Controllers
             
         }
 
-
-        public void OnEvent(EnteredNewLevelEvent invokedEvent)
-        {
-            // Behaviour not specified yet
-        }
     }
 }
