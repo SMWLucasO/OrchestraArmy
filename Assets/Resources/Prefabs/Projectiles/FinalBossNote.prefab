@@ -67,7 +67,7 @@ MonoBehaviour:
     Sprites:
     - {fileID: 21300000, guid: bc677dc6d6a12255aaa7e271a5817ee3, type: 3}
   <MovementData>k__BackingField:
-    _walkSpeed: 10
+    _walkSpeed: 8
 --- !u!136 &7354626313918657945
 CapsuleCollider:
   m_ObjectHideFlags: 0

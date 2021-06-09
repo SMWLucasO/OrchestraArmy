@@ -14,7 +14,7 @@ namespace OrchestraArmy
     /// <summary>
     /// Keeps track of the current combat state
     /// </summary>
-    public class CombatManager: IListener<OffBeatEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>, IListener<PlayerDeathEvent>
+    public class CombatManager: IListener<OffBeatEvent>, IListener<EnemyCombatInitiatedEvent>, IListener<EnemyLeaveCombatEvent>, IListener<PlayerDeathEvent>
     {
         /// <summary>
         /// List of the current enemies that are registered
@@ -44,8 +44,8 @@ namespace OrchestraArmy
         private CombatManager()
         {
             EventManager.Bind<OffBeatEvent>(this);
-            EventManager.Bind<CombatInitiatedEvent>(this);
-            EventManager.Bind<LeaveCombatEvent>(this);
+            EventManager.Bind<EnemyCombatInitiatedEvent>(this);
+            EventManager.Bind<EnemyLeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
         }
 
@@ -72,9 +72,12 @@ namespace OrchestraArmy
         /// <summary>
         /// Register an enemy when he enters combat mode
         /// </summary>
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(EnemyCombatInitiatedEvent invokedEvent)
         {
             if (_enemies.Contains(invokedEvent.EntityId)) return;
+            
+            if (_enemies.Start == null)
+                EventManager.Invoke(new InitiatedCombatEvent());
             
             _enemies.AddToEnd(invokedEvent.EntityId);
 
@@ -85,7 +88,7 @@ namespace OrchestraArmy
         /// <summary>
         /// Unregister the enemy when he leaves combat mode
         /// </summary>
-        public void OnEvent(LeaveCombatEvent invokedEvent)
+        public void OnEvent(EnemyLeaveCombatEvent invokedEvent)
         {
             if (_enemies.Contains(invokedEvent.EntityId))
             {
@@ -94,6 +97,10 @@ namespace OrchestraArmy
                     _current = _current.Next;
                 
                 _enemies.Remove(invokedEvent.EntityId);
+                
+                
+                if (_enemies.Start == null)
+                    EventManager.Invoke(new LeaveCombatEvent());
 
                 //current is registered by value, so refetch. I miss pointers
                 _current = _current == null ? _enemies.Start : _enemies.Get(_current.Data);

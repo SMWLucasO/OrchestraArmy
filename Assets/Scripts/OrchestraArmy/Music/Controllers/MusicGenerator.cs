@@ -12,7 +12,7 @@ using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, 
+    public class MusicGenerator : MonoBehaviour, IListener<InitiatedCombatEvent>, 
     IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
         /// <summary>
@@ -115,7 +115,7 @@ namespace OrchestraArmy.Music.Controllers
             _userBeatVolume = 1f;
             _inBattle = false;
             
-            EventManager.Bind<CombatInitiatedEvent>(this);
+            EventManager.Bind<InitiatedCombatEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnteredNewLevelEvent>(this);
@@ -136,7 +136,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         void OnDisable()
         {
-            EventManager.Unbind<CombatInitiatedEvent>(this);
+            EventManager.Unbind<InitiatedCombatEvent>(this);
             EventManager.Unbind<LeaveCombatEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<EnteredNewLevelEvent>(this);
@@ -287,7 +287,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Event for when combat is started
         /// </summary>
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(InitiatedCombatEvent invokedEvent)
         {
             _inBattle = true;
             BPM = 110;

@@ -23,7 +23,7 @@ namespace OrchestraArmy.Entity.Entities.Players
     
     public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
         IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>, 
-        IListener<PlayerAttackEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
+        IListener<PlayerAttackEvent>, IListener<EnemyCombatInitiatedEvent>, IListener<EnemyLeaveCombatEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -161,8 +161,8 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<EnemyAttackHitEvent>(this);
             EventManager.Bind<PlayerAttackEvent>(this);
-            EventManager.Bind<CombatInitiatedEvent>(this);
-            EventManager.Bind<LeaveCombatEvent>(this);
+            EventManager.Bind<EnemyCombatInitiatedEvent>(this);
+            EventManager.Bind<EnemyLeaveCombatEvent>(this);
             _inBattle = false;
         }
 
@@ -173,8 +173,8 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<EnemyAttackHitEvent>(this);
             EventManager.Unbind<PlayerAttackEvent>(this);
-            EventManager.Unbind<CombatInitiatedEvent>(this);
-            EventManager.Unbind<LeaveCombatEvent>(this);
+            EventManager.Unbind<EnemyCombatInitiatedEvent>(this);
+            EventManager.Unbind<EnemyLeaveCombatEvent>(this);
         }
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
@@ -263,12 +263,12 @@ namespace OrchestraArmy.Entity.Entities.Players
             } 
         }
 
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(EnemyCombatInitiatedEvent invokedEvent)
         {
             _inBattle = true;
         }
 
-        public void OnEvent(LeaveCombatEvent invokedEvent)
+        public void OnEvent(EnemyLeaveCombatEvent invokedEvent)
         {
             _inBattle = false;
         }
