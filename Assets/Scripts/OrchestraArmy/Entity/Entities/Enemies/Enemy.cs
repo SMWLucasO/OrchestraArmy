@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using OrchestraArmy.Entity.Entities.Enemies.Controllers;
+using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
@@ -189,6 +190,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             }
 
             _spriteRenderer.color = color;
+        }
+
+        public Enemy()
+        {
+            int difficulty = DataSaver.LoadData<SettingsData>("settingsData").Difficulty;
+            EntityData.MaxHealth = (int)(((LevelManager.Instance.Level-1)/2) * 10*(difficulty+1));
         }
     }
 }

@@ -22,5 +22,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             EventManager.Invoke(new BossDeathEvent() { PositionOfDeath = transform.position, InstrumentToAward = WeaponType });
             Destroy(gameObject);
         }
+
+        protected Boss()
+        {
+        }
     }
 }

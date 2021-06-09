@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2542,6 +2542,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1839649594050069537, guid: 91857907806ba2e43b7a55bc7f123d10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1839649594471544513, guid: 91857907806ba2e43b7a55bc7f123d10, type: 3}
       propertyPath: m_Name
       value: PauseMenu
@@ -3707,6 +3711,10 @@ PrefabInstance:
       propertyPath: DeathScreen
       value: 
       objectReference: {fileID: 410868433}
+    - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
+      propertyPath: ForceNextRoomIsBoss
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6962567360145505130, guid: fb800740ec1892d428b83f6903fa0a8b, type: 3}
       propertyPath: <RoomPrefabData>k__BackingField.FillObj
       value: 
