@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6358986316931355647}
   - component: {fileID: 5282798930959010217}
   m_Layer: 0
-  m_Name: BossNote 1
+  m_Name: BossNote
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
     Sprites:
     - {fileID: 21300000, guid: bc677dc6d6a12255aaa7e271a5817ee3, type: 3}
   <MovementData>k__BackingField:
-    _walkSpeed: 10
+    _walkSpeed: 7
 --- !u!1 &6083409659253803625
 GameObject:
   m_ObjectHideFlags: 0
