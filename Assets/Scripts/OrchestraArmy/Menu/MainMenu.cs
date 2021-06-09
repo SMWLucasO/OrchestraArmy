@@ -23,7 +23,7 @@ namespace OrchestraArmy.Menu
             {
                 Cursor.SetCursor(CursorSprite[data.Mouse],Vector2.zero,CursorMode.ForceSoftware);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Debug.Log("no saved settings found\ngenerating new settings");
                 DataSaver.SaveData(new SettingsData(), "settingsData");
