@@ -74,5 +74,10 @@ namespace OrchestraArmy.Music.Controllers
             
         }
 
+        public void ResetStopWatch()
+        {
+            if (_rhythmStopwatch != null)
+                _rhythmStopwatch.Restart();
+        }
     }
 }

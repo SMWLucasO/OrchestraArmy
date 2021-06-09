@@ -12,15 +12,32 @@ using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, 
+    public class MusicGenerator : MonoBehaviour, IListener<InitiatedCombatEvent>, 
     IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
         /// <summary>
         /// The BPM for the game.
         /// </summary>
-        [SerializeField]
-        [Range(1,140)]
-        public int BPM = 120;
+        [field: SerializeField]
+        public int BPM
+        {
+            get => _BPM;
+            set
+            {
+                _newBPM = value;
+            }
+        }
+
+        /// <summary>
+        /// Temporary store the changed BPM, will be used to change BPM at the first beat to prevent stuttering
+        /// </summary>
+        private int _newBPM = 120;
+        
+        /// <summary>
+        /// Value for BPM property
+        /// </summary>
+        [Range(1, 140)]
+        private int _BPM = 120;
 
         /// <summary>
         /// The scale for the music harmony.
@@ -113,7 +130,7 @@ namespace OrchestraArmy.Music.Controllers
             _userBeatVolume = 1f;
             _inBattle = false;
             
-            EventManager.Bind<CombatInitiatedEvent>(this);
+            EventManager.Bind<InitiatedCombatEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnteredNewLevelEvent>(this);
@@ -128,7 +145,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         void OnDisable()
         {
-            EventManager.Unbind<CombatInitiatedEvent>(this);
+            EventManager.Unbind<InitiatedCombatEvent>(this);
             EventManager.Unbind<LeaveCombatEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<EnteredNewLevelEvent>(this);
@@ -246,6 +263,13 @@ namespace OrchestraArmy.Music.Controllers
                 }
 
                 int score = RhythmController.GetRhythmScore(BPM);
+
+                //change BPM at first beat if needed
+                if (score < 1 && _newBPM != _BPM)
+                {
+                    RhythmController.ResetStopWatch();
+                    _BPM = _newBPM;
+                }
                             
                 if (score >= 95 && CurrentBeat % 2 == 1 || score <= 5 && CurrentBeat % 2 == 0)
                 {
@@ -291,7 +315,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Event for when combat is started
         /// </summary>
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(InitiatedCombatEvent invokedEvent)
         {
             _inBattle = true;
             BPM = 110;

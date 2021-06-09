@@ -25,7 +25,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
         /// <summary>
         /// The distance traveled before seeking.
         /// </summary>
-        public float DistanceBeforeSeek = 3f;
+        public float DistanceForSeek = 2.5f;
         
         /// <summary>
         /// The movement controller currently being executed.
@@ -50,7 +50,7 @@ namespace OrchestraArmy.Entity.Entities.Projectiles.Controllers
             }
             
             // If the distance is far enough, we can move on to the homing projectiles.
-            if (Vector3.Distance(StartingPosition, Entity.transform.position) >= DistanceBeforeSeek)
+            if (Vector3.Distance(Entity.transform.position, Player.transform.position) <= DistanceForSeek)
             {
                 MovementController = new PlayerFollowingProjectileMovementController()
                 {

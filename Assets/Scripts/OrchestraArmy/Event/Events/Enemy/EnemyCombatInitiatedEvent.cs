@@ -1,6 +1,6 @@
 ﻿namespace OrchestraArmy.Event.Events.Enemy
 {
-    public class LeaveCombatEvent: IEvent
+    public class EnemyCombatInitiatedEvent : IEvent
     {
         public int EntityId;
     }
