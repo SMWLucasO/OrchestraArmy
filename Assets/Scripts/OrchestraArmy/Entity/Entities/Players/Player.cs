@@ -74,12 +74,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// <summary>
         /// How many updates it takes to regenerate stamina.
         /// </summary>
-        public int StaminaBoostInterval = 10;
+        public float StaminaBoostIntervalInSeconds = 1;
 
         /// <summary>
         /// The counter for when the stamina of the player gets increased.
         /// </summary>
-        public int StaminaBoostIntervalCounter = 0;
+        public float StaminaBoostIntervalCounterInSeconds = 0;
 
         /// <summary>
         /// A boolean determining whether the player is in battle mode.
@@ -97,15 +97,15 @@ namespace OrchestraArmy.Entity.Entities.Players
                 AttackController.HandleAttack();
                 ToneController.HandleTone();
 
+                StaminaBoostIntervalCounterInSeconds += Time.deltaTime;
+                
                 // Check if the counter has reached the interval
-                StaminaBoostIntervalCounter %= StaminaBoostInterval;
-
-                if (StaminaBoostIntervalCounter == 0 && 
-                EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
-                    // Regenerate Stamina a bit, but only if not in battle
-                    EntityData.Stamina++;
-
-                StaminaBoostIntervalCounter++;
+                if (StaminaBoostIntervalCounterInSeconds >= StaminaBoostIntervalInSeconds)
+                {
+                    StaminaBoostIntervalCounterInSeconds = 0;
+                    if (EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
+                        EntityData.Stamina++;
+                }
             }
         }
 
