@@ -5,12 +5,12 @@ namespace OrchestraArmy.SaveData
     [Serializable]
     public class SettingsData
     {
-        public float sound = 1.0f;
-        public float gMusic = 1.0f;
-        public float mMusic = 1.0f;
-        public float beats = 1.0f;
+        public float Sound = 1.0f;
+        public float GMusic = 1.0f;
+        public float MMusic = 1.0f;
+        public float Beats = 1.0f;
 
-        public int mouse = 0;
-        public int difficultly = 1;
+        public int Mouse = 0;
+        public int Difficulty = 1;
     }
 }

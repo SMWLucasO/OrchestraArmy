@@ -21,7 +21,7 @@ namespace OrchestraArmy.Menu
             SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             try
             {
-                Cursor.SetCursor(CursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
+                Cursor.SetCursor(CursorSprite[data.Mouse],Vector2.zero,CursorMode.ForceSoftware);
             }
             catch (Exception e)
             {

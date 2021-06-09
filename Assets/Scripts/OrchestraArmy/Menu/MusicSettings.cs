@@ -29,10 +29,10 @@ namespace OrchestraArmy.Menu
         {
             _data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            SliderSound.GetComponent<Slider>().value = _data.sound;
-            SliderGMusic.GetComponent<Slider>().value = _data.gMusic;
-            SliderMMusic.GetComponent<Slider>().value = _data.mMusic;
-            SliderBeats.GetComponent<Slider>().value = _data.beats;
+            SliderSound.GetComponent<Slider>().value = _data.Sound;
+            SliderGMusic.GetComponent<Slider>().value = _data.GMusic;
+            SliderMMusic.GetComponent<Slider>().value = _data.MMusic;
+            SliderBeats.GetComponent<Slider>().value = _data.Beats;
         }
 
         /// <summary>
@@ -48,10 +48,10 @@ namespace OrchestraArmy.Menu
             _savedMMusic = SliderMMusic.GetComponent<Slider>().value;
             _savedBeats = SliderBeats.GetComponent<Slider>().value;
 
-            _data.beats = _savedBeats;
-            _data.sound = _savedSound;
-            _data.gMusic = _savedGMusic;
-            _data.mMusic = _savedMMusic;
+            _data.Beats = _savedBeats;
+            _data.Sound = _savedSound;
+            _data.GMusic = _savedGMusic;
+            _data.MMusic = _savedMMusic;
             
             DataSaver.SaveData(_data, "settingsData");
         }
@@ -74,10 +74,10 @@ namespace OrchestraArmy.Menu
             SliderMMusic.GetComponent<Slider>().value = 1.0f;
             SliderBeats.GetComponent<Slider>().value = 1.0f;
             
-            _data.beats = _savedBeats;
-            _data.sound = _savedSound;
-            _data.gMusic = _savedGMusic;
-            _data.mMusic = _savedMMusic;
+            _data.Beats = _savedBeats;
+            _data.Sound = _savedSound;
+            _data.GMusic = _savedGMusic;
+            _data.MMusic = _savedMMusic;
             DataSaver.SaveData(_data, "settingsData");
         } 
     }

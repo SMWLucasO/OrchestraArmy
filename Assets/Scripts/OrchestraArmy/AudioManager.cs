@@ -50,7 +50,7 @@ namespace OrchestraArmy
             
             SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             if (data != null)
-                _audioSource.volume = data.sound;
+                _audioSource.volume = data.Sound;
             else
                 _audioSource.volume = 1.0f;
         }

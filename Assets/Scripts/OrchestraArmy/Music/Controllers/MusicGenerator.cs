@@ -127,8 +127,8 @@ namespace OrchestraArmy.Music.Controllers
             
             if (data != null)
             {
-                _userBeatVolume = data.beats;
-                _userInstrumentsVolume = data.gMusic;
+                _userBeatVolume = data.Beats;
+                _userInstrumentsVolume = data.GMusic;
             }
         }
 
