@@ -15,7 +15,10 @@ namespace OrchestraArmy.Menu
         private void OnEnable()
         {
             SettingsData data = DataSaver.loadData<SettingsData>("settingsData");
-            Cursor.SetCursor(cursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
+            if (data != null)
+                Cursor.SetCursor(cursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
+            else
+                DataSaver.saveData(new SettingsData(), "settingsData");
         }
 
         public void PlayGame()
