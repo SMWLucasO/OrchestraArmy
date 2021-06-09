@@ -35,10 +35,13 @@ namespace OrchestraArmy.Entity.Entities.Projectiles
             yield return new WaitForSeconds(0.01f);
             
             var distance = 0f;
+            var previous = Source;
 
             do
             {
-                distance = Vector3.Distance(Source, transform.position);
+                var position = transform.position;
+                distance += Vector3.Distance(previous, position);
+                previous = position;
                 MovementController.HandleMovement();
 
                 yield return null;
