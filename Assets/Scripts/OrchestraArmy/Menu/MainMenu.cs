@@ -12,13 +12,14 @@ namespace OrchestraArmy.Menu
     public class MainMenu : MonoBehaviour
     {
         public Texture2D[] cursorSprite;
+        
         private void OnEnable()
         {
-            SettingsData data = DataSaver.loadData<SettingsData>("settingsData");
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             if (data != null)
                 Cursor.SetCursor(cursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
             else
-                DataSaver.saveData(new SettingsData(), "settingsData");
+                DataSaver.SaveData(new SettingsData(), "settingsData");
         }
 
         public void PlayGame()

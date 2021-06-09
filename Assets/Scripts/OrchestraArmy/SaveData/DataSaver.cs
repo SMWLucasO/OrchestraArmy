@@ -8,7 +8,7 @@ namespace OrchestraArmy.SaveData
     public class DataSaver
     {
         //Save Data
-        public static void saveData<T>(T dataToSave, string dataFileName)
+        public static void SaveData<T>(T dataToSave, string dataFileName)
         {
             string tempPath = Path.Combine(Application.persistentDataPath, "data");
             tempPath = Path.Combine(tempPath, dataFileName + ".txt");
@@ -22,7 +22,6 @@ namespace OrchestraArmy.SaveData
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(tempPath));
             }
-            //Debug.Log(path);
 
             try
             {
@@ -37,7 +36,7 @@ namespace OrchestraArmy.SaveData
         }
 
         //Load Data
-        public static T loadData<T>(string dataFileName)
+        public static T LoadData<T>(string dataFileName)
         {
             string tempPath = Path.Combine(Application.persistentDataPath, "data");
             tempPath = Path.Combine(tempPath, dataFileName + ".txt");
@@ -76,7 +75,7 @@ namespace OrchestraArmy.SaveData
             return (T) Convert.ChangeType(resultValue, typeof(T));
         }
 
-        public static bool deleteData(string dataFileName)
+        public static bool DeleteData(string dataFileName)
         {
             bool success = false;
 

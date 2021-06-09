@@ -48,7 +48,7 @@ namespace OrchestraArmy
             EventManager.Bind<EnemyAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
             
-            SettingsData data = DataSaver.loadData<SettingsData>("settingsData");
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             if (data != null)
                 _audioSource.volume = data.sound;
             else

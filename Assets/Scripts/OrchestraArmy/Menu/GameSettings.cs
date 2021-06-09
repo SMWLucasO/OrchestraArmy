@@ -27,9 +27,9 @@ namespace OrchestraArmy.Menu
         /// </summary>
         private void OnEnable()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            sliderMouse.GetComponent<Scrollbar>().value = data.mouse * (1.0f/3.0f);;
+            sliderMouse.GetComponent<Scrollbar>().value = data.mouse * (1.0f/3.0f);
             sliderDifficulty.GetComponent<Scrollbar>().value = data.dificulty * 0.5f;
         }
 
@@ -71,7 +71,7 @@ namespace OrchestraArmy.Menu
             {
                 v.SetActive(false);
             }
-            Debug.Log(state);
+            
             showCursor[state].SetActive(true);
             
             Cursor.SetCursor(cursorSprite[state],Vector2.zero,CursorMode.ForceSoftware);
@@ -79,7 +79,7 @@ namespace OrchestraArmy.Menu
 
         public void SaveSettings()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
             savedCursor = tempCursor;
             savedDifficulty = tempDifficulty;
@@ -88,12 +88,12 @@ namespace OrchestraArmy.Menu
             data.mouse = savedCursor;
             data.dificulty = savedDifficulty;
 
-            DataSaver.saveData(data, "settingsData");
+            DataSaver.SaveData(data, "settingsData");
         }
 
         public void Undo()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
             sliderDifficulty.GetComponent<Scrollbar>().value = savedDifficulty * 0.5f;
             sliderMouse.GetComponent<Scrollbar>().value = savedCursor * (1.0f/3.0f);
@@ -122,7 +122,7 @@ namespace OrchestraArmy.Menu
             data.mouse = savedCursor;
             data.dificulty = savedDifficulty;
             
-            DataSaver.saveData(data, "settingsData");
+            DataSaver.SaveData(data, "settingsData");
         } 
     }
 }

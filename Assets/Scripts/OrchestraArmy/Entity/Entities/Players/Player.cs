@@ -88,7 +88,8 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         protected override void Update()
         {
-            if (Time.timeScale != 0){
+            if (Time.timeScale != 0) 
+            {
                 base.Update();
                 DirectionController.HandleDirection();
                 WeaponSelectionController.HandleWeaponSelection();

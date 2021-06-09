@@ -115,12 +115,16 @@ namespace OrchestraArmy.Music.Controllers
             _userInstrumentsVolume = 1f;
             _userBeatVolume = 1f;
             _inBattle = false;
+            
             EventManager.Bind<CombatInitiatedEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnteredNewLevelEvent>(this);
+            
             StartCoroutine(BeatCheck());
-            SettingsData data = DataSaver.loadData<SettingsData>("settingsData");
+            
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
+            
             if (data != null)
             {
                 _userBeatVolume = data.beats;

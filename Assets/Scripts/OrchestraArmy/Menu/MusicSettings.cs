@@ -27,7 +27,7 @@ namespace OrchestraArmy.Menu
         /// </summary>
         private void OnEnable()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
             sliderSound.GetComponent<Slider>().value = data.sound;
             sliderGMusic.GetComponent<Slider>().value = data.gMusic;
@@ -58,7 +58,7 @@ namespace OrchestraArmy.Menu
 
         public void SaveSettings()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
             savedSound = sliderSound.GetComponent<Slider>().value;
             savedGMusic = sliderGMusic.GetComponent<Slider>().value;
@@ -70,7 +70,7 @@ namespace OrchestraArmy.Menu
             data.gMusic = savedGMusic;
             data.mMusic = savedMMusic;
             
-            DataSaver.saveData(data, "settingsData");
+            DataSaver.SaveData(data, "settingsData");
         }
         
         /// <summary>
@@ -78,7 +78,7 @@ namespace OrchestraArmy.Menu
         /// </summary>
         public void Undo()
         {
-            data = DataSaver.loadData<SettingsData>("settingsData");
+            data = DataSaver.LoadData<SettingsData>("settingsData");
             
             savedSound = 1.0f;
             savedGMusic = 1.0f;
@@ -94,7 +94,7 @@ namespace OrchestraArmy.Menu
             data.sound = savedSound;
             data.gMusic = savedGMusic;
             data.mMusic = savedMMusic;
-            DataSaver.saveData(data, "settingsData");
+            DataSaver.SaveData(data, "settingsData");
         } 
     }
 }

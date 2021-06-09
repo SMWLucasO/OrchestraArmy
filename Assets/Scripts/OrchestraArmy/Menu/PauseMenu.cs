@@ -9,6 +9,7 @@ namespace OrchestraArmy.Menu
     {
         public GameObject PauseScreen;
         public GameObject MusicTimer;
+        
         public void Continue()
         {
             MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
