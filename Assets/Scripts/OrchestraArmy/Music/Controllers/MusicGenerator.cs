@@ -231,7 +231,7 @@ namespace OrchestraArmy.Music.Controllers
                     }
                     else
                     {
-                        EventManager.Invoke(new EvenBeatEvent());
+                        EventManager.Invoke(new OnBeatEvent());
                         PlayBeatAudio(InstrumentsFixedOnBeat);
                     }
 

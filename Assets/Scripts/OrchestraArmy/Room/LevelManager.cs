@@ -61,6 +61,7 @@ namespace OrchestraArmy.Room
             if (player != null)
                 player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
 
+            EventManager.Invoke(new EnteredNewLevelEvent());
         }
 
         /// <summary>
@@ -68,7 +69,6 @@ namespace OrchestraArmy.Room
         /// </summary>
         public void MoveToPreviousLevel()
         {
-
             RoomManager.Instance.DestroyRooms();
 
             // we do not want the guitar to be locked, it should only be available in the final level.
@@ -91,6 +91,8 @@ namespace OrchestraArmy.Room
             Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
             if (player != null)
                 player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
+
+            EventManager.Invoke(new EnteredNewLevelEvent());
         }
 
         private void Update()
@@ -115,7 +117,6 @@ namespace OrchestraArmy.Room
                         MoveToPreviousLevel();
                         DeathScreen.SetActive(false); //deactivate death screen
                         _deathState = 0; //deactivate death 'loop'
-                        EventManager.Invoke(new EnteredNewLevelEvent());
                     }
                     break;
             }
