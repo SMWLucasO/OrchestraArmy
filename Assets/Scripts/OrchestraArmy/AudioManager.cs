@@ -42,6 +42,11 @@ namespace OrchestraArmy
         /// </summary>
         private AudioSource _audioSource;
 
+        /// <summary>
+        /// user controled volume
+        /// </summary>
+        private float _playerVolume;
+
         public void OnEnable()
         {
             EventManager.Bind<PlayerAttackEvent>(this);
@@ -50,9 +55,11 @@ namespace OrchestraArmy
             
             SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             if (data != null)
-                _audioSource.volume = data.Sound;
+                _playerVolume = data.Sound;
             else
-                _audioSource.volume = 1.0f;
+                _playerVolume = 1.0f;
+
+            _audioSource.volume = _playerVolume;
         }
 
         /// <summary>
@@ -99,7 +106,7 @@ namespace OrchestraArmy
                 _ => throw new InvalidEnumArgumentException()
             };
 
-            AudioSource.PlayClipAtPoint(clip, invokedEvent.Position);
+            AudioSource.PlayClipAtPoint(clip, invokedEvent.Position,_playerVolume);
         }
 
         private void OnDisable()
