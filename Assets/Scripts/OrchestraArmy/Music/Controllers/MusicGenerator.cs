@@ -5,7 +5,6 @@ using OrchestraArmy.Enum;
 using OrchestraArmy.Music.Instruments;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Rhythm;
-using System.Threading;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Event.Events.Level;
@@ -231,7 +230,6 @@ namespace OrchestraArmy.Music.Controllers
                     }
                     else
                     {
-                        EventManager.Invoke(new OnBeatEvent());
                         PlayBeatAudio(InstrumentsFixedOnBeat);
                     }
 
