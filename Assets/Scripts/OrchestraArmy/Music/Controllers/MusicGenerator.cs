@@ -75,8 +75,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The volume for the instruments.
         /// </summary>
-        [Range(0,1)]
-        public float InstrumentsVolume = .8f;
+        private float _instrumentsVolume = .8f;
 
         /// <summary>
         /// The user given volume for the instruments.
@@ -87,8 +86,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The volume for the beat instruments.
         /// </summary>
-        [Range(0,1)]
-        public float BeatVolume = .9f;
+        private float _beatVolume = .9f;
 
         /// <summary>
         /// The user given volume for the beat instruments.
@@ -109,8 +107,8 @@ namespace OrchestraArmy.Music.Controllers
             RhythmController = new RhythmController();
             BPM = 100;
             RhythmController.SetStopwatch();
-            InstrumentsVolume = .8f;
-            BeatVolume = .9f;
+            _instrumentsVolume = .8f;
+            _beatVolume = .9f;
             _userInstrumentsVolume = 1f;
             _userBeatVolume = 1f;
             _inBattle = false;
@@ -122,13 +120,7 @@ namespace OrchestraArmy.Music.Controllers
             
             StartCoroutine(BeatCheck());
             
-            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            if (data != null)
-            {
-                _userBeatVolume = data.Beats;
-                _userInstrumentsVolume = data.GMusic;
-            }
         }
 
         /// <summary>
@@ -152,7 +144,8 @@ namespace OrchestraArmy.Music.Controllers
                 if (instrument != null)
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
-                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume * _userBeatVolume;
+                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume 
+                    * _beatVolume * _userBeatVolume;
                     instrument.Play();
                 }
             }
@@ -170,8 +163,10 @@ namespace OrchestraArmy.Music.Controllers
                     int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
                     if (random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                     {
-                        instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
-                        instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume * _userInstrumentsVolume;
+                        instrument.pitch = GetPitch(GetRandomCompanyTone(), 
+                        instrument.GetComponent<InstrumentData>().BaseTone);
+                        instrument.volume = instrument.GetComponent<InstrumentData>().
+                        SpecificVolume * _instrumentsVolume * _userInstrumentsVolume;
                         instrument.Play();
                     }
                 }
@@ -241,9 +236,18 @@ namespace OrchestraArmy.Music.Controllers
         {
             while (true)
             {
+
+                SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
+            
+                if (data != null)
+                {
+                    _userBeatVolume = data.Beats;
+                    _userInstrumentsVolume = data.GMusic;
+                }
+
                 int score = RhythmController.GetRhythmScore(BPM);
                             
-                if (score >= 99 && CurrentBeat % 2 == 1 || score <= 1 && CurrentBeat % 2 == 0)
+                if (score >= 95 && CurrentBeat % 2 == 1 || score <= 5 && CurrentBeat % 2 == 0)
                 {
                     CurrentBeat = CurrentBeat % 4 + 1;
                     
@@ -291,8 +295,8 @@ namespace OrchestraArmy.Music.Controllers
         {
             _inBattle = true;
             BPM = 110;
-            InstrumentsVolume = .9f;
-            BeatVolume = 1f;
+            _instrumentsVolume = .9f;
+            _beatVolume = 1f;
         }
 
         /// <summary>
@@ -307,8 +311,8 @@ namespace OrchestraArmy.Music.Controllers
         {
             _inBattle = false;
             BPM = 100;
-            InstrumentsVolume = .8f;
-            BeatVolume = .9f;
+            _instrumentsVolume = .8f;
+            _beatVolume = .9f;
         }
 
         /// <summary>
