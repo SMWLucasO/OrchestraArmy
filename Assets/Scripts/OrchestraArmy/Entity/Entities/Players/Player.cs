@@ -88,22 +88,25 @@ namespace OrchestraArmy.Entity.Entities.Players
 
         protected override void Update()
         {
-            base.Update();
-            DirectionController.HandleDirection();
-            WeaponSelectionController.HandleWeaponSelection();
-            SpriteManager.UpdateSprite();
-            AttackController.HandleAttack();
-            ToneController.HandleTone();
+            if (Time.timeScale != 0) 
+            {
+                base.Update();
+                DirectionController.HandleDirection();
+                WeaponSelectionController.HandleWeaponSelection();
+                SpriteManager.UpdateSprite();
+                AttackController.HandleAttack();
+                ToneController.HandleTone();
 
-            // Check if the counter has reached the interval
-            StaminaBoostIntervalCounter %= StaminaBoostInterval;
+                // Check if the counter has reached the interval
+                StaminaBoostIntervalCounter %= StaminaBoostInterval;
 
-            if (StaminaBoostIntervalCounter == 0 && 
-            EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
-                // Regenerate Stamina a bit, but only if not in battle
-                EntityData.Stamina++;
+                if (StaminaBoostIntervalCounter == 0 && 
+                EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
+                    // Regenerate Stamina a bit, but only if not in battle
+                    EntityData.Stamina++;
 
-            StaminaBoostIntervalCounter++;
+                StaminaBoostIntervalCounter++;
+            }
         }
 
         protected override void FixedUpdate()

@@ -55,6 +55,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             if (Mouse.current.rightButton.wasPressedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
             {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 _dragging = true;
                 setThisFrame = true;
             }
@@ -70,6 +71,7 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             {
                 _dragging = false;
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 
                 //lets wrap the cursor to above the player, resetting the aim to forward in the progress. Done because the sudden swap from facing forward to the aimdirection can feel disorientating
                 var position = new Vector2(Screen.width / 2f,

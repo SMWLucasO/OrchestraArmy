@@ -34,5 +34,8 @@ namespace OrchestraArmy.UI
             // update value of slider each frame
             RhythmSlider.value = MusicGenerator.RhythmController.GetRhythmScore(MusicGenerator.BPM);
         }
+
+        public RhythmController GetRhythmController() 
+            => MusicGenerator.RhythmController;
     }
 }

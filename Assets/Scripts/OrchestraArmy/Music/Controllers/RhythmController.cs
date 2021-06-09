@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using OrchestraArmy.Event;
+using UnityEngine;
+
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -14,6 +17,19 @@ namespace OrchestraArmy.Music.Controllers
         public RhythmController()
         {
             SetStopwatch();
+        }
+
+        public void PauseTimer()
+        {
+            // only set if not existing, or you reset the current stopwatch
+            if (Time.timeScale == 0)
+            {
+                _rhythmStopwatch.Start();
+            }
+            else
+            {
+                _rhythmStopwatch.Stop();
+            }
         }
 
         /// <summary>

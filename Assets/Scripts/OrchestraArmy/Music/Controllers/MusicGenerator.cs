@@ -8,6 +8,7 @@ using OrchestraArmy.Event.Events.Rhythm;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
 using OrchestraArmy.Event.Events.Level;
+using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Music.Controllers
 {
@@ -78,10 +79,22 @@ namespace OrchestraArmy.Music.Controllers
         public float InstrumentsVolume = .8f;
 
         /// <summary>
+        /// The user given volume for the instruments.
+        /// </summary>
+        [Range(0,1)]
+        private float _userInstrumentsVolume = 1f;
+
+        /// <summary>
         /// The volume for the beat instruments.
         /// </summary>
         [Range(0,1)]
         public float BeatVolume = .9f;
+
+        /// <summary>
+        /// The user given volume for the beat instruments.
+        /// </summary>
+        [Range(0,1)]
+        private float _userBeatVolume = 1f;
 
         /// <summary>
         /// The RhythmController
@@ -98,12 +111,24 @@ namespace OrchestraArmy.Music.Controllers
             RhythmController.SetStopwatch();
             InstrumentsVolume = .8f;
             BeatVolume = .9f;
+            _userInstrumentsVolume = 1f;
+            _userBeatVolume = 1f;
             _inBattle = false;
+            
             EventManager.Bind<CombatInitiatedEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnteredNewLevelEvent>(this);
+            
             StartCoroutine(BeatCheck());
+            
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
+            
+            if (data != null)
+            {
+                _userBeatVolume = data.Beats;
+                _userInstrumentsVolume = data.GMusic;
+            }
         }
 
         /// <summary>
@@ -117,7 +142,6 @@ namespace OrchestraArmy.Music.Controllers
             EventManager.Unbind<EnteredNewLevelEvent>(this);
         }
 
-
         /// <summary>
         /// Play a note for each instrument in the given beat list
         /// </summary>
@@ -128,7 +152,7 @@ namespace OrchestraArmy.Music.Controllers
                 if (instrument != null)
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
-                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume;
+                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume * _userBeatVolume;
                     instrument.Play();
                 }
             }
@@ -147,7 +171,7 @@ namespace OrchestraArmy.Music.Controllers
                     if (random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                     {
                         instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
-                        instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume;
+                        instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume * _userInstrumentsVolume;
                         instrument.Play();
                     }
                 }
