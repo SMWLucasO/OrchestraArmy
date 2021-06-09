@@ -12,15 +12,32 @@ using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Music.Controllers
 {
-    public class MusicGenerator : MonoBehaviour, IListener<CombatInitiatedEvent>, 
+    public class MusicGenerator : MonoBehaviour, IListener<InitiatedCombatEvent>, 
     IListener<PlayerDeathEvent>, IListener<LeaveCombatEvent>, IListener<EnteredNewLevelEvent>
     {
         /// <summary>
         /// The BPM for the game.
         /// </summary>
-        [SerializeField]
-        [Range(1,140)]
-        public int BPM = 120;
+        [field: SerializeField]
+        public int BPM
+        {
+            get => _BPM;
+            set
+            {
+                _newBPM = value;
+            }
+        }
+
+        /// <summary>
+        /// Temporary store the changed BPM, will be used to change BPM at the first beat to prevent stuttering
+        /// </summary>
+        private int _newBPM = 120;
+        
+        /// <summary>
+        /// Value for BPM property
+        /// </summary>
+        [Range(1, 140)]
+        private int _BPM = 120;
 
         /// <summary>
         /// The scale for the music harmony.
@@ -75,8 +92,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The volume for the instruments.
         /// </summary>
-        [Range(0,1)]
-        public float InstrumentsVolume = .8f;
+        private float _instrumentsVolume = .8f;
 
         /// <summary>
         /// The user given volume for the instruments.
@@ -87,8 +103,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The volume for the beat instruments.
         /// </summary>
-        [Range(0,1)]
-        public float BeatVolume = .9f;
+        private float _beatVolume = .9f;
 
         /// <summary>
         /// The user given volume for the beat instruments.
@@ -109,26 +124,20 @@ namespace OrchestraArmy.Music.Controllers
             RhythmController = new RhythmController();
             BPM = 100;
             RhythmController.SetStopwatch();
-            InstrumentsVolume = .8f;
-            BeatVolume = .9f;
+            _instrumentsVolume = .8f;
+            _beatVolume = .9f;
             _userInstrumentsVolume = 1f;
             _userBeatVolume = 1f;
             _inBattle = false;
             
-            EventManager.Bind<CombatInitiatedEvent>(this);
+            EventManager.Bind<InitiatedCombatEvent>(this);
             EventManager.Bind<LeaveCombatEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<EnteredNewLevelEvent>(this);
             
             StartCoroutine(BeatCheck());
             
-            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            if (data != null)
-            {
-                _userBeatVolume = data.Beats;
-                _userInstrumentsVolume = data.GMusic;
-            }
         }
 
         /// <summary>
@@ -136,7 +145,7 @@ namespace OrchestraArmy.Music.Controllers
         /// </summary>
         void OnDisable()
         {
-            EventManager.Unbind<CombatInitiatedEvent>(this);
+            EventManager.Unbind<InitiatedCombatEvent>(this);
             EventManager.Unbind<LeaveCombatEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<EnteredNewLevelEvent>(this);
@@ -152,7 +161,8 @@ namespace OrchestraArmy.Music.Controllers
                 if (instrument != null)
                 {
                     instrument.pitch = GetPitch(Tone.C, instrument.GetComponent<InstrumentData>().BaseTone);
-                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * BeatVolume * _userBeatVolume;
+                    instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume 
+                    * _beatVolume * _userBeatVolume;
                     instrument.Play();
                 }
             }
@@ -170,8 +180,10 @@ namespace OrchestraArmy.Music.Controllers
                     int random = (int)(Random.value * (100f/instrument.GetComponent<InstrumentData>().Chance));
                     if (random == 1 || instrument.GetComponent<InstrumentData>().Chance == 100)
                     {
-                        instrument.pitch = GetPitch(GetRandomCompanyTone(), instrument.GetComponent<InstrumentData>().BaseTone);
-                        instrument.volume = instrument.GetComponent<InstrumentData>().SpecificVolume * InstrumentsVolume * _userInstrumentsVolume;
+                        instrument.pitch = GetPitch(GetRandomCompanyTone(), 
+                        instrument.GetComponent<InstrumentData>().BaseTone);
+                        instrument.volume = instrument.GetComponent<InstrumentData>().
+                        SpecificVolume * _instrumentsVolume * _userInstrumentsVolume;
                         instrument.Play();
                     }
                 }
@@ -241,9 +253,25 @@ namespace OrchestraArmy.Music.Controllers
         {
             while (true)
             {
+
+                SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
+            
+                if (data != null)
+                {
+                    _userBeatVolume = data.Beats;
+                    _userInstrumentsVolume = data.GMusic;
+                }
+
                 int score = RhythmController.GetRhythmScore(BPM);
+
+                //change BPM at first beat if needed
+                if (score < 1 && _newBPM != _BPM)
+                {
+                    RhythmController.ResetStopWatch();
+                    _BPM = _newBPM;
+                }
                             
-                if (score >= 99 && CurrentBeat % 2 == 1 || score <= 1 && CurrentBeat % 2 == 0)
+                if (score >= 95 && CurrentBeat % 2 == 1 || score <= 5 && CurrentBeat % 2 == 0)
                 {
                     CurrentBeat = CurrentBeat % 4 + 1;
                     
@@ -287,12 +315,12 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Event for when combat is started
         /// </summary>
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(InitiatedCombatEvent invokedEvent)
         {
             _inBattle = true;
             BPM = 110;
-            InstrumentsVolume = .9f;
-            BeatVolume = 1f;
+            _instrumentsVolume = .9f;
+            _beatVolume = 1f;
         }
 
         /// <summary>
@@ -307,8 +335,8 @@ namespace OrchestraArmy.Music.Controllers
         {
             _inBattle = false;
             BPM = 100;
-            InstrumentsVolume = .8f;
-            BeatVolume = .9f;
+            _instrumentsVolume = .8f;
+            _beatVolume = .9f;
         }
 
         /// <summary>

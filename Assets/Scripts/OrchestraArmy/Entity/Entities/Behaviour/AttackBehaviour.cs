@@ -27,7 +27,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         public void Enter()
         {
             EventManager.Bind<EnemyTurnEvent>(this);
-            EventManager.Invoke(new CombatInitiatedEvent() {EntityId = StateData.Enemy.GetInstanceID()});
+            EventManager.Invoke(new EnemyCombatInitiatedEvent() {EntityId = StateData.Enemy.GetInstanceID()});
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
         public void Exit()
         {
             EventManager.Unbind<EnemyTurnEvent>(this);
-            EventManager.Invoke(new LeaveCombatEvent() {EntityId = StateData.Enemy.GetInstanceID()});
+            EventManager.Invoke(new EnemyLeaveCombatEvent() {EntityId = StateData.Enemy.GetInstanceID()});
         }
 
         public void OnEvent(EnemyTurnEvent invokedEvent)

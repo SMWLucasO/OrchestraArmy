@@ -2339,7 +2339,7 @@ GameObject:
   - component: {fileID: 7151652364153464102}
   - component: {fileID: 7151652364153464101}
   m_Layer: 5
-  m_Name: ScrollbarDifficuty
+  m_Name: ScrollbarDifficulty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5190,7 +5190,7 @@ GameObject:
   - component: {fileID: 7151652364813917819}
   - component: {fileID: 7151652364813917818}
   m_Layer: 5
-  m_Name: Dificulty
+  m_Name: Difficulty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5243,7 +5243,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Dificulty
+  m_text: Difficulty
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: abf5fe0d1055b9e49a4556e0260455cb, type: 2}
   m_sharedMaterial: {fileID: -6177443983831398200, guid: abf5fe0d1055b9e49a4556e0260455cb, type: 2}

@@ -23,7 +23,7 @@ namespace OrchestraArmy.Entity.Entities.Players
     
     public class Player : LivingDirectionalEntity, IListener<PlayerWeaponChangedEvent>,
         IListener<InstrumentPickupEvent>, IListener<EnemyAttackHitEvent>, 
-        IListener<PlayerAttackEvent>, IListener<CombatInitiatedEvent>, IListener<LeaveCombatEvent>
+        IListener<PlayerAttackEvent>, IListener<EnemyCombatInitiatedEvent>, IListener<EnemyLeaveCombatEvent>
     {
         /// <summary>
         /// The controller for the player's camera.
@@ -74,12 +74,12 @@ namespace OrchestraArmy.Entity.Entities.Players
         /// <summary>
         /// How many updates it takes to regenerate stamina.
         /// </summary>
-        public int StaminaBoostInterval = 10;
+        public float StaminaBoostIntervalInSeconds = 1;
 
         /// <summary>
         /// The counter for when the stamina of the player gets increased.
         /// </summary>
-        public int StaminaBoostIntervalCounter = 0;
+        public float StaminaBoostIntervalCounterInSeconds = 0;
 
         /// <summary>
         /// A boolean determining whether the player is in battle mode.
@@ -97,15 +97,15 @@ namespace OrchestraArmy.Entity.Entities.Players
                 AttackController.HandleAttack();
                 ToneController.HandleTone();
 
+                StaminaBoostIntervalCounterInSeconds += Time.deltaTime;
+                
                 // Check if the counter has reached the interval
-                StaminaBoostIntervalCounter %= StaminaBoostInterval;
-
-                if (StaminaBoostIntervalCounter == 0 && 
-                EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
-                    // Regenerate Stamina a bit, but only if not in battle
-                    EntityData.Stamina++;
-
-                StaminaBoostIntervalCounter++;
+                if (StaminaBoostIntervalCounterInSeconds >= StaminaBoostIntervalInSeconds)
+                {
+                    StaminaBoostIntervalCounterInSeconds = 0;
+                    if (EntityData.Stamina < EntityData.MaxStamina && !_inBattle)
+                        EntityData.Stamina++;
+                }
             }
         }
 
@@ -161,8 +161,8 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Bind<InstrumentPickupEvent>(this);
             EventManager.Bind<EnemyAttackHitEvent>(this);
             EventManager.Bind<PlayerAttackEvent>(this);
-            EventManager.Bind<CombatInitiatedEvent>(this);
-            EventManager.Bind<LeaveCombatEvent>(this);
+            EventManager.Bind<EnemyCombatInitiatedEvent>(this);
+            EventManager.Bind<EnemyLeaveCombatEvent>(this);
             _inBattle = false;
         }
 
@@ -173,8 +173,8 @@ namespace OrchestraArmy.Entity.Entities.Players
             EventManager.Unbind<InstrumentPickupEvent>(this);
             EventManager.Unbind<EnemyAttackHitEvent>(this);
             EventManager.Unbind<PlayerAttackEvent>(this);
-            EventManager.Unbind<CombatInitiatedEvent>(this);
-            EventManager.Unbind<LeaveCombatEvent>(this);
+            EventManager.Unbind<EnemyCombatInitiatedEvent>(this);
+            EventManager.Unbind<EnemyLeaveCombatEvent>(this);
         }
 
         public void OnEvent(InstrumentPickupEvent invokedEvent)
@@ -263,12 +263,12 @@ namespace OrchestraArmy.Entity.Entities.Players
             } 
         }
 
-        public void OnEvent(CombatInitiatedEvent invokedEvent)
+        public void OnEvent(EnemyCombatInitiatedEvent invokedEvent)
         {
             _inBattle = true;
         }
 
-        public void OnEvent(LeaveCombatEvent invokedEvent)
+        public void OnEvent(EnemyLeaveCombatEvent invokedEvent)
         {
             _inBattle = false;
         }
