@@ -5,6 +5,7 @@ using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Pickup;
 using OrchestraArmy.Event.Events.Room;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OrchestraArmy.Room.Controllers
 {
@@ -88,7 +89,7 @@ namespace OrchestraArmy.Room.Controllers
         public void OnEvent(FinalBossDeathEvent invokedEvent)
         {
             // The Conductor was defeated.
-            Time.timeScale = 0; // TMP, do something after final boss is defeated.
+            SceneManager.LoadScene(0);
         }
     }
 }
