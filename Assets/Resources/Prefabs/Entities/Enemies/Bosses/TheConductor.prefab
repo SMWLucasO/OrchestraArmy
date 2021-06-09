@@ -83,9 +83,9 @@ MonoBehaviour:
   <MovementData>k__BackingField:
     _walkSpeed: 200
   <EntityData>k__BackingField:
-    _health: 400
-    _maxHealth: 400
+    _health: 240
     _stamina: 100
+    _maxHealth: 240
     _maxStamina: 100
   DamageParticles: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
 --- !u!195 &3522590019689424631

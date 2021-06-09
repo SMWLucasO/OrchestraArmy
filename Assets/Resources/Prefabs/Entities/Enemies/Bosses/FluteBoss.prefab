@@ -524,9 +524,10 @@ MonoBehaviour:
   <MovementData>k__BackingField:
     _walkSpeed: 200
   <EntityData>k__BackingField:
-    _health: 1600
-    _maxHealth: 1600
+    _health: 160
     _stamina: 100
+    _maxHealth: 160
+    _maxStamina: 100
   DamageParticles: {fileID: 4813351722596478776, guid: e86265102b760bf46b6c2c62240f52ec, type: 3}
 --- !u!195 &1787171556346427030
 NavMeshAgent:
