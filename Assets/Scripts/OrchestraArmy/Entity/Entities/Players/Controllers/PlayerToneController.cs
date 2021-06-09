@@ -45,7 +45,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         {
             _current = _toneList.Start;
             CurrentTone = _current.Data;
-            
             EventManager.Invoke(new ToneChangedEvent()
             {
                 Tone = CurrentTone

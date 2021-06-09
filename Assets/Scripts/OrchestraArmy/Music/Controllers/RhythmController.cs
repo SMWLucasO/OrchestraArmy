@@ -1,153 +1,85 @@
-﻿using UnityEngine;
-using OrchestraArmy.Music.Data;
-using System.Threading;
-using OrchestraArmy.Event;
-using OrchestraArmy.Event.Events.Level;
+﻿using OrchestraArmy.Event.Events.Level;
 using System;
-using System.Collections;
-using OrchestraArmy.Event.Events.Player;
-using OrchestraArmy.Event.Events.Rhythm;
+using System.Diagnostics;
+using OrchestraArmy.Event;
+using UnityEngine;
+
 
 namespace OrchestraArmy.Music.Controllers
 {
     public class RhythmController : IListener<EnteredNewLevelEvent>
     {
-        private bool _started = false;
 
         /// <summary>
-        /// Create with custom BPM
+        /// Rhythm stopwatch
         /// </summary>
-        public RhythmController(int newBPM)
-        {
-            RhythmData.BPM = newBPM;
-            EventManager.Bind<EnteredNewLevelEvent>(this);
-            RhythmData.SetStopwatch();
+        private static Stopwatch _rhythmStopwatch;
 
-        }
-
-        /// <summary>
-        /// Create with standard BPM (120)
-        /// </summary>
         public RhythmController()
         {
-            RhythmData.BPM = 120;
             EventManager.Bind<EnteredNewLevelEvent>(this);
-            RhythmData.SetStopwatch();
+            SetStopwatch();
         }
 
         public void PauseTimer()
         {
-            RhythmData.PauseStopwatch();
-        }
-
-        public IEnumerator BeatCheck()
-        {
-            while (true)
+            // only set if not existing, or you reset the current stopwatch
+            if (Time.timeScale == 0)
             {
-                var score = RhythmData.GetRhythmScore();
-                            
-                if (score >= 99 && RhythmData.CurrentBeat % 2 == 1 || score <= 1 && RhythmData.CurrentBeat % 2 == 0)
-                {
-                    RhythmData.CurrentBeat = RhythmData.CurrentBeat % 4 + 1;
-                    
-                    if (RhythmData.CurrentBeat % 2 == 1)
-                        EventManager.Invoke(new OffBeatEvent());
-                    else
-                        EventManager.Invoke(new EvenBeatEvent());
-                }
-
-                yield return new WaitForSeconds(0.01f);
+                _rhythmStopwatch.Start();
             }
-        }
-
-        /// <summary>
-        /// Get stamina damage in negative int
-        /// </summary>
-        public int StaminaDamage()
-        {
-            return RhythmData.GetStaminaDamage();
-        }
-
-        /// <summary>
-        /// Get the rhythm score between 0 and 100
-        /// </summary>
-        public int RhythmScore()
-        {
-            return RhythmData.GetRhythmScore();
-        }
-
-        // DOESN'T WORK, FIX LATER
-
-        /// <summary>
-        /// Gradually change bpm for a better flow
-        /// </summary>
-        private void GraduallyChangeBPM(object obj)
-        {
-            // cast object to newBPM
-            int newBPM;
-            try {
-                newBPM = (int) obj;
-            }
-            catch (InvalidCastException) { 
-                // do nothing
-                newBPM = RhythmData.BPM;
-            }
-
-            // start changing bpm
-            while(true)
+            else
             {
-                if(RhythmData.BPM>newBPM)
-                {
-                    RhythmData.BPM--;
-                }
-                else if(RhythmData.BPM<newBPM)
-                {
-                    RhythmData.BPM++;
-                }
-                else
-                {
-                    break;
-                }
-                // sleep 1/50th of a second
-                Thread.Sleep(200); 
+                _rhythmStopwatch.Stop();
             }
         }
-        
+
         /// <summary>
-        /// Public starting point for GraduallyChangeBPM
+        /// Returns the damage to the stamina in negative double
         /// </summary>
-        public void ChangeBPMByPercentage(int changeInPercentage)
+        /// <param name="BPM"></param>
+        public double GetStaminaDamage(int BPM)
         {
-            int newBPM = RhythmData.BPM / 100 * changeInPercentage + RhythmData.BPM;
+            // Get elapsed time in seconds
+            TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
+            double sTime = timeSpan.TotalSeconds;
+
+            // Calculate damage and return
+            return (Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)-1)/4;
+        }
+
+        /// <summary>
+        /// Returns value from 1 to 100 indicating what the score is right now, 100 is good, 1 is bad.
+        /// </summary>
+        /// <param name="BPM"></param>
+        public int GetRhythmScore(int BPM)
+        {
+            // Get elapsed time in seconds
+            TimeSpan timeSpan = _rhythmStopwatch.Elapsed;
+            double sTime = timeSpan.TotalSeconds;
+
+            return (int)(100 * ((Math.Cos(sTime*Math.PI*(BPM/60f)+Math.PI)+1)/2));
+
+        }
+
+        /// <summary>
+        /// Set the rhythm stopwatch
+        /// </summary>
+        public void SetStopwatch()
+        {
+            // only set if not existing, or you reset the current stopwatch
+            if (_rhythmStopwatch == null) 
+            {
+                _rhythmStopwatch = new Stopwatch();
+                _rhythmStopwatch.Start();
+            }
             
-            // Start new thread for BPM change
-            Thread t = new Thread(GraduallyChangeBPM);
-            t.IsBackground = true;
-            t.Start(newBPM);
         }
 
-        /// <summary>
-        /// Public starting point for GraduallyChangeBPM
-        /// </summary>
-        public void ChangeBPMByBPM(int changeInBPM)
-        {
-            // Start new thread for BPM change
-            Thread t = new Thread(GraduallyChangeBPM);
-            t.IsBackground = true;
-            t.Start(changeInBPM);
-        }
-
-        /// <summary>
-        /// Change BPM Immediately
-        /// </summary>
-        public void ChangeBPMImmediately(int changeInBPM)
-        {
-            RhythmData.BPM = changeInBPM;
-        }
 
         public void OnEvent(EnteredNewLevelEvent invokedEvent)
         {
-            RhythmData.SetStopwatch();
+            // Behaviour not specified yet
         }
     }
 }

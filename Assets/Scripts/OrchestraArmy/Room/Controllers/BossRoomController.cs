@@ -9,13 +9,14 @@ using UnityEngine;
 namespace OrchestraArmy.Room.Controllers
 {
     public class BossRoomController : RoomController, IListener<RoomClearedOfEnemiesEvent>, IListener<BossDeathEvent>,
-        IListener<RoomDoorNextLevelEvent>
+        IListener<FinalBossDeathEvent>, IListener<RoomDoorNextLevelEvent>
     {
         
         public override void RegisterEvents()
         {
             base.RegisterEvents();
             EventManager.Bind<RoomClearedOfEnemiesEvent>(this);
+            EventManager.Bind<FinalBossDeathEvent>(this);
             EventManager.Bind<BossDeathEvent>(this);
             EventManager.Bind<RoomDoorNextLevelEvent>(this);
         }
@@ -25,6 +26,7 @@ namespace OrchestraArmy.Room.Controllers
             base.UnregisterEvents();
             EventManager.Unbind<RoomClearedOfEnemiesEvent>(this);
             EventManager.Unbind<BossDeathEvent>(this);
+            EventManager.Unbind<FinalBossDeathEvent>(this);
             EventManager.Unbind<RoomDoorNextLevelEvent>(this);
         }
 
@@ -78,5 +80,15 @@ namespace OrchestraArmy.Room.Controllers
         /// <param name="invokedEvent"></param>
         public void OnEvent(RoomDoorNextLevelEvent invokedEvent) 
             => LevelManager.Instance.MoveToNextLevel();
+
+        /// <summary>
+        /// Event for after killing the conductor.
+        /// </summary>
+        /// <param name="invokedEvent"></param>
+        public void OnEvent(FinalBossDeathEvent invokedEvent)
+        {
+            // The Conductor was defeated.
+            Time.timeScale = 0; // TMP, do something after final boss is defeated.
+        }
     }
 }

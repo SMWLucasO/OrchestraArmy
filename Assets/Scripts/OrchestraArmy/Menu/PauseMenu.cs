@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using OrchestraArmy.Enum;
-using OrchestraArmy.Keybindings;
-using OrchestraArmy.Music.Data;
-using OrchestraArmy.Music.UI;
+﻿using OrchestraArmy.Keybindings;
+using OrchestraArmy.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
