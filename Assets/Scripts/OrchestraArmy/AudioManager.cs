@@ -6,6 +6,7 @@ using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.SaveData;
 using UnityEngine;
 
 namespace OrchestraArmy
@@ -46,6 +47,12 @@ namespace OrchestraArmy
             EventManager.Bind<PlayerAttackEvent>(this);
             EventManager.Bind<EnemyAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
+            
+            SettingsData data = DataSaver.loadData<SettingsData>("settingsData");
+            if (data != null)
+                _audioSource.volume = data.sound;
+            else
+                _audioSource.volume = 1.0f;
         }
 
         /// <summary>
