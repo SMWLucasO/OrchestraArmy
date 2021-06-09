@@ -18,9 +18,15 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The BPM for the game.
         /// </summary>
-        [SerializeField]
-        [Range(1,140)]
-        public int BPM = 120;
+        [field: SerializeField]
+        public int BPM
+        {
+            get => _BPM;
+            set
+            {
+                _newBPM = value;
+            }
+        }
 
         /// <summary>
         /// The scale for the music harmony.
@@ -100,6 +106,11 @@ namespace OrchestraArmy.Music.Controllers
         /// The RhythmController
         /// </summary>
         public RhythmController RhythmController;
+
+        private int _newBPM = 120;
+        
+        [Range(1, 140)]
+        private int _BPM = 120;
 
         /// <summary>
         /// This function is called when the object becomes enabled and active.
@@ -242,6 +253,12 @@ namespace OrchestraArmy.Music.Controllers
             while (true)
             {
                 int score = RhythmController.GetRhythmScore(BPM);
+
+                if (score < 1 && _newBPM != _BPM)
+                {
+                    RhythmController.ResetStopWatch();
+                    _BPM = _newBPM;
+                }
                             
                 if (score >= 99 && CurrentBeat % 2 == 1 || score <= 1 && CurrentBeat % 2 == 0)
                 {
