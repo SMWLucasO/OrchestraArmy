@@ -14,7 +14,8 @@ namespace OrchestraArmy
     /// <summary>
     /// Keeps track of the current combat state
     /// </summary>
-    public class CombatManager: IListener<OffBeatEvent>, IListener<EnemyCombatInitiatedEvent>, IListener<EnemyLeaveCombatEvent>, IListener<PlayerDeathEvent>
+    public class CombatManager : IListener<OffBeatEvent>, IListener<EnemyCombatInitiatedEvent>,
+        IListener<EnemyLeaveCombatEvent>, IListener<PlayerDeathEvent>
     {
         /// <summary>
         /// List of the current enemies that are registered

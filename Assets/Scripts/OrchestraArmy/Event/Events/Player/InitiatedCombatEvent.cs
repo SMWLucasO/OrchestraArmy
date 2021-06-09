@@ -1,6 +1,6 @@
 ﻿namespace OrchestraArmy.Event.Events.Player
 {
-    public class InitiatedCombatEvent: IEvent
+    public class InitiatedCombatEvent : IEvent
     {
         
     }
