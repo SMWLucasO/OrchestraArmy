@@ -1,4 +1,5 @@
-﻿using OrchestraArmy.Entity.Entities.Behaviour;
+﻿using System;
+using OrchestraArmy.Entity.Entities.Behaviour;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Enemies.Bosses;
 using OrchestraArmy.Entity.Entities.Players;
@@ -13,11 +14,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using OrchestraArmy.Entity.Entities.Enemies.Controllers;
+using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
     public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
     {
+        /// <summary>
+        /// used for dynamic difficulty
+        /// </summary>
+        private int _difficulty = 0;
 
         public BehaviourStateMachine Behaviour { get; set; }
 
@@ -65,8 +71,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             {
                 Entity = this
             };
-            
-
 
             Behaviour = new BehaviourStateMachine()
             {
@@ -79,7 +83,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             Behaviour.CurrentState.StateData = new StateData()
             {
                 Player = GameObject.FindWithTag("Player").GetComponent<Player>(),
-                Enemy = this
+                Enemy = this,
+                ProjectileType = typeof(EnemyNote),
+                AttackController = new EnemyAttackController()
             };
 
             NavMeshAgent = this.GetComponent<NavMeshAgent>();
@@ -125,8 +131,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 EventManager.Invoke(new RoomClearedOfEnemiesEvent());
             }
 
-            Behaviour.ClearState();
-            
             Destroy(gameObject);
         }
 
@@ -164,6 +168,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);
             
+            Behaviour.ClearState();
         }
 
         public void OnEvent(PlayerDeathEvent invokedEvent) => Behaviour.ClearState();
@@ -171,7 +176,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         public void OnEvent(PlayerWeaponChangedEvent invokedEvent)
             => ApplyVisibilityChangesForWeapon(invokedEvent.NewlySelectedWeapon);
 
-        private void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
+        protected void ApplyVisibilityChangesForWeapon(WeaponType selectedWeapon)
         {
             if (this is Boss) return;
             
@@ -190,6 +195,24 @@ namespace OrchestraArmy.Entity.Entities.Enemies
             }
 
             _spriteRenderer.color = color;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void SetVariableHp()
+        {
+            _difficulty = DataSaver.LoadData<SettingsData>("settingsData").Difficulty;
+            EntityData.MaxHealth += (int)(((LevelManager.Instance.Level-1)*0.5f) * 10*(_difficulty+1));
+            EntityData.Health = EntityData.MaxHealth;
+            Debug.Log((int)(((LevelManager.Instance.Level-1)*0.5f) * 10*(_difficulty+1)));
+            Debug.Log(EntityData.MaxHealth);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            SetVariableHp();
         }
     }
 }

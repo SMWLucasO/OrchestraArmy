@@ -83,5 +83,10 @@ namespace OrchestraArmy.UI
 
             _currentHeight = noteInfo.Item1;
         }
+
+        public void OnDisable()
+        {
+            EventManager.Unbind<ToneChangedEvent>( this);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using OrchestraArmy.Entity.Entities.Players;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.Event.Events.Level;
 using OrchestraArmy.Room.Rooms;
 using UnityEngine;
 
@@ -60,6 +61,7 @@ namespace OrchestraArmy.Room
             if (player != null)
                 player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
 
+            EventManager.Invoke(new EnteredNewLevelEvent());
         }
 
         /// <summary>
@@ -67,7 +69,6 @@ namespace OrchestraArmy.Room
         /// </summary>
         public void MoveToPreviousLevel()
         {
-
             RoomManager.Instance.DestroyRooms();
 
             // we do not want the guitar to be locked, it should only be available in the final level.
@@ -90,6 +91,8 @@ namespace OrchestraArmy.Room
             Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
             if (player != null)
                 player.transform.position = RoomManager.CurrentRoom.GetPlayerSpawnPosition(DoorDirection.Left);
+
+            EventManager.Invoke(new EnteredNewLevelEvent());
         }
 
         private void Update()

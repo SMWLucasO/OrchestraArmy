@@ -133,10 +133,11 @@ namespace OrchestraArmy.Room
             {
                 CurrentRoom.RoomController.Room = CurrentRoom;
                 if (!CurrentRoom.RoomIsCleared)
+                {
                     CurrentRoom.EnemySpawnData.NumberOfEnemies = GetNumberOfEnemies();
-                
-                CurrentRoom.Generate();
-                
+                    CurrentRoom.Generate();
+                }
+
                 CurrentRoom.RoomController.RegisterEvents();
                 
                 StartCoroutine(nameof(SpawnRoom));
@@ -277,36 +278,41 @@ namespace OrchestraArmy.Room
             objs[0].BuildNavMesh();
             
             yield return null;
-            // Spawn enemies into game
-            int newestEnemy = Math.Min(
-                CollectedInstrumentCount,
-                RoomPrefabData.Enemies.Count - 1
+
+            // Only spawn enemies when the room hadn't been cleared before.
+            // (This only happens when the room is generated for the first time.)
+            if (!CurrentRoom.RoomIsCleared)
+            {
+                // Spawn enemies into game
+                int newestEnemy = Math.Min(
+                    CollectedInstrumentCount,
+                    RoomPrefabData.Enemies.Count - 1
                 );
 
-            int enemyTypes = newestEnemy + 1;
+                int enemyTypes = newestEnemy + 1;
 
-            int newestEnemyPercentage = (int) (100.0 / enemyTypes + 10.0);
-            int newestEnemyAmount =
-                (int) ((float) CurrentRoom.EnemySpawnLocations.Count / 100.0 * (float) newestEnemyPercentage);
+                int newestEnemyPercentage = (int) (100.0 / enemyTypes + 10.0);
+                int newestEnemyAmount =
+                    (int) ((float) CurrentRoom.EnemySpawnLocations.Count / 100.0 * (float) newestEnemyPercentage);
             
-            // Make sure there is always at least one new enemy in the field
-            newestEnemyAmount =
-                Math.Max(newestEnemyAmount, 1); 
+                // Make sure there is always at least one new enemy in the field
+                newestEnemyAmount =
+                    Math.Max(newestEnemyAmount, 1); 
 
-            foreach (Vector2 enemy in CurrentRoom.EnemySpawnLocations)
-            {
-                if (newestEnemyAmount > 0)
+                foreach (Vector2 enemy in CurrentRoom.EnemySpawnLocations)
                 {
-                    Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[newestEnemy].gameObject);
-                    newestEnemyAmount--;
-                }
-                else
-                {
-                    // Check how many types of enemies may spawn and randomly get enemy to spawn from older ones
-                    Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[Random.Range(0, newestEnemy)].gameObject);
+                    if (newestEnemyAmount > 0)
+                    {
+                        Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[newestEnemy].gameObject);
+                        newestEnemyAmount--;
+                    }
+                    else
+                    {
+                        // Check how many types of enemies may spawn and randomly get enemy to spawn from older ones
+                        Spawn(enemy.x, enemy.y, RoomPrefabData.Enemies[Random.Range(0, newestEnemy)].gameObject);
+                    }
                 }
             }
-            
         }
 
         /// <summary>
@@ -359,8 +365,8 @@ namespace OrchestraArmy.Room
         /// <returns></returns>
         private RoomType DecideNextRoom()
         {
-            // calculation for chance boss room (after 5 rooms +20% per room)
-            if (Random.value < 0.1f * (RoomsCleared - 5 + Math.Abs(RoomsCleared - 5)) || ForceNextRoomIsBoss)
+            // Calculation for chance boss room (after 1 rooms +25% per room)
+            if (RoomsCleared >= 1 && Random.value < 0.25f * (RoomsCleared - 1) || ForceNextRoomIsBoss)
                 return RoomType.BossRoom;
             else
                 return RoomsCleared == 0 ? RoomType.StartingRoom : RoomType.MonsterRoom;

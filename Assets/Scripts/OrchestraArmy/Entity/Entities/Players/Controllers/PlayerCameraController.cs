@@ -34,8 +34,6 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
         /// </summary>
         public float Yaw { get; set; }
 
-        private bool _moved = false;
-
         private bool _dragging = false;
         
         public void HandleCameraMovement()
@@ -54,26 +52,31 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             var setThisFrame = false;
 
-            if (Mouse.current.rightButton.wasPressedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
+            if (Time.timeScale != 0)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                _dragging = true;
-                _moved = false;
-                setThisFrame = true;
+                if (Mouse.current.rightButton.wasPressedThisFrame ||
+                    (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                    _dragging = true;
+                    setThisFrame = true;
+                }
+
+                var mouseDelta = Mouse.current.delta.x.ReadValue();
+
+                if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta, 0) ||
+                    !Mouse.current.rightButton.isPressed && _dragging)
+                {
+                    Yaw += mouseDelta * CameraRotationIncrement;
+                }
             }
 
-            var mouseDelta = Mouse.current.delta.x.ReadValue();
-            
-            if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0) || !Mouse.current.rightButton.isPressed && _dragging)
-            {
-                _moved = true;
-                Yaw += mouseDelta * CameraRotationIncrement;
-            }
-
-            if (Mouse.current.rightButton.wasReleasedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging && !setThisFrame))
+            if (Mouse.current.rightButton.wasReleasedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging && !setThisFrame) || _dragging && Time.timeScale == 0)
             {
                 _dragging = false;
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 
                 //lets wrap the cursor to above the player, resetting the aim to forward in the progress. Done because the sudden swap from facing forward to the aimdirection can feel disorientating
                 var position = new Vector2(Screen.width / 2f,

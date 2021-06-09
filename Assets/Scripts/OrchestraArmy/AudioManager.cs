@@ -6,6 +6,7 @@ using OrchestraArmy.Enum;
 using OrchestraArmy.Event;
 using OrchestraArmy.Event.Events.Enemy;
 using OrchestraArmy.Event.Events.Player;
+using OrchestraArmy.SaveData;
 using UnityEngine;
 
 namespace OrchestraArmy
@@ -25,7 +26,7 @@ namespace OrchestraArmy
         public AudioClip A;
         public AudioClip B;
     }
-    
+
     /// <summary>
     /// Class that plays instrument audio
     /// </summary>
@@ -35,19 +36,32 @@ namespace OrchestraArmy
         /// InstrumentAudio collection
         /// </summary>
         public InstrumentAudio[] AttackSounds;
-        
+
         /// <summary>
         /// AudioSource to play audio
         /// </summary>
         private AudioSource _audioSource;
+
+        /// <summary>
+        /// user controled volume
+        /// </summary>
+        private float _playerVolume;
 
         public void OnEnable()
         {
             EventManager.Bind<PlayerAttackEvent>(this);
             EventManager.Bind<EnemyAttackEvent>(this);
             _audioSource = GetComponent<AudioSource>();
+            
+            SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
+            if (data != null)
+                _playerVolume = data.Sound;
+            else
+                _playerVolume = 1.0f;
+
+            _audioSource.volume = _playerVolume;
         }
-        
+
         /// <summary>
         /// Event to handle player attack sounds
         /// </summary>
@@ -69,7 +83,7 @@ namespace OrchestraArmy
                 Tone.B => instrumentAudio.B,
                 _ => throw new InvalidEnumArgumentException()
             };
-            
+
             _audioSource.Play();
         }
 
@@ -91,8 +105,14 @@ namespace OrchestraArmy
                 Tone.B => instrumentAudio.B,
                 _ => throw new InvalidEnumArgumentException()
             };
-            
-            AudioSource.PlayClipAtPoint(clip, invokedEvent.Position);
+
+            AudioSource.PlayClipAtPoint(clip, invokedEvent.Position,_playerVolume);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unbind<PlayerAttackEvent>(this);
+            EventManager.Unbind<EnemyAttackEvent>(this);
         }
     }
 }
