@@ -24,8 +24,8 @@ namespace OrchestraArmy.Music.Instruments
         public int Chance = 100;
 
         /// <summary>
-        /// 
+        /// To assign a specific value to an instrument in case it's audio file is very loud or very silent.
         /// </summary>
-        public float SpecificVolume = 1f;
+        public float SpecificVolume = .5f;
     }
 }

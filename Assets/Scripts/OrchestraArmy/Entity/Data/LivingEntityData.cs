@@ -46,7 +46,11 @@ namespace OrchestraArmy.Entity.Data
         public int MaxHealth
         {
             get => _maxHealth;
-            set => _maxHealth = value;
+             set {
+                _maxHealth = value;
+                if(_health > _maxHealth)
+                    _health = _maxHealth;
+            } 
         }
 
         /// <summary>
@@ -55,7 +59,11 @@ namespace OrchestraArmy.Entity.Data
         public int MaxStamina
         {
             get => _maxStamina;
-            set => _maxStamina = value;
+            set {
+                _maxStamina = value;
+                if(_stamina > _maxStamina)
+                    _stamina = _maxStamina;
+            } 
         }
     }
 }

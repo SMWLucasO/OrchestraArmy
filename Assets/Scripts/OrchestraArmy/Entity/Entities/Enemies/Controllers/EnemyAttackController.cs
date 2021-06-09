@@ -40,7 +40,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Controllers
                 enemyTransform = Enemy.transform;
                 playerTransform = Player.transform;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return;
             }
