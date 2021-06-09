@@ -52,22 +52,27 @@ namespace OrchestraArmy.Entity.Entities.Players.Controllers
             
             var setThisFrame = false;
 
-            if (Mouse.current.rightButton.wasPressedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
+            if (Time.timeScale != 0)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                _dragging = true;
-                setThisFrame = true;
+                if (Mouse.current.rightButton.wasPressedThisFrame ||
+                    (Keyboard.current.rKey.wasPressedThisFrame && _dragging == false))
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                    _dragging = true;
+                    setThisFrame = true;
+                }
+
+                var mouseDelta = Mouse.current.delta.x.ReadValue();
+
+                if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta, 0) ||
+                    !Mouse.current.rightButton.isPressed && _dragging)
+                {
+                    Yaw += mouseDelta * CameraRotationIncrement;
+                }
             }
 
-            var mouseDelta = Mouse.current.delta.x.ReadValue();
-            
-            if (Mouse.current.rightButton.isPressed && !Mathf.Approximately(mouseDelta,0) || !Mouse.current.rightButton.isPressed && _dragging)
-            {
-                Yaw += mouseDelta * CameraRotationIncrement;
-            }
-
-            if (Mouse.current.rightButton.wasReleasedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging && !setThisFrame))
+            if (Mouse.current.rightButton.wasReleasedThisFrame || (Keyboard.current.rKey.wasPressedThisFrame && _dragging && !setThisFrame) || _dragging && Time.timeScale == 0)
             {
                 _dragging = false;
                 Cursor.lockState = CursorLockMode.None;
