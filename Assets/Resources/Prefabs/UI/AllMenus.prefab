@@ -1016,22 +1016,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb04b184d5946dea65ea98e1d317366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorSprite:
+  CursorSprite:
   - {fileID: 2800000, guid: d893d0f9884c0a142bbb465303aee29b, type: 3}
   - {fileID: 2800000, guid: 4d1a5435ac0b1d24484126888a252c11, type: 3}
   - {fileID: 2800000, guid: 59191d183329fc6489a3ef408262886e, type: 3}
   - {fileID: 2800000, guid: dae2678d6e97b4042b5dcdc729c415d8, type: 3}
-  showCursor:
+  ShowCursor:
   - {fileID: 7151652365104683661}
   - {fileID: 7151652364529009712}
   - {fileID: 7151652365486701274}
   - {fileID: 7151652363822657650}
-  showDifficulty:
+  ShowDifficulty:
   - {fileID: 7151652364027197064}
   - {fileID: 7151652365391465433}
   - {fileID: 7151652364465529328}
-  sliderDifficulty: {fileID: 7151652364153464100}
-  sliderMouse: {fileID: 7151652364962459624}
+  SliderDifficulty: {fileID: 7151652364153464100}
+  SliderMouse: {fileID: 7151652364962459624}
 --- !u!1 &7151652363866670407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,10 +1091,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c977b0c662405580b90c64a3fedc0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliderSound: {fileID: 7151652365517829029}
-  sliderGMusic: {fileID: 7151652365399207895}
-  sliderMMusic: {fileID: 7151652364107637539}
-  sliderBeats: {fileID: 7151652364067024795}
+  SliderSound: {fileID: 7151652365517829029}
+  SliderGMusic: {fileID: 7151652365399207895}
+  SliderMMusic: {fileID: 7151652364107637539}
+  SliderBeats: {fileID: 7151652364067024795}
 --- !u!1 &7151652363891446585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,19 +1948,7 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7151652363866670401}
-        m_TargetAssemblyTypeName: OrchestraArmy.Menu.MusicSettings, OrchestraArmy
-        m_MethodName: SetBeats
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7151652364078308757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2167,19 +2155,7 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7151652363866670401}
-        m_TargetAssemblyTypeName: OrchestraArmy.Menu.MusicSettings, OrchestraArmy
-        m_MethodName: SetMMusic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7151652364140506948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,7 +2521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db2bb3c207a56e408e93c3a234ac057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorSprite:
+  CursorSprite:
   - {fileID: 2800000, guid: d893d0f9884c0a142bbb465303aee29b, type: 3}
   - {fileID: 2800000, guid: 4d1a5435ac0b1d24484126888a252c11, type: 3}
   - {fileID: 2800000, guid: 59191d183329fc6489a3ef408262886e, type: 3}
@@ -8311,19 +8287,7 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7151652363866670401}
-        m_TargetAssemblyTypeName: OrchestraArmy.Menu.MusicSettings, OrchestraArmy
-        m_MethodName: SetGMusic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7151652365400020949
 GameObject:
   m_ObjectHideFlags: 0
@@ -9635,19 +9599,7 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7151652363866670401}
-        m_TargetAssemblyTypeName: OrchestraArmy.Menu.MusicSettings, OrchestraArmy
-        m_MethodName: SetSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7151652365566907163
 GameObject:
   m_ObjectHideFlags: 0

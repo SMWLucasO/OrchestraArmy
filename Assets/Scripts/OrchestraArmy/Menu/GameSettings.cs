@@ -9,120 +9,122 @@ namespace OrchestraArmy.Menu
 {
     public class GameSettings : MonoBehaviour
     {
-        private SettingsData data = new SettingsData();
+        private SettingsData Data = new SettingsData();
         
-        public Texture2D[] cursorSprite;
-        public GameObject[] showCursor;
-        public GameObject[] showDifficulty;
-        public GameObject sliderDifficulty;
-        public GameObject sliderMouse;
+        public Texture2D[] CursorSprite;
+        public GameObject[] ShowCursor;
+        public GameObject[] ShowDifficulty;
+        public GameObject SliderDifficulty;
+        public GameObject SliderMouse;
         
-        private int savedDifficulty = 1;
-        private int savedCursor = 0;
-        private int tempDifficulty = 1;
-        private int tempCursor = 0;
+        private int _savedDifficulty = 1;
+        private int _savedCursor = 0;
+        private int _tempDifficulty = 1;
+        private int _tempCursor = 0;
 
         /// <summary>
-        /// load the saved data;
+        /// load the saved data on activation
         /// </summary>
         private void OnEnable()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            Data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            sliderMouse.GetComponent<Scrollbar>().value = data.mouse * (1.0f/3.0f);
-            sliderDifficulty.GetComponent<Scrollbar>().value = data.dificulty * 0.5f;
+            SliderMouse.GetComponent<Scrollbar>().value = Data.mouse * (1.0f/3.0f);
+            SliderDifficulty.GetComponent<Scrollbar>().value = Data.difficultly * 0.5f;
         }
-
+        
+        /// <summary>
+        /// temporarily save difficulty to _tempDifficulty
+        /// and change UI
+        /// </summary>
         public void SetDifficulty()
         {
-            float sliderValue = sliderDifficulty.GetComponent<Scrollbar>().value;
+            float sliderValue = SliderDifficulty.GetComponent<Scrollbar>().value;
             // set state name on screen
             if (sliderValue < 0.5f)
             {
-                showDifficulty[0].SetActive(true);
-                showDifficulty[1].SetActive(false);
-                showDifficulty[2].SetActive(false);
-                tempDifficulty = 0;
+                ShowDifficulty[0].SetActive(true);
+                ShowDifficulty[1].SetActive(false);
+                ShowDifficulty[2].SetActive(false);
+                _tempDifficulty = 0;
             }
             else if (sliderValue < 1.0f)
             {
-                showDifficulty[0].SetActive(false);
-                showDifficulty[1].SetActive(true);
-                showDifficulty[2].SetActive(false);
-                tempDifficulty = 1;
+                ShowDifficulty[0].SetActive(false);
+                ShowDifficulty[1].SetActive(true);
+                ShowDifficulty[2].SetActive(false);
+                _tempDifficulty = 1;
             }
             else
             {
-                showDifficulty[0].SetActive(false);
-                showDifficulty[1].SetActive(false);
-                showDifficulty[2].SetActive(true);
-                tempDifficulty = 2;
+                ShowDifficulty[0].SetActive(false);
+                ShowDifficulty[1].SetActive(false);
+                ShowDifficulty[2].SetActive(true);
+                _tempDifficulty = 2;
             }
         }
-
+        
+        /// <summary>
+        /// temporarily save cursor to _tempCursor
+        /// and change UI
+        /// </summary>
         public void SetCursor()
         {
-            float sliderValue = sliderMouse.GetComponent<Scrollbar>().value;
+            float sliderValue = SliderMouse.GetComponent<Scrollbar>().value;
             int state = (int) Mathf.Floor(sliderValue * 4.0f);
             state = state == 4 ? 3 : state;
-            tempCursor = state;
+            _tempCursor = state;
             // set show cursor on screen
-            foreach (GameObject v in showCursor)
+            foreach (GameObject v in ShowCursor)
             {
                 v.SetActive(false);
             }
             
-            showCursor[state].SetActive(true);
+            ShowCursor[state].SetActive(true);
             
-            Cursor.SetCursor(cursorSprite[state],Vector2.zero,CursorMode.ForceSoftware);
+            Cursor.SetCursor(CursorSprite[state],Vector2.zero,CursorMode.ForceSoftware);
         }
-
+        
+        /// <summary>
+        /// save all _temp variables to _saved
+        /// and write data to settings save file
+        /// </summary>
         public void SaveSettings()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            Data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            savedCursor = tempCursor;
-            savedDifficulty = tempDifficulty;
-            Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
+            _savedCursor = _tempCursor;
+            _savedDifficulty = _tempDifficulty;
+            Cursor.SetCursor(CursorSprite[_savedCursor],Vector2.zero,CursorMode.ForceSoftware);
 
-            data.mouse = savedCursor;
-            data.dificulty = savedDifficulty;
+            Data.mouse = _savedCursor;
+            Data.difficultly = _savedDifficulty;
 
-            DataSaver.SaveData(data, "settingsData");
+            DataSaver.SaveData(Data, "settingsData");
         }
-
+        
+        /// <summary>
+        /// undo all _temp variables
+        /// and reset sliders and ui to _saved values
+        /// </summary>
         public void Undo()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            Data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            sliderDifficulty.GetComponent<Scrollbar>().value = savedDifficulty * 0.5f;
-            sliderMouse.GetComponent<Scrollbar>().value = savedCursor * (1.0f/3.0f);
+            SliderDifficulty.GetComponent<Scrollbar>().value = _savedDifficulty * 0.5f;
+            SliderMouse.GetComponent<Scrollbar>().value = _savedCursor * (1.0f/3.0f);
+            
+            ShowDifficulty[0].SetActive(_savedDifficulty==0);
+            ShowDifficulty[1].SetActive(_savedDifficulty==1);
+            ShowDifficulty[2].SetActive(_savedDifficulty==2);
 
-            if (savedDifficulty==0)
-            {
-                showDifficulty[0].SetActive(true);
-                showDifficulty[1].SetActive(false);
-                showDifficulty[2].SetActive(false);
-            }
-            else if (savedDifficulty==1)
-            {
-                showDifficulty[0].SetActive(false);
-                showDifficulty[1].SetActive(true);
-                showDifficulty[2].SetActive(false);
-            }
-            else
-            {
-                showDifficulty[0].SetActive(false);
-                showDifficulty[1].SetActive(false);
-                showDifficulty[2].SetActive(true);
-            }
             
-            Cursor.SetCursor(cursorSprite[savedCursor],Vector2.zero,CursorMode.ForceSoftware);
+            Cursor.SetCursor(CursorSprite[_savedCursor],Vector2.zero,CursorMode.ForceSoftware);
 
-            data.mouse = savedCursor;
-            data.dificulty = savedDifficulty;
+            Data.mouse = _savedCursor;
+            Data.difficultly = _savedDifficulty;
             
-            DataSaver.SaveData(data, "settingsData");
+            DataSaver.SaveData(Data, "settingsData");
         } 
     }
 }

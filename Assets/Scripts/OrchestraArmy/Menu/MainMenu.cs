@@ -11,22 +11,36 @@ namespace OrchestraArmy.Menu
 {
     public class MainMenu : MonoBehaviour
     {
-        public Texture2D[] cursorSprite;
+        public Texture2D[] CursorSprite;
         
+        /// <summary>
+        /// load the saved data on activation
+        /// </summary>
         private void OnEnable()
         {
             SettingsData data = DataSaver.LoadData<SettingsData>("settingsData");
-            if (data != null)
-                Cursor.SetCursor(cursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
-            else
+            try
+            {
+                Cursor.SetCursor(CursorSprite[data.mouse],Vector2.zero,CursorMode.ForceSoftware);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("no saved settings found\ngenerating new settings");
                 DataSaver.SaveData(new SettingsData(), "settingsData");
+            }
         }
-
+        
+        /// <summary>
+        /// load the game scene
+        /// </summary>
         public void PlayGame()
         {
             SceneManager.LoadScene(1);
         }
-
+        
+        /// <summary>
+        /// quit the game
+        /// </summary>
         public void QuitGame()
         {
             Application.Quit();

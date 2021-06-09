@@ -10,25 +10,29 @@ namespace OrchestraArmy.Menu
         public GameObject PauseScreen;
         public GameObject MusicTimer;
         
+        /// <summary>
+        /// reactivate the time
+        /// timeScale for movement and MusicTimer for the music
+        /// </summary>
         public void Continue()
         {
             MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
             Time.timeScale = 1;
         }
 
-        public void Settings()
-        {
-            //todo: make settings menu reachable from ingame
-            return;
-        }
-
+        /// <summary>
+        /// reactivate the time
+        /// and go back to the menu scene
+        /// </summary>
         public void QuitToMenu()
         {
-            MusicTimer.GetComponent<RhythmSliderController>().GetRhythmController().PauseTimer();
-            Time.timeScale = 1;
+            Continue();
             SceneManager.LoadScene(0);
         }
         
+        /// <summary>
+        /// pause and unpause game using the 'esc' key
+        /// </summary>
         private void Update()
         {
             //press esc key to pause and unpause game

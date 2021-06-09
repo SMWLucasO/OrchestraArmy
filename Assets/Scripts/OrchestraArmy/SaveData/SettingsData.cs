@@ -11,6 +11,6 @@ namespace OrchestraArmy.SaveData
         public float beats = 1.0f;
 
         public int mouse = 0;
-        public int dificulty = 1;
+        public int difficultly = 1;
     }
 }

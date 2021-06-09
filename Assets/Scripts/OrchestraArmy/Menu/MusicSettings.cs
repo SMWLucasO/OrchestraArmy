@@ -10,91 +10,75 @@ namespace OrchestraArmy.Menu
 {
     public class MusicSettings : MonoBehaviour
     {
-        private SettingsData data = new SettingsData();
+        private SettingsData _data = new SettingsData();
         
-        public GameObject sliderSound;
-        public GameObject sliderGMusic;
-        public GameObject sliderMMusic;
-        public GameObject sliderBeats;
+        public GameObject SliderSound;
+        public GameObject SliderGMusic;
+        public GameObject SliderMMusic;
+        public GameObject SliderBeats;
 
-        private float savedSound = 1.0f;
-        private float savedGMusic = 1.0f;
-        private float savedMMusic = 1.0f;
-        private float savedBeats = 1.0f;
+        private float _savedSound = 1.0f;
+        private float _savedGMusic = 1.0f;
+        private float _savedMMusic = 1.0f;
+        private float _savedBeats = 1.0f;
         
         /// <summary>
         /// load the saved data;
         /// </summary>
         private void OnEnable()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            _data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            sliderSound.GetComponent<Slider>().value = data.sound;
-            sliderGMusic.GetComponent<Slider>().value = data.gMusic;
-            sliderMMusic.GetComponent<Slider>().value = data.mMusic;
-            sliderBeats.GetComponent<Slider>().value = data.beats;
+            SliderSound.GetComponent<Slider>().value = _data.sound;
+            SliderGMusic.GetComponent<Slider>().value = _data.gMusic;
+            SliderMMusic.GetComponent<Slider>().value = _data.mMusic;
+            SliderBeats.GetComponent<Slider>().value = _data.beats;
         }
 
-
-        public void SetSound()
-        {
-            float sliderValue = sliderSound.GetComponent<Slider>().value;
-        }
-
-        public void SetGMusic()
-        {
-            float sliderValue = sliderGMusic.GetComponent<Slider>().value;
-        }
-        
-        public void SetMMusic()
-        {
-            float sliderValue = sliderMMusic.GetComponent<Slider>().value;
-        }
-        
-        public void SetBeats()
-        {
-            float sliderValue = sliderBeats.GetComponent<Slider>().value;
-        }
-
+        /// <summary>
+        /// save all slider values to _saved
+        /// and write data to settings save file
+        /// </summary>
         public void SaveSettings()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            _data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            savedSound = sliderSound.GetComponent<Slider>().value;
-            savedGMusic = sliderGMusic.GetComponent<Slider>().value;
-            savedMMusic = sliderMMusic.GetComponent<Slider>().value;
-            savedBeats = sliderBeats.GetComponent<Slider>().value;
+            _savedSound = SliderSound.GetComponent<Slider>().value;
+            _savedGMusic = SliderGMusic.GetComponent<Slider>().value;
+            _savedMMusic = SliderMMusic.GetComponent<Slider>().value;
+            _savedBeats = SliderBeats.GetComponent<Slider>().value;
 
-            data.beats = savedBeats;
-            data.sound = savedSound;
-            data.gMusic = savedGMusic;
-            data.mMusic = savedMMusic;
+            _data.beats = _savedBeats;
+            _data.sound = _savedSound;
+            _data.gMusic = _savedGMusic;
+            _data.mMusic = _savedMMusic;
             
-            DataSaver.SaveData(data, "settingsData");
+            DataSaver.SaveData(_data, "settingsData");
         }
         
         /// <summary>
         /// reset all volumes to max
+        /// and write data to settings save file
         /// </summary>
         public void Undo()
         {
-            data = DataSaver.LoadData<SettingsData>("settingsData");
+            _data = DataSaver.LoadData<SettingsData>("settingsData");
             
-            savedSound = 1.0f;
-            savedGMusic = 1.0f;
-            savedMMusic = 1.0f;
-            savedBeats = 1.0f;
+            _savedSound = 1.0f;
+            _savedGMusic = 1.0f;
+            _savedMMusic = 1.0f;
+            _savedBeats = 1.0f;
             
-            sliderSound.GetComponent<Slider>().value = 1.0f;
-            sliderGMusic.GetComponent<Slider>().value = 1.0f;
-            sliderMMusic.GetComponent<Slider>().value = 1.0f;
-            sliderBeats.GetComponent<Slider>().value = 1.0f;
+            SliderSound.GetComponent<Slider>().value = 1.0f;
+            SliderGMusic.GetComponent<Slider>().value = 1.0f;
+            SliderMMusic.GetComponent<Slider>().value = 1.0f;
+            SliderBeats.GetComponent<Slider>().value = 1.0f;
             
-            data.beats = savedBeats;
-            data.sound = savedSound;
-            data.gMusic = savedGMusic;
-            data.mMusic = savedMMusic;
-            DataSaver.SaveData(data, "settingsData");
+            _data.beats = _savedBeats;
+            _data.sound = _savedSound;
+            _data.gMusic = _savedGMusic;
+            _data.mMusic = _savedMMusic;
+            DataSaver.SaveData(_data, "settingsData");
         } 
     }
 }
