@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OrchestraArmy.Entity.Entities.Behaviour.Data;
 using OrchestraArmy.Entity.Entities.Behaviour.Utils;
 using OrchestraArmy.Entity.Entities.Players;
@@ -106,7 +106,7 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
             StateData.ProjectileTone = Tone.A;
             StateData.AttackController.Enemy = StateData.Enemy;
             StateData.AttackController.Player = StateData.Player;
-            
+
             StateData.AttackController.HandleAttack();
 
             if (invokedEvent.EnemyId != StateData.Enemy.GetInstanceID())
