@@ -18,7 +18,7 @@ namespace Tests.PlayTests
         public IEnumerator Setup()
         {
             _game = new Game();
-            yield return _game.TestSetup("SampleScene");
+            yield return _game.TestSetup("GameScene");
         }
 
         [UnityTest]
@@ -63,7 +63,7 @@ namespace Tests.PlayTests
         [UnityTearDown]
         public IEnumerator Teardown()
         {
-            yield return _game.TestTearDown("SampleScene");
+            yield return _game.TestTearDown("GameScene");
         }
     }
 }
