@@ -128,6 +128,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
   m_PrefabInstance: {fileID: 7519919699390143343}
   m_PrefabAsset: {fileID: 0}
+--- !u!208 &4025438
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4025433}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 1.5, y: 1, z: 1.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.1
 --- !u!1 &204702744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3908,6 +3924,10 @@ PrefabInstance:
       propertyPath: <InstrumentSprites>k__BackingField.Array.data[3].SpriteEntries.Array.data[3].Sprites.Array.data[1]
       value: 
       objectReference: {fileID: 21300000, guid: 94818e779451b414ab84533e86245836, type: 3}
+    - target: {fileID: 7519919700026670170, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7519919700026670171, guid: 97ff844d73e849d48a72d652be925a8f, type: 3}
       propertyPath: m_Name
       value: Player
