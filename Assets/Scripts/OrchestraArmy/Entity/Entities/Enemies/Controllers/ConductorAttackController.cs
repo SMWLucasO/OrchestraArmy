@@ -66,11 +66,16 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Controllers
                     enemyTransform.position + enemyTransform.forward * (enemyTransform.localScale.x * 1.1f),
                     Enemy.transform.GetChild(0).transform.rotation
                 );
+
+                var objPosition = obj.transform.position;
+                objPosition.y = 0.5f;
                 
+                obj.transform.position = objPosition;
+
                 EnemyNote attack = (EnemyNote) obj.GetComponent(state.ProjectileType);
 
                 attack.transform.forward = directionVector;
-                attack.Source = obj.transform.position;
+                attack.Source = objPosition;
                 attack.MaxDistance = 7.5f;
                 attack.Instrument = WeaponFactory.Make(Enemy.WeaponType);
                 attack.Attacker = Enemy;
