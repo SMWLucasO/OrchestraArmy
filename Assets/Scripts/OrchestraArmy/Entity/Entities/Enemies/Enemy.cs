@@ -18,7 +18,7 @@ using OrchestraArmy.SaveData;
 
 namespace OrchestraArmy.Entity.Entities.Enemies
 {
-    public abstract class Enemy : LivingDirectionalEntity, IListener<EnemyDeathEvent>, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
+    public abstract class Enemy : LivingDirectionalEntity, IListener<PlayerAttackHitEvent>, IListener<PlayerDeathEvent>, IListener<PlayerWeaponChangedEvent>
     {
         /// <summary>
         /// used for dynamic difficulty
@@ -102,7 +102,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
                 );
 
             // Register enemy events.
-            EventManager.Bind<EnemyDeathEvent>(this);
+            //EventManager.Bind<EnemyDeathEvent>(this);
             EventManager.Bind<PlayerAttackHitEvent>(this);
             EventManager.Bind<PlayerDeathEvent>(this);
             EventManager.Bind<PlayerWeaponChangedEvent>(this);
@@ -115,12 +115,12 @@ namespace OrchestraArmy.Entity.Entities.Enemies
         }
 
         /// <summary>
-        /// Event for when an enemy dies.
+        /// For when an enemy dies.
         /// </summary>
-        /// <param name="enemyDeathEvent"></param>
-        public virtual void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        /// <param name="enemy"></param>
+        public virtual void EnemyDeath(Enemy enemy)
         {
-            if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
+            if (enemy.GetInstanceID() != GetInstanceID()) return;
 
             Room.Room currentRoom = RoomManager.Instance.CurrentRoom;
             currentRoom.EnemySpawnData.NumberOfEnemies -= 1;
@@ -147,7 +147,7 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
             if (EntityData.Health <= 0)
             {
-                EventManager.Invoke(new EnemyDeathEvent() { KilledEnemy = this });
+                EnemyDeath(this);
             }
             
             //update healthbar
@@ -163,7 +163,6 @@ namespace OrchestraArmy.Entity.Entities.Enemies
 
         public void OnDestroy()
         {
-            EventManager.Unbind<EnemyDeathEvent>(this);
             EventManager.Unbind<PlayerAttackHitEvent>(this);
             EventManager.Unbind<PlayerDeathEvent>(this);
             EventManager.Unbind<PlayerWeaponChangedEvent>(this);

@@ -15,9 +15,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             Behaviour.CurrentState.StateData.ProjectileType = typeof(BossNote);
         }
         
-        public override void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        public override void EnemyDeath(Enemy enemy)
         {
-            if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
+            if (enemy.GetInstanceID() != GetInstanceID()) return;
             
             EventManager.Invoke(new BossDeathEvent() { PositionOfDeath = transform.position, InstrumentToAward = WeaponType });
             Destroy(gameObject);
