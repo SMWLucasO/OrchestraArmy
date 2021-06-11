@@ -62,9 +62,9 @@ namespace OrchestraArmy.Entity.Entities.Enemies.Bosses
             ApplyVisibilityChangesForWeapon(HittableBy);
         }
 
-        public override void OnEvent(EnemyDeathEvent enemyDeathEvent)
+        public override void EnemyDeath(Enemy enemy)
         {
-            if (enemyDeathEvent.KilledEnemy.GetInstanceID() != GetInstanceID()) return;
+            if (enemy.GetInstanceID() != GetInstanceID()) return;
             
             EventManager.Invoke(new FinalBossDeathEvent());
             Destroy(gameObject);

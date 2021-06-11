@@ -18,7 +18,6 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// The BPM for the game.
         /// </summary>
-        [field: SerializeField]
         public int BPM
         {
             get => _BPM;
@@ -31,6 +30,7 @@ namespace OrchestraArmy.Music.Controllers
         /// <summary>
         /// Temporary store the changed BPM, will be used to change BPM at the first beat to prevent stuttering
         /// </summary>
+        [SerializeField]
         private int _newBPM = 120;
         
         /// <summary>

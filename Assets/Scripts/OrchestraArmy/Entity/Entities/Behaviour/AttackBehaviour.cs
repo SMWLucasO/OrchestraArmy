@@ -76,10 +76,12 @@ namespace OrchestraArmy.Entity.Entities.Behaviour
                 return;
             }
 
-            if ((navAgent.destination - enemyTransform.position).magnitude <0.1f) //prevent jittering movement
+            // Prevent jittering movement
+            if ((navAgent.destination - enemyTransform.position).magnitude < 0.1f)
             {
                 // Do random movement but keep player inside attack area
-                Vector3 movement = Random.insideUnitSphere * 1.249f; // <2.5 units diameter circle
+                // < 2.5 units diameter circle
+                Vector3 movement = Random.insideUnitSphere * 1.249f; 
                 movement.y = 0;
     
                 // Shift so player always in attack area

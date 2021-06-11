@@ -1,4 +1,5 @@
 ﻿using OrchestraArmy.Keybindings;
+using OrchestraArmy.Room;
 using OrchestraArmy.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,7 @@ namespace OrchestraArmy.Menu
         public void QuitToMenu()
         {
             Continue();
+            RoomManager.Instance.DestroyRooms();
             SceneManager.LoadScene(0);
         }
         
